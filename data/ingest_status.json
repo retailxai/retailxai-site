@@ -1,0 +1,60 @@
+{
+  "ingests": [
+    {
+      "id": 1,
+      "title": "Market Analysis: Understanding the Debasement Trade",
+      "source": "https://www.youtube.com/watch?v=FBoeZFBu23k",
+      "source_type": "youtube",
+      "status": "Complete",
+      "ingest_timestamp": "2025-10-04T14:00:27Z"
+    },
+    {
+      "id": 2,
+      "title": "Patriots Analysis: Breaking Down QB Drake Maye",
+      "source": "https://www.patriots.com/news/after-further-review-breaking-down-qb-drake-maye",
+      "source_type": "article",
+      "status": "Complete",
+      "ingest_timestamp": "2025-11-03T19:32:00Z"
+    },
+    {
+      "id": 3,
+      "title": "Multi-Source Article: Patriots Unfiltered Analysis",
+      "source": "Multiple sources (articles + podcasts)",
+      "source_type": "multi-source",
+      "status": "Complete",
+      "ingest_timestamp": "2025-11-03T19:33:00Z"
+    },
+    {
+      "id": 4,
+      "title": "Falcons Preview and Week 9 League Picks",
+      "source": "Patriots Unfiltered Podcast",
+      "source_type": "podcast",
+      "status": "Complete",
+      "ingest_timestamp": "2025-11-03T19:43:00Z"
+    },
+    {
+      "id": 5,
+      "title": "Nvidia Earnings Q3 Analysis",
+      "source": "https://www.youtube.com/watch?v=example",
+      "source_type": "youtube",
+      "status": "Pending",
+      "ingest_timestamp": null
+    },
+    {
+      "id": 6,
+      "title": "Tesla AI Day Coverage",
+      "source": "https://www.youtube.com/watch?v=example2",
+      "source_type": "youtube",
+      "status": "In Progress",
+      "ingest_timestamp": "2025-11-04T06:17:00Z"
+    }
+  ],
+  "last_updated": "2025-11-04T12:00:00Z",
+  "total_ingests": 6,
+  "status_summary": {
+    "complete": 4,
+    "pending": 1,
+    "in_progress": 1
+  }
+}
+

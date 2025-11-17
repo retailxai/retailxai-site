@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics Setup - RetailXAI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <script defer data-domain="retailxai.github.io" src="https://plausible.io/js/script.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <h1><a href="../index.html" style="text-decoration: none; color: inherit;">RetailXAI</a></h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="getting_started.html">Docs</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="hero" style="padding: 4rem 0;">
+        <div class="container">
+            <h1 class="hero-title" style="font-size: 2.5rem;">Analytics Setup</h1>
+            <p class="hero-subtitle" style="max-width: 800px;">Privacy-friendly analytics integration</p>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="container">
+            <div class="doc-content" style="max-width: 900px; margin: 0 auto; padding: 2rem;">
+                <h2>Plausible Analytics</h2>
+                <p>RetailXAI uses Plausible Analytics, a privacy-friendly, GDPR-compliant analytics solution that doesn't use cookies or collect personal data.</p>
+
+                <h3>Setup Instructions</h3>
+                <ol>
+                    <li>Sign up for a Plausible account at <a href="https://plausible.io" target="_blank">plausible.io</a></li>
+                    <li>Add your domain (retailxai.github.io) to your Plausible account</li>
+                    <li>The analytics script is already included in index.html:</li>
+                </ol>
+
+                <pre><code>&lt;script defer data-domain="retailxai.github.io" src="https://plausible.io/js/script.js"&gt;&lt;/script&gt;</code></pre>
+
+                <h3>Custom Event Tracking</h3>
+                <p>Custom events are tracked using the <code>data-analytics</code> attribute:</p>
+
+                <pre><code>&lt;a href="..." class="btn" data-analytics="cta-hero-get-started"&gt;Get Started&lt;/a&gt;</code></pre>
+
+                <p>The tracking script automatically captures clicks on elements with the <code>data-analytics</code> attribute.</p>
+
+                <h3>Tracked Events</h3>
+                <ul>
+                    <li><code>cta-hero-get-started</code> - Hero "Get Started" button</li>
+                    <li><code>cta-hero-why</code> - Hero "Why RetailXAI" button</li>
+                    <li><code>footer-github</code> - Footer GitHub link</li>
+                    <li><code>footer-substack</code> - Footer Substack link</li>
+                    <li><code>footer-producthunt</code> - Footer Product Hunt link</li>
+                </ul>
+
+                <h3>Alternative: GoatCounter</h3>
+                <p>If you prefer GoatCounter, replace the Plausible script with:</p>
+
+                <pre><code>&lt;script data-goatcounter="https://YOUR-CODE.goatcounter.com/count" src="https://gc.zgo.at/count.js"&gt;&lt;/script&gt;</code></pre>
+
+                <h2>Privacy & Compliance</h2>
+                <p>Both Plausible and GoatCounter are:</p>
+                <ul>
+                    <li>GDPR compliant</li>
+                    <li>Cookie-free</li>
+                    <li>No personal data collection</li>
+                    <li>Lightweight and fast</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>RetailXAI</h3>
+                    <p>AI-powered content intelligence for modern publishers.</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 RetailXAI. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
+

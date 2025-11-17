@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Getting Started - RetailXAI</title>
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <style>
+        .doc-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .doc-content h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        .doc-content h2 {
+            font-size: 1.8rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+        .doc-content h3 {
+            font-size: 1.3rem;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+        .doc-content code {
+            background-color: #f3f4f6;
+            padding: 0.2rem 0.4rem;
+            border-radius: 0.25rem;
+            font-family: 'Courier New', monospace;
+        }
+        .doc-content pre {
+            background-color: #1f2937;
+            color: #f9fafb;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+        .doc-content pre code {
+            background-color: transparent;
+            color: inherit;
+            padding: 0;
+        }
+        .doc-content ul, .doc-content ol {
+            margin-left: 2rem;
+            margin-bottom: 1rem;
+        }
+        .doc-content li {
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <h1><a href="../index.html" style="text-decoration: none; color: inherit;">RetailXAI</a></h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../index.html#features">Features</a></li>
+                <li><a href="../index.html#pipeline">Pipeline</a></li>
+                <li><a href="getting_started.html">Docs</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="doc-content">
+        <h1>Getting Started with RetailXAI</h1>
+        
+        <p>Welcome to RetailXAI! This guide will help you get up and running quickly with our content intelligence pipeline.</p>
+
+        <h2>What is RetailXAI?</h2>
+        <p>RetailXAI is an AI-powered platform that transforms video content into professional articles. It can ingest YouTube videos, earnings calls, and podcasts to produce publication-ready content for Substack, LinkedIn, and X.</p>
+
+        <h2>Prerequisites</h2>
+        <p>Before you begin, ensure you have:</p>
+        <ul>
+            <li><strong>Python 3.10+</strong> installed</li>
+            <li><strong>Git</strong> for version control</li>
+            <li><strong>YouTube API access</strong> (optional, for enhanced metadata)</li>
+            <li><strong>OpenAI/Anthropic API keys</strong> (optional, for AI features)</li>
+        </ul>
+
+        <h2>Quick Installation</h2>
+
+        <h3>1. Clone the Repository</h3>
+        <pre><code>git clone https://github.com/retailxai/precipice-2.git
+cd precipice-2</code></pre>
+
+        <h3>2. Set Up Python Environment</h3>
+        <pre><code># Create virtual environment
+python3 -m venv .venv
+
+# Activate virtual environment
+# On macOS/Linux:
+source .venv/bin/activate
+# On Windows:
+.venv\Scripts\activate
+
+# Install dependencies
+pip install -e ".[dev]"</code></pre>
+
+        <h3>3. Configure Environment</h3>
+        <pre><code># Copy environment template
+cp env.example .env
+
+# Edit with your settings
+nano .env  # or your preferred editor</code></pre>
+
+        <p><strong>Required Environment Variables:</strong></p>
+        <pre><code># Database
+DATABASE_URL=sqlite:///./precipice.db
+
+# AI Services (at least one required)
+OPENAI_API_KEY=your_openai_key
+ANTHROPIC_API_KEY=your_anthropic_key
+
+# YouTube API (optional)
+YOUTUBE_API_KEY=your_youtube_key</code></pre>
+
+        <h2>Your First Pipeline Run</h2>
+
+        <h3>Basic Usage</h3>
+        <pre><code># Process a YouTube video to article
+precipice process "https://www.youtube.com/watch?v=VIDEO_ID"</code></pre>
+
+        <h3>Expected Output</h3>
+        <p>The pipeline will:</p>
+        <ol>
+            <li>Ingest video metadata and transcript</li>
+            <li>Analyze content for key points</li>
+            <li>Generate a professional article</li>
+            <li>Save the output to your data directory</li>
+        </ol>
+
+        <h2>Next Steps</h2>
+        <ul>
+            <li>Read the <a href="architecture.html">Architecture Overview</a> to understand the system</li>
+            <li>Explore the <a href="ingest_pipeline.html">Ingest Pipeline</a> documentation</li>
+            <li>Check out <a href="../examples/">example outputs</a></li>
+            <li>View the <a href="../dashboard.html">Dashboard</a> for live status</li>
+        </ul>
+
+        <h2>Getting Help</h2>
+        <p>If you encounter issues:</p>
+        <ul>
+            <li>Check the <a href="architecture.html">Architecture</a> documentation</li>
+            <li>Review the <a href="release_notes.html">Release Notes</a> for known issues</li>
+            <li>Visit our <a href="https://github.com/retailxai">GitHub repository</a></li>
+        </ul>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>RetailXAI</h3>
+                    <p>AI-powered content intelligence for modern publishers.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="getting_started.html">Getting Started</a></li>
+                        <li><a href="architecture.html">Architecture</a></li>
+                        <li><a href="release_notes.html">Release Notes</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 RetailXAI. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
+

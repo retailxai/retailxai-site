@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ingest Pipeline - RetailXAI</title>
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <style>
+        .doc-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .doc-content h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        .doc-content h2 {
+            font-size: 1.8rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+        .pipeline-step-box {
+            background-color: #f3f4f6;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            margin: 1rem 0;
+            border-left: 4px solid var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <h1><a href="../index.html" style="text-decoration: none; color: inherit;">RetailXAI</a></h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="getting_started.html">Docs</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="doc-content">
+        <h1>Ingest Pipeline</h1>
+        
+        <p>The RetailXAI ingest pipeline processes content from multiple sources and transforms it into professional articles.</p>
+
+        <h2>Pipeline Stages</h2>
+
+        <div class="pipeline-step-box">
+            <h3>1. Source Ingestion</h3>
+            <p>Ingest content from various sources:</p>
+            <ul>
+                <li><strong>YouTube Videos</strong>: Extract metadata and transcripts</li>
+                <li><strong>RSS Feeds</strong>: Process podcast episodes</li>
+                <li><strong>Direct Audio Uploads</strong>: Support for local files</li>
+                <li><strong>Article URLs</strong>: Extract and process web content</li>
+            </ul>
+        </div>
+
+        <div class="pipeline-step-box">
+            <h3>2. Transcription</h3>
+            <p>Convert audio to text using multiple services with intelligent fallback:</p>
+            <ul>
+                <li><strong>Local Whisper</strong>: Fast, offline transcription</li>
+                <li><strong>OpenAI Whisper API</strong>: High-quality transcription</li>
+                <li><strong>Google Speech-to-Text</strong>: Backup service</li>
+            </ul>
+            <p>The system automatically selects the best available service and falls back if errors occur.</p>
+        </div>
+
+        <div class="pipeline-step-box">
+            <h3>3. Content Analysis</h3>
+            <p>Analyze transcribed content to extract key information:</p>
+            <ul>
+                <li><strong>Auto Tagging</strong>: Identify topics and themes</li>
+                <li><strong>Classification</strong>: Determine content type (earnings call, interview, etc.)</li>
+                <li><strong>Summary Extraction</strong>: Extract key points and highlights</li>
+                <li><strong>Title Rewriting</strong>: Optimize titles for engagement</li>
+            </ul>
+        </div>
+
+        <div class="pipeline-step-box">
+            <h3>4. Article Generation</h3>
+            <p>Generate professional articles using AI models:</p>
+            <ul>
+                <li><strong>Multiple Styles</strong>: Analytical, narrative, data-driven, opinion</li>
+                <li><strong>Model Selection</strong>: Choose between OpenAI GPT and Anthropic Claude</li>
+                <li><strong>Quality Control</strong>: Automatic fact-checking and quality metrics</li>
+            </ul>
+        </div>
+
+        <div class="pipeline-step-box">
+            <h3>5. Publishing</h3>
+            <p>Distribute articles to publishing platforms:</p>
+            <ul>
+                <li><strong>Substack</strong>: Direct publishing integration</li>
+                <li><strong>LinkedIn</strong>: Professional network sharing</li>
+                <li><strong>X (Twitter)</strong>: Social media distribution</li>
+                <li><strong>Markdown Export</strong>: For manual publishing</li>
+            </ul>
+        </div>
+
+        <h2>Multi-Source Processing</h2>
+        <p>RetailXAI can combine multiple sources into a single comprehensive article:</p>
+        <ul>
+            <li>Combine multiple articles on the same topic</li>
+            <li>Merge podcast episodes with article content</li>
+            <li>Create sentiment echo analysis across sources</li>
+        </ul>
+
+        <h2>Error Handling</h2>
+        <p>The pipeline includes robust error handling:</p>
+        <ul>
+            <li>Automatic retries with exponential backoff</li>
+            <li>Circuit breakers to prevent cascade failures</li>
+            <li>Graceful degradation when services are unavailable</li>
+            <li>Comprehensive logging for debugging</li>
+        </ul>
+
+        <h2>Performance</h2>
+        <p>Typical processing times:</p>
+        <ul>
+            <li><strong>Short videos (5-10 min)</strong>: 2-3 minutes</li>
+            <li><strong>Medium videos (10-30 min)</strong>: 5-8 minutes</li>
+            <li><strong>Long videos (30+ min)</strong>: 10-15 minutes</li>
+            <li><strong>Multi-source articles</strong>: 15-20 minutes</li>
+        </ul>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>RetailXAI</h3>
+                    <p>AI-powered content intelligence for modern publishers.</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 RetailXAI. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
+

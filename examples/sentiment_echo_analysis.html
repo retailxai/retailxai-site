@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sentiment Echo Analysis Example - RetailXAI</title>
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <style>
+        .example-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .example-content h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        .sentiment-card {
+            background-color: #f3f4f6;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            margin: 1rem 0;
+            border-left: 4px solid var(--primary-color);
+        }
+        .sentiment-positive {
+            border-left-color: #10b981;
+        }
+        .sentiment-negative {
+            border-left-color: #ef4444;
+        }
+        .sentiment-neutral {
+            border-left-color: #6b7280;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <h1><a href="../index.html" style="text-decoration: none; color: inherit;">RetailXAI</a></h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../examples/">Examples</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="example-content">
+        <h1>Sentiment Echo Analysis Example</h1>
+        <p><em>Multi-source sentiment analysis across earnings call coverage</em></p>
+
+        <h2>Analysis Summary</h2>
+        <p><strong>Consensus Level:</strong> 75% Positive</p>
+        <p><strong>Sources Analyzed:</strong> 6 articles, 3 podcasts</p>
+
+        <h2>Source Sentiment Breakdown</h2>
+
+        <div class="sentiment-card sentiment-positive">
+            <h3>Financial Times</h3>
+            <p><strong>Sentiment:</strong> Positive</p>
+            <p><strong>Key Quote:</strong> "Strong quarterly performance exceeded analyst expectations"</p>
+        </div>
+
+        <div class="sentiment-card sentiment-positive">
+            <h3>Bloomberg</h3>
+            <p><strong>Sentiment:</strong> Positive</p>
+            <p><strong>Key Quote:</strong> "Management's guidance upgrade reflects confidence in future growth"</p>
+        </div>
+
+        <div class="sentiment-card sentiment-neutral">
+            <h3>Wall Street Journal</h3>
+            <p><strong>Sentiment:</strong> Neutral</p>
+            <p><strong>Key Quote:</strong> "Results were in line with expectations, with some concerns about margin pressure"</p>
+        </div>
+
+        <div class="sentiment-card sentiment-negative">
+            <h3>MarketWatch</h3>
+            <p><strong>Sentiment:</strong> Negative</p>
+            <p><strong>Key Quote:</strong> "While revenue grew, operating margins contracted slightly"</p>
+        </div>
+
+        <h2>Echo Patterns</h2>
+        <p>The analysis identified a strong echo pattern around the revenue beat, with 5 out of 9 sources highlighting this as the key positive factor. However, there was divergence on margin concerns, with some sources viewing them as temporary while others saw them as a longer-term issue.</p>
+
+        <h2>Key Themes</h2>
+        <ul>
+            <li>Revenue growth (mentioned in 8/9 sources)</li>
+            <li>Margin pressure (mentioned in 5/9 sources)</li>
+            <li>Guidance upgrade (mentioned in 6/9 sources)</li>
+            <li>Digital channel strength (mentioned in 7/9 sources)</li>
+        </ul>
+
+        <p><a href="../index.html">← Back to Home</a></p>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>RetailXAI</h3>
+                    <p>AI-powered content intelligence for modern publishers.</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 RetailXAI. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
+

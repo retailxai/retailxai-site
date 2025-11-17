@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Architecture Overview - RetailXAI</title>
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <style>
+        .doc-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .doc-content h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        .doc-content h2 {
+            font-size: 1.8rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+        .doc-content h3 {
+            font-size: 1.3rem;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+        .architecture-diagram {
+            background-color: #f3f4f6;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <h1><a href="../index.html" style="text-decoration: none; color: inherit;">RetailXAI</a></h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../index.html#features">Features</a></li>
+                <li><a href="getting_started.html">Docs</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="doc-content">
+        <h1>Architecture Overview</h1>
+        
+        <p>RetailXAI is built with a modular, pipeline-first architecture designed for extensibility and production reliability.</p>
+
+        <h2>High-Level Design</h2>
+        <p>The system follows a <strong>pipeline-first architecture</strong> with clear separation of concerns:</p>
+        <ul>
+            <li><strong>Pipeline Orchestrator</strong>: Single entry point for content processing</li>
+            <li><strong>Service Layer</strong>: Business logic for content processing</li>
+            <li><strong>Agent System</strong>: Advanced workflows (feature-flagged)</li>
+            <li><strong>Infrastructure</strong>: Database, logging, circuit breakers, cost tracking</li>
+        </ul>
+
+        <div class="architecture-diagram">
+            <h3>System Flow</h3>
+            <p>CLI → Pipeline Orchestrator → Services → Database/APIs</p>
+            <p>Each stage processes content and passes results to the next stage.</p>
+        </div>
+
+        <h2>Core Components</h2>
+
+        <h3>1. Pipeline Orchestrator</h3>
+        <p>The Pipeline Orchestrator is the single source of truth for content processing. It coordinates:</p>
+        <ul>
+            <li>Video/content ingestion</li>
+            <li>Transcription</li>
+            <li>Content analysis</li>
+            <li>Article drafting</li>
+            <li>Publishing</li>
+        </ul>
+
+        <h3>2. Service Layer</h3>
+        <p>Business logic is encapsulated in dedicated services:</p>
+        <ul>
+            <li><strong>Ingest Service</strong>: Video metadata and transcript extraction</li>
+            <li><strong>Auto Tagger</strong>: Content tagging with AI</li>
+            <li><strong>Video Classifier</strong>: Content type classification</li>
+            <li><strong>Summary Extractor</strong>: Key points extraction</li>
+            <li><strong>Article Draft Service</strong>: Article generation</li>
+        </ul>
+
+        <h3>3. Fallback Strategy</h3>
+        <p>Critical services implement fallback chains for reliability:</p>
+        <ul>
+            <li><strong>Transcription</strong>: Local Whisper → OpenAI Whisper → Google Speech</li>
+            <li><strong>AI Services</strong>: Primary model → Secondary model → Graceful degradation</li>
+        </ul>
+
+        <h2>Data Flow</h2>
+        <ol>
+            <li>User submits content URL via CLI</li>
+            <li>Pipeline ingests content and extracts metadata</li>
+            <li>Transcription service converts audio to text</li>
+            <li>Analysis services extract tags, summaries, and classifications</li>
+            <li>Article generation creates professional content</li>
+            <li>Publishing service distributes to platforms</li>
+        </ol>
+
+        <h2>Key Design Principles</h2>
+
+        <h3>1. Async-First Architecture</h3>
+        <p>All I/O operations are asynchronous for better resource utilization and scalability.</p>
+
+        <h3>2. Structured Logging</h3>
+        <p>All components use structured JSON logging for easy analysis and debugging.</p>
+
+        <h3>3. Circuit Breaker Pattern</h3>
+        <p>API calls are protected by circuit breakers to prevent cascade failures.</p>
+
+        <h3>4. Cost Tracking</h3>
+        <p>All AI API calls are tracked for cost management and optimization.</p>
+
+        <h2>Security</h2>
+        <ul>
+            <li>API keys stored in environment variables</li>
+            <li>No persistent storage of user data</li>
+            <li>Input validation and sanitization</li>
+            <li>GDPR-compliant data handling</li>
+        </ul>
+
+        <h2>Extensibility</h2>
+        <p>The architecture supports easy extension:</p>
+        <ul>
+            <li>Add new services by implementing standard interfaces</li>
+            <li>Extend agent tools through the tool registry</li>
+            <li>Add publishing platforms via adapter pattern</li>
+        </ul>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>RetailXAI</h3>
+                    <p>AI-powered content intelligence for modern publishers.</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 RetailXAI. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
+

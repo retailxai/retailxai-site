@@ -25,14 +25,14 @@ jobs:
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
       
       - name: Configure Pages
-        uses: actions/configure-pages@5a3d0a0e4b4e4c4e4e4e4e4e4e4e4e4e4e4e4e4 # v4.0.0
+        uses: actions/configure-pages@1f0c5cde4bc74cd7e1254d0cb4de8d49e9068c7d # v4.0.0
       
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@56afc609e845f50e5b791d2737d66e8b5c3b3b3b3 # v3.0.1
+        uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3.0.1
         with:
           path: .
       
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@3e9524ce48b5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5 # v4.0.0
+        uses: actions/deploy-pages@f33f41b675f0ab2dc5a6863c9a170fe83af3571e # v4.0.0
 

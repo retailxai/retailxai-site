@@ -1,0 +1,7 @@
+# Python dependencies for RetailXAI data generation
+# Pinned versions for security and reproducibility
+
+yfinance==0.2.40
+pytrends==4.9.2
+requests==2.31.0
+

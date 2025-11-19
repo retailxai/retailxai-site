@@ -11,7 +11,22 @@ class Dashboard {
         };
         this.charts = {};
         this.sortState = {};
+        // Ensure DOMPurify is available
+        if (typeof DOMPurify === 'undefined') {
+            console.error('DOMPurify is not loaded. XSS protection disabled.');
+        }
         this.init();
+    }
+
+    sanitizeHtml(html) {
+        if (typeof DOMPurify !== 'undefined') {
+            return DOMPurify.sanitize(html, { 
+                ALLOWED_TAGS: ['tr', 'td', 'th', 'table', 'tbody', 'thead', 'a', 'span', 'div', 'p', 'strong', 'em', 'br'],
+                ALLOWED_ATTR: ['href', 'class', 'colspan', 'style', 'data-sort', 'title']
+            });
+        }
+        // Fallback to escapeHtml if DOMPurify not available
+        return this.escapeHtml(html);
     }
 
     async init() {
@@ -36,11 +51,14 @@ class Dashboard {
         const promises = endpoints.map(async ({ key, url }) => {
             try {
                 const response = await fetch(url);
-                if (!response.ok) throw new Error(`Failed to load ${key}`);
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: Failed to load ${key}`);
+                }
                 const data = await response.json();
                 this.data[key] = data;
             } catch (error) {
-                console.error(`Error loading ${key}:`, error);
+                // Log minimal error context (no stack traces or sensitive data)
+                console.error(`Error loading ${key}:`, error.message || 'Unknown error');
                 // Set empty defaults
                 if (key === 'articles' || key === 'drafts' || key === 'earnings') {
                     this.data[key] = [];
@@ -50,7 +68,22 @@ class Dashboard {
             }
         });
 
-        await Promise.all(promises);
+        try {
+            await Promise.all(promises);
+        } catch (error) {
+            console.error('Critical error loading data:', error.message || 'Unknown error');
+            // Show user-friendly error
+            this.showError('Failed to load dashboard data. Please refresh the page.');
+        }
+    }
+
+    showError(message) {
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'error-message';
+        errorDiv.style.cssText = 'position: fixed; top: 20px; right: 20px; background: #ef4444; color: white; padding: 1rem; border-radius: 8px; z-index: 10000;';
+        errorDiv.textContent = message;
+        document.body.appendChild(errorDiv);
+        setTimeout(() => errorDiv.remove(), 5000);
     }
 
     setupNavigation() {
@@ -231,11 +264,11 @@ class Dashboard {
         const articles = (this.data.articles || []).slice(0, 5);
         
         if (articles.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="4" class="loading">No articles found</td></tr>';
+            tbody.innerHTML = this.sanitizeHtml('<tr><td colspan="4" class="loading">No articles found</td></tr>');
             return;
         }
 
-        tbody.innerHTML = articles.map(article => {
+        const html = articles.map(article => {
             const date = article.ingest_timestamp 
                 ? new Date(article.ingest_timestamp).toLocaleDateString()
                 : '-';
@@ -261,11 +294,11 @@ class Dashboard {
         const articles = this.data.articles || [];
         
         if (articles.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="8" class="loading">No articles found</td></tr>';
+            tbody.innerHTML = this.sanitizeHtml('<tr><td colspan="8" class="loading">No articles found</td></tr>');
             return;
         }
 
-        tbody.innerHTML = articles.map(article => {
+        const html = articles.map(article => {
             const date = article.ingest_timestamp 
                 ? new Date(article.ingest_timestamp).toLocaleDateString()
                 : '-';
@@ -286,6 +319,7 @@ class Dashboard {
                 </tr>
             `;
         }).join('');
+        tbody.innerHTML = this.sanitizeHtml(html);
     }
 
     renderDrafts() {
@@ -295,11 +329,11 @@ class Dashboard {
         const drafts = this.data.drafts || [];
         
         if (drafts.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="6" class="loading">No drafts found</td></tr>';
+            tbody.innerHTML = this.sanitizeHtml('<tr><td colspan="6" class="loading">No drafts found</td></tr>');
             return;
         }
 
-        tbody.innerHTML = drafts.map(draft => {
+        const html = drafts.map(draft => {
             const created = draft.created_at 
                 ? new Date(draft.created_at).toLocaleDateString()
                 : '-';
@@ -318,6 +352,7 @@ class Dashboard {
                 </tr>
             `;
         }).join('');
+        tbody.innerHTML = this.sanitizeHtml(html);
     }
 
     renderEarnings() {
@@ -327,11 +362,11 @@ class Dashboard {
         const earnings = this.data.earnings || [];
         
         if (earnings.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="8" class="loading">No earnings data found</td></tr>';
+            tbody.innerHTML = this.sanitizeHtml('<tr><td colspan="8" class="loading">No earnings data found</td></tr>');
             return;
         }
 
-        tbody.innerHTML = earnings.map(earning => {
+        const html = earnings.map(earning => {
             const revenue = earning.revenue 
                 ? `$${(earning.revenue.value / 1e9).toFixed(2)}B`
                 : '-';
@@ -356,6 +391,7 @@ class Dashboard {
                 </tr>
             `;
         }).join('');
+        tbody.innerHTML = this.sanitizeHtml(html);
     }
 
     setupCharts() {
@@ -370,7 +406,7 @@ class Dashboard {
 
         const trends = this.data.trends;
         if (!trends || !trends.data_points || trends.data_points.length === 0) {
-            canvas.parentElement.innerHTML = '<p class="loading">No trends data available</p>';
+            canvas.parentElement.innerHTML = this.sanitizeHtml('<p class="loading">No trends data available</p>');
             return;
         }
 
@@ -414,7 +450,7 @@ class Dashboard {
 
         const costs = this.data.costs;
         if (!costs || !costs.periods || costs.periods.length === 0) {
-            canvas.parentElement.innerHTML = '<p class="loading">No costs data available</p>';
+            canvas.parentElement.innerHTML = this.sanitizeHtml('<p class="loading">No costs data available</p>');
             return;
         }
 
@@ -462,7 +498,7 @@ class Dashboard {
 
         const trends = this.data.trends;
         if (!trends) {
-            canvas.parentElement.innerHTML = '<p class="loading">No trends data available</p>';
+            canvas.parentElement.innerHTML = this.sanitizeHtml('<p class="loading">No trends data available</p>');
             return;
         }
 
@@ -516,7 +552,7 @@ class Dashboard {
 
         const costs = this.data.costs;
         if (!costs) {
-            canvas.parentElement.innerHTML = '<p class="loading">No costs data available</p>';
+            canvas.parentElement.innerHTML = this.sanitizeHtml('<p class="loading">No costs data available</p>');
             return;
         }
 
@@ -574,7 +610,7 @@ class Dashboard {
 
         const status = this.data.status;
         if (!status || !status.system_health) {
-            container.innerHTML = '<p class="loading">No system health data available</p>';
+            container.innerHTML = this.sanitizeHtml('<p class="loading">No system health data available</p>');
             return;
         }
 
@@ -593,11 +629,11 @@ class Dashboard {
             }).join('');
         }
 
-        container.innerHTML = `
+        const healthHtml = `
             <div class="health-status ${healthClass}">
-                <div class="health-status-icon">${this.getHealthIcon(healthClass)}</div>
+                <div class="health-status-icon">${this.escapeHtml(this.getHealthIcon(healthClass))}</div>
                 <div class="health-status-text">
-                    <h3>System Status: ${health.status.toUpperCase()}</h3>
+                    <h3>System Status: ${this.escapeHtml(health.status.toUpperCase())}</h3>
                     <p>Uptime: ${health.uptime_percent || 0}%</p>
                 </div>
             </div>
@@ -606,11 +642,12 @@ class Dashboard {
             </div>
             <div style="margin-top: 1rem;">
                 <p><strong>Last Pipeline Run:</strong> ${status.last_pipeline_run?.timestamp 
-                    ? new Date(status.last_pipeline_run.timestamp).toLocaleString() 
+                    ? this.escapeHtml(new Date(status.last_pipeline_run.timestamp).toLocaleString())
                     : 'Never'}</p>
                 <p><strong>Failures This Week:</strong> ${status.failures_this_week || 0}</p>
             </div>
         `;
+        container.innerHTML = this.sanitizeHtml(healthHtml);
     }
 
     getHealthIcon(status) {
@@ -669,11 +706,11 @@ class Dashboard {
         });
 
         if (filtered.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="8" class="loading">No articles match filters</td></tr>';
+            tbody.innerHTML = this.sanitizeHtml('<tr><td colspan="8" class="loading">No articles match filters</td></tr>');
             return;
         }
 
-        tbody.innerHTML = filtered.map(article => {
+        const html = filtered.map(article => {
             const date = article.ingest_timestamp 
                 ? new Date(article.ingest_timestamp).toLocaleDateString()
                 : '-';
@@ -694,6 +731,7 @@ class Dashboard {
                 </tr>
             `;
         }).join('');
+        tbody.innerHTML = this.sanitizeHtml(html);
     }
 
     filterDrafts() {
@@ -713,11 +751,11 @@ class Dashboard {
         });
 
         if (filtered.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="6" class="loading">No drafts match filters</td></tr>';
+            tbody.innerHTML = this.sanitizeHtml('<tr><td colspan="6" class="loading">No drafts match filters</td></tr>');
             return;
         }
 
-        tbody.innerHTML = filtered.map(draft => {
+        const html = filtered.map(draft => {
             const created = draft.created_at 
                 ? new Date(draft.created_at).toLocaleDateString()
                 : '-';
@@ -736,6 +774,7 @@ class Dashboard {
                 </tr>
             `;
         }).join('');
+        tbody.innerHTML = this.sanitizeHtml(html);
     }
 
     filterEarnings() {
@@ -752,11 +791,11 @@ class Dashboard {
         });
 
         if (filtered.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="8" class="loading">No earnings match filters</td></tr>';
+            tbody.innerHTML = this.sanitizeHtml('<tr><td colspan="8" class="loading">No earnings match filters</td></tr>');
             return;
         }
 
-        tbody.innerHTML = filtered.map(earning => {
+        const html = filtered.map(earning => {
             const revenue = earning.revenue 
                 ? `$${(earning.revenue.value / 1e9).toFixed(2)}B`
                 : '-';
@@ -781,6 +820,7 @@ class Dashboard {
                 </tr>
             `;
         }).join('');
+        tbody.innerHTML = this.sanitizeHtml(html);
     }
 
     escapeHtml(text) {

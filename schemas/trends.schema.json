@@ -1,0 +1,45 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": ["data_points"],
+  "properties": {
+    "data_points": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["date", "value"],
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date",
+            "description": "Date of data point"
+          },
+          "value": {
+            "type": "number",
+            "description": "Trend value"
+          },
+          "label": {
+            "type": "string",
+            "description": "Label for the trend"
+          },
+          "category": {
+            "type": "string",
+            "enum": ["articles", "costs", "earnings", "sentiment", "engagement"],
+            "description": "Category of trend"
+          }
+        }
+      }
+    },
+    "last_updated": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Last update timestamp"
+    },
+    "trend_direction": {
+      "type": "string",
+      "enum": ["up", "down", "stable"],
+      "description": "Overall trend direction"
+    }
+  }
+}
+

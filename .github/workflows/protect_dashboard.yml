@@ -1,0 +1,53 @@
+name: Protect Dashboard
+
+on:
+  push:
+    paths:
+      - 'dashboard/index.html'
+      - 'assets/css/dashboard.css'
+      - 'assets/js/dashboard.js'
+      - 'assets/css/global.css'
+      - 'assets/js/theme-toggle.js'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  encrypt-dashboard:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      
+      - name: Install Staticrypt
+        run: |
+          npm install -g staticrypt
+      
+      - name: Encrypt dashboard
+        env:
+          DASHBOARD_PASSWORD: ${{ secrets.DASHBOARD_PASSWORD }}
+        run: |
+          if [ -f "resources/staticrypt-template.html" ]; then
+            staticrypt dashboard/index.html dashboard/index.html.enc \
+              --password "$DASHBOARD_PASSWORD" \
+              --template resources/staticrypt-template.html
+          else
+            staticrypt dashboard/index.html dashboard/index.html.enc \
+              --password "$DASHBOARD_PASSWORD"
+          fi
+      
+      - name: Commit encrypted dashboard
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add dashboard/index.html.enc
+          git diff --staged --quiet || git commit -m "Update encrypted dashboard [skip ci]"
+          git push
+

@@ -47,14 +47,77 @@
       "source_type": "youtube",
       "status": "In Progress",
       "ingest_timestamp": "2025-11-04T06:17:00Z"
+    },
+    {
+      "id": 554782,
+      "title": "The Impact and Influence of Ronda Rousey's Comments: An Analysis",
+      "source": "https://www.youtube.com/watch?v=zdQqEEeZzeE",
+      "source_type": "youtube",
+      "status": "Complete",
+      "ingest_timestamp": "2025-11-17T22:59:29.596177Z"
+    },
+    {
+      "id": 372830,
+      "title": "The Impact and Influence of Ronda Rousey's Comments: An Analysis",
+      "source": "https://www.youtube.com/watch?v=zdQqEEeZzeE",
+      "source_type": "youtube",
+      "status": "Complete",
+      "ingest_timestamp": "2025-11-17T22:59:55.281962Z"
+    },
+    {
+      "id": 949841,
+      "title": "The Impact and Influence of Ronda Rousey's Comments: An Analysis",
+      "source": "https://www.youtube.com/watch?v=zdQqEEeZzeE",
+      "source_type": "youtube",
+      "status": "Complete",
+      "ingest_timestamp": "2025-11-17T23:00:01.453433Z"
+    },
+    {
+      "id": 2029,
+      "title": "'She's a Legend!': Analyzing Joe's Response to Ronda Rousey's Comments",
+      "source": "https://www.youtube.com/watch?v=zdQqEEeZzeE",
+      "source_type": "youtube",
+      "status": "Complete",
+      "ingest_timestamp": "2025-11-17T23:26:35.640849Z"
+    },
+    {
+      "id": 123,
+      "title": "Test",
+      "source": "https://youtube.com/watch?v=test",
+      "source_type": "youtube",
+      "status": "Complete",
+      "ingest_timestamp": "2025-11-18T01:56:20.675860Z"
+    },
+    {
+      "id": 986387,
+      "title": "Analyzing Tesla's Q3 2025 Financial Results: A Deep Dive into the Future of Retail Industry",
+      "source": "https://www.youtube.com/watch?v=GQ9S7xbkGAY",
+      "source_type": "youtube",
+      "status": "Complete",
+      "ingest_timestamp": "2025-11-18T01:21:04.418951Z"
+    },
+    {
+      "id": 538681,
+      "title": "Meta Platforms Q3 Earnings Call 2025: A Comprehensive Analysis",
+      "source": "https://www.youtube.com/watch?v=3GfsXtC_1IQ",
+      "source_type": "youtube",
+      "status": "Complete",
+      "ingest_timestamp": "2025-11-18T01:21:38.797452Z"
+    },
+    {
+      "id": 836149,
+      "title": "Strategy Q2 2025 Earnings Call Analysis: Bitcoin's Role in Strategic Growth",
+      "source": "https://www.youtube.com/watch?v=Jez7rIVeClE",
+      "source_type": "youtube",
+      "status": "Complete",
+      "ingest_timestamp": "2025-11-18T01:22:16.064556Z"
     }
   ],
-  "last_updated": "2025-11-04T12:00:00Z",
-  "total_ingests": 6,
+  "last_updated": "2025-11-18T01:56:20.675863Z",
+  "total_ingests": 14,
   "status_summary": {
-    "complete": 4,
+    "complete": 12,
     "pending": 1,
     "in_progress": 1
   }
 }
-

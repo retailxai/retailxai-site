@@ -1,0 +1,85 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": ["last_pipeline_run", "system_health"],
+  "properties": {
+    "last_pipeline_run": {
+      "type": "object",
+      "required": ["timestamp", "status"],
+      "properties": {
+        "timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Last pipeline run timestamp"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["success", "failed", "running"],
+          "description": "Pipeline run status"
+        },
+        "duration_seconds": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Duration in seconds"
+        },
+        "articles_processed": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Number of articles processed"
+        },
+        "errors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Error messages if any"
+        }
+      }
+    },
+    "system_health": {
+      "type": "object",
+      "required": ["status"],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": ["healthy", "degraded", "down"],
+          "description": "Overall system health"
+        },
+        "components": {
+          "type": "object",
+          "properties": {
+            "api": {
+              "type": "string",
+              "enum": ["healthy", "degraded", "down"]
+            },
+            "database": {
+              "type": "string",
+              "enum": ["healthy", "degraded", "down"]
+            },
+            "storage": {
+              "type": "string",
+              "enum": ["healthy", "degraded", "down"]
+            }
+          }
+        },
+        "uptime_percent": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Uptime percentage"
+        }
+      }
+    },
+    "failures_this_week": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Number of failures in the current week"
+    },
+    "last_updated": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Last update timestamp"
+    }
+  }
+}
+

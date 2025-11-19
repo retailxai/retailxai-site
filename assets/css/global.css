@@ -1,0 +1,31 @@
+:root {
+    --color-bg: #ffffff;
+    --color-text: #1a1a1a;
+    --color-text-secondary: #6b7280;
+    --color-border: #e5e7eb;
+    --color-primary: #3b82f6;
+    --color-primary-hover: #2563eb;
+    --color-success: #10b981;
+    --color-warning: #f59e0b;
+    --color-error: #ef4444;
+    --color-shadow: rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="dark"] {
+    --color-bg: #1a1a1a;
+    --color-text: #f5f5f5;
+    --color-text-secondary: #a0a0a0;
+    --color-border: #404040;
+    --color-primary: #60a5fa;
+    --color-primary-hover: #3b82f6;
+    --color-success: #34d399;
+    --color-warning: #fbbf24;
+    --color-error: #f87171;
+    --color-shadow: rgba(0, 0, 0, 0.3);
+}
+
+/* Global styles for site-wide elements */
+body {
+    transition: background-color 0.3s, color 0.3s;
+}
+

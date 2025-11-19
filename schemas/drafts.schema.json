@@ -1,0 +1,47 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["id", "title", "status"],
+    "properties": {
+      "id": {
+        "type": "integer",
+        "description": "Unique draft identifier"
+      },
+      "title": {
+        "type": "string",
+        "description": "Draft title"
+      },
+      "status": {
+        "type": "string",
+        "enum": ["draft", "review", "ready", "archived"],
+        "description": "Draft status"
+      },
+      "created_at": {
+        "type": "string",
+        "format": "date-time",
+        "description": "Creation timestamp"
+      },
+      "updated_at": {
+        "type": "string",
+        "format": "date-time",
+        "description": "Last update timestamp"
+      },
+      "word_count": {
+        "type": "integer",
+        "minimum": 0,
+        "description": "Word count"
+      },
+      "source_article_id": {
+        "type": ["integer", "null"],
+        "description": "Reference to source article if applicable"
+      },
+      "preview": {
+        "type": "string",
+        "description": "Preview text or excerpt"
+      }
+    }
+  }
+}
+

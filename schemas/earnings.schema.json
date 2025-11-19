@@ -1,0 +1,90 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["id", "company", "quarter", "year"],
+    "properties": {
+      "id": {
+        "type": "integer",
+        "description": "Unique earnings call identifier"
+      },
+      "company": {
+        "type": "string",
+        "description": "Company name"
+      },
+      "symbol": {
+        "type": "string",
+        "description": "Stock ticker symbol"
+      },
+      "quarter": {
+        "type": "string",
+        "enum": ["Q1", "Q2", "Q3", "Q4"],
+        "description": "Fiscal quarter"
+      },
+      "year": {
+        "type": "integer",
+        "description": "Fiscal year"
+      },
+      "call_date": {
+        "type": "string",
+        "format": "date",
+        "description": "Date of earnings call"
+      },
+      "revenue": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "number",
+            "description": "Revenue value"
+          },
+          "currency": {
+            "type": "string",
+            "default": "USD",
+            "description": "Currency code"
+          },
+          "change_percent": {
+            "type": "number",
+            "description": "Percentage change from previous period"
+          }
+        }
+      },
+      "eps": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "number",
+            "description": "Earnings per share"
+          },
+          "change_percent": {
+            "type": "number",
+            "description": "Percentage change from previous period"
+          }
+        }
+      },
+      "sentiment": {
+        "type": "string",
+        "enum": ["positive", "negative", "neutral"],
+        "description": "Overall sentiment"
+      },
+      "sentiment_score": {
+        "type": "number",
+        "minimum": -1,
+        "maximum": 1,
+        "description": "Sentiment score from -1 to 1"
+      },
+      "article_id": {
+        "type": ["integer", "null"],
+        "description": "Reference to generated article"
+      },
+      "key_highlights": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "Key highlights from the call"
+      }
+    }
+  }
+}
+

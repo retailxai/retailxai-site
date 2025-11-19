@@ -5,8 +5,10 @@ class ThemeToggle {
     }
 
     init() {
-        // Check for saved theme preference or default to light mode
-        const savedTheme = localStorage.getItem('theme') || 'light';
+        // Check for saved theme preference or default to dark mode
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        // Set theme immediately to prevent flash
+        document.documentElement.setAttribute('data-theme', savedTheme);
         this.setTheme(savedTheme);
 
         // Setup toggle button

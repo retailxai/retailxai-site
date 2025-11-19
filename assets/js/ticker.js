@@ -14,7 +14,11 @@ class StockTicker {
 
     async loadTickerData() {
         try {
-            const response = await fetch('data/ticker.json');
+            // Try relative path first (for dashboard), then absolute (for index.html)
+            let response = await fetch('../data/ticker.json');
+            if (!response.ok) {
+                response = await fetch('data/ticker.json');
+            }
             if (!response.ok) throw new Error('Failed to load ticker data');
             this.data = await response.json();
         } catch (error) {

@@ -1,6 +1,7 @@
 <script>
   import { onMount } from 'svelte';
   import Prism from 'prismjs';
+  import DOMPurify from 'dompurify';
   import 'prismjs/components/prism-json';
   import 'prismjs/components/prism-python';
   import 'prismjs/components/prism-javascript';
@@ -15,6 +16,7 @@
   
   let contentRef;
   let highlightedHtml = '';
+  let sanitizedHtml = '';
   
   onMount(() => {
     if (html && viewMode === 'text') {
@@ -26,12 +28,24 @@
     highlightCode();
   }
   
+  function sanitizeHtml(htmlString) {
+    if (!htmlString) return '';
+    return DOMPurify.sanitize(htmlString, {
+      ALLOWED_TAGS: ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'strong', 'em', 'u', 's', 'a', 'ul', 'ol', 'li', 'blockquote', 'code', 'pre', 'br', 'hr', 'table', 'thead', 'tbody', 'tr', 'th', 'td', 'img'],
+      ALLOWED_ATTR: ['href', 'src', 'alt', 'title', 'class', 'id', 'style'],
+      ALLOW_DATA_ATTR: false
+    });
+  }
+  
   function highlightCode() {
     if (!html) return;
     
+    // Sanitize HTML first
+    const sanitized = sanitizeHtml(html);
+    
     // Create a temporary div to parse the HTML
     const temp = document.createElement('div');
-    temp.innerHTML = html;
+    temp.innerHTML = sanitized;
     
     // Find all code blocks
     const codeBlocks = temp.querySelectorAll('pre code, code');
@@ -53,11 +67,12 @@
       try {
         Prism.highlightElement(block);
       } catch (e) {
-        console.warn('Could not highlight code:', e);
+        console.warn('Could not highlight code:', e.message || 'Unknown error');
       }
     });
     
-    highlightedHtml = temp.innerHTML;
+    highlightedHtml = sanitizeHtml(temp.innerHTML);
+    sanitizedHtml = sanitized;
   }
 </script>
 
@@ -68,9 +83,11 @@
         src="../../{pdfPath}#toolbar=1&navpanes=1&scrollbar=1"
         class="pdf-iframe"
         title="PDF Preview"
+        sandbox="allow-same-origin allow-top-navigation-by-user-activation allow-downloads"
+        loading="lazy"
       >
         <p>Your browser does not support PDFs. 
-          <a href="../../{pdfPath}" target="_blank">Download the PDF</a>.
+          <a href="../../{pdfPath}" target="_blank" rel="noopener noreferrer">Download the PDF</a>.
         </p>
       </iframe>
     </div>
@@ -78,8 +95,10 @@
     <div class="text-content" bind:this={contentRef}>
       {#if highlightedHtml}
         {@html highlightedHtml}
+      {:else if sanitizedHtml}
+        {@html sanitizedHtml}
       {:else if html}
-        {@html html}
+        {@html sanitizeHtml(html)}
       {:else}
         <pre>{content}</pre>
       {/if}

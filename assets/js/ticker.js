@@ -19,10 +19,13 @@ class StockTicker {
             if (!response.ok) {
                 response = await fetch('data/ticker.json');
             }
-            if (!response.ok) throw new Error('Failed to load ticker data');
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}: Failed to load ticker data`);
+            }
             this.data = await response.json();
         } catch (error) {
-            console.error('Error loading ticker data:', error);
+            // Log minimal error context (no stack traces or sensitive data)
+            console.error('Error loading ticker data:', error.message || 'Unknown error');
             this.data = [];
         }
     }
@@ -32,7 +35,15 @@ class StockTicker {
         if (!container) return;
 
         if (this.data.length === 0) {
-            container.innerHTML = '<div class="ticker-wrapper"><div class="ticker-item">No ticker data available</div></div>';
+            // Use textContent for safe text insertion
+            container.textContent = '';
+            const wrapper = document.createElement('div');
+            wrapper.className = 'ticker-wrapper';
+            const item = document.createElement('div');
+            item.className = 'ticker-item';
+            item.textContent = 'No ticker data available';
+            wrapper.appendChild(item);
+            container.appendChild(wrapper);
             return;
         }
 

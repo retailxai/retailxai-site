@@ -19,23 +19,23 @@ jobs:
     
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
       
       - name: Checkout Precipice-2 repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
         with:
           repository: retailxai/Precipice-2
           path: precipice
       
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@0c6c58d04622770e8eae247e52aa3584771258b0 # v5.1.0
         with:
           python-version: '3.11'
       
       - name: Install dependencies
         run: |
           pip install --upgrade pip
-          pip install yfinance pytrends requests
+          pip install -r requirements.txt
       
       - name: Copy draft files from Precipice-2
         run: |
@@ -69,15 +69,16 @@ jobs:
           echo "Copied draft and PDF files"
       
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@1e60f620b9541d0be6b62d4a1925505e9fa3198e # v4.0.2
         with:
           node-version: '20'
       
       - name: Build Svelte viewer
         run: |
           cd dashboard/viewer
-          npm install
+          npm ci
           npm run build
+        continue-on-error: false
       
       - name: Generate data files
         env:

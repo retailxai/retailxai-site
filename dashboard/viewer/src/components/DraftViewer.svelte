@@ -14,24 +14,61 @@
   let loading = true;
   let error = null;
   
+  // Validate article ID from URL
+  function validateArticleId(id) {
+    if (!id || typeof id !== 'string') return null;
+    // Allow alphanumeric, hyphens, underscores, max 100 chars
+    const sanitized = id.trim().substring(0, 100);
+    if (!/^[a-zA-Z0-9_-]+$/.test(sanitized)) {
+      return null;
+    }
+    return sanitized;
+  }
+  
   onMount(async () => {
+    // Validate article ID
+    const validatedId = validateArticleId(articleId);
+    if (!validatedId) {
+      error = 'Invalid article ID';
+      loading = false;
+      return;
+    }
+    articleId = validatedId;
     await loadArticle();
   });
   
   async function loadArticle() {
     try {
       loading = true;
+      error = null;
       
-      // Load articles.json
-      const articlesResponse = await fetch('../../data/articles.json');
-      if (!articlesResponse.ok) throw new Error('Failed to load articles');
-      const articles = await articlesResponse.json();
+      // Load articles.json with error handling
+      let articlesResponse;
+      try {
+        articlesResponse = await fetch('../../data/articles.json');
+        if (!articlesResponse.ok) {
+          throw new Error(`HTTP ${articlesResponse.status}: Failed to load articles`);
+        }
+      } catch (fetchError) {
+        throw new Error('Network error loading articles');
+      }
+      
+      let articles;
+      try {
+        articles = await articlesResponse.json();
+      } catch (parseError) {
+        throw new Error('Invalid JSON response');
+      }
+      
+      if (!Array.isArray(articles)) {
+        throw new Error('Invalid articles data format');
+      }
       
       // Find article by ID
       article = articles.find(a => 
         a.id == articleId || 
         a.id === articleId ||
-        a.slug === articleId ||
+        (a.slug && a.slug === articleId) ||
         String(a.id) === String(articleId)
       );
       
@@ -44,46 +81,53 @@
       // Load draft content if available
       if (article.draft_path) {
         try {
-          const draftResponse = await fetch(`../../${article.draft_path}`);
+          // Validate draft_path to prevent path traversal
+          const draftPath = article.draft_path.replace(/\.\./g, '').replace(/^\//, '');
+          const draftResponse = await fetch(`../../${draftPath}`);
           if (draftResponse.ok) {
             draftContent = await draftResponse.text();
           }
         } catch (e) {
-          console.warn('Could not load draft:', e);
+          console.warn('Could not load draft:', e.message || 'Unknown error');
         }
       }
       
-      // Check for PDF
+      // Check for PDF with path validation
       if (article.pdf_path) {
-        pdfPath = article.pdf_path.startsWith('../') 
-          ? article.pdf_path.substring(3) 
-          : article.pdf_path;
+        // Sanitize PDF path
+        const sanitizedPath = article.pdf_path.replace(/\.\./g, '').replace(/^\//, '');
+        if (/^pdfs\/[a-zA-Z0-9_-]+\.pdf$/.test(sanitizedPath)) {
+          pdfPath = sanitizedPath;
+        }
       } else {
-        // Try to find PDF by slug or ID
-        const slug = article.slug || articleId;
-        const possiblePdfPaths = [
-          `pdfs/${slug}.pdf`,
-          `pdfs/${article.id}.pdf`,
-          `drafts/${slug}.pdf`
-        ];
-        
-        for (const path of possiblePdfPaths) {
-          try {
-            const testResponse = await fetch(`../../${path}`, { method: 'HEAD' });
-            if (testResponse.ok) {
-              pdfPath = path;
-              break;
+        // Try to find PDF by slug or ID (with validation)
+        const slug = (article.slug || articleId || '').replace(/[^a-zA-Z0-9_-]/g, '');
+        if (slug) {
+          const possiblePdfPaths = [
+            `pdfs/${slug}.pdf`,
+            `pdfs/${String(article.id || '').replace(/[^a-zA-Z0-9_-]/g, '')}.pdf`
+          ];
+          
+          for (const path of possiblePdfPaths) {
+            try {
+              const testResponse = await fetch(`../../${path}`, { method: 'HEAD' });
+              if (testResponse.ok) {
+                pdfPath = path;
+                break;
+              }
+            } catch (e) {
+              // Continue checking other paths
             }
-          } catch (e) {
-            // Continue checking other paths
           }
         }
       }
       
       loading = false;
     } catch (err) {
-      error = err.message;
+      // Log minimal error context (no stack traces or sensitive data)
+      error = err.message || 'Failed to load article';
       loading = false;
+      console.error('Error loading article:', error);
     }
   }
   
@@ -98,16 +142,21 @@
   function renderMarkdown(content) {
     if (!content) return '';
     
-    // Configure marked
-    marked.setOptions({
-      breaks: true,
-      gfm: true
-    });
-    
-    const html = marked.parse(content);
-    
-    // Return HTML string - will be processed by ContentViewer for syntax highlighting
-    return html;
+    try {
+      // Configure marked
+      marked.setOptions({
+        breaks: true,
+        gfm: true
+      });
+      
+      const html = marked.parse(content);
+      
+      // Return HTML string - will be sanitized by ContentViewer
+      return html;
+    } catch (err) {
+      console.error('Error rendering markdown:', err.message || 'Unknown error');
+      return '<p>Error rendering content</p>';
+    }
   }
 </script>
 

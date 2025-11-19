@@ -1,187 +1,186 @@
 {
   "data_points": [
     {
-      "date": "2024-12-17",
-      "value": 85,
-      "label": "Article Generation Trend",
-      "category": "articles"
-    },
-    {
-      "date": "2024-12-18",
-      "value": 88,
-      "label": "Article Generation Trend",
-      "category": "articles"
-    },
-    {
-      "date": "2024-12-19",
-      "value": 92,
-      "label": "Article Generation Trend",
-      "category": "articles"
-    },
-    {
-      "date": "2024-12-20",
-      "value": 95,
-      "label": "Article Generation Trend",
-      "category": "articles"
-    },
-    {
-      "date": "2024-12-21",
-      "value": 98,
-      "label": "Article Generation Trend",
-      "category": "articles"
-    },
-    {
-      "date": "2024-12-22",
-      "value": 100,
-      "label": "Article Generation Trend",
-      "category": "articles"
-    },
-    {
-      "date": "2024-12-23",
+      "date": "2025-10-20",
       "value": 102,
       "label": "Article Generation Trend",
       "category": "articles"
     },
     {
-      "date": "2024-12-24",
-      "value": 105,
+      "date": "2025-10-21",
+      "value": 106,
       "label": "Article Generation Trend",
       "category": "articles"
     },
     {
-      "date": "2024-12-25",
-      "value": 108,
+      "date": "2025-10-22",
+      "value": 111,
       "label": "Article Generation Trend",
       "category": "articles"
     },
     {
-      "date": "2024-12-26",
-      "value": 110,
+      "date": "2025-10-23",
+      "value": 114,
       "label": "Article Generation Trend",
       "category": "articles"
     },
     {
-      "date": "2024-12-27",
-      "value": 112,
+      "date": "2025-10-24",
+      "value": 114,
       "label": "Article Generation Trend",
       "category": "articles"
     },
     {
-      "date": "2024-12-28",
+      "date": "2025-10-25",
       "value": 115,
       "label": "Article Generation Trend",
       "category": "articles"
     },
     {
-      "date": "2024-12-29",
+      "date": "2025-10-26",
       "value": 118,
       "label": "Article Generation Trend",
       "category": "articles"
     },
     {
-      "date": "2024-12-30",
+      "date": "2025-10-27",
       "value": 120,
       "label": "Article Generation Trend",
       "category": "articles"
     },
     {
-      "date": "2024-12-31",
-      "value": 122,
+      "date": "2025-10-28",
+      "value": 119,
       "label": "Article Generation Trend",
       "category": "articles"
     },
     {
-      "date": "2025-01-01",
-      "value": 125,
+      "date": "2025-10-29",
+      "value": 126,
       "label": "Article Generation Trend",
       "category": "articles"
     },
     {
-      "date": "2025-01-02",
-      "value": 128,
+      "date": "2025-10-30",
+      "value": 126,
       "label": "Article Generation Trend",
       "category": "articles"
     },
     {
-      "date": "2025-01-03",
-      "value": 130,
+      "date": "2025-10-31",
+      "value": 129,
       "label": "Article Generation Trend",
       "category": "articles"
     },
     {
-      "date": "2025-01-04",
+      "date": "2025-11-01",
       "value": 132,
       "label": "Article Generation Trend",
       "category": "articles"
     },
     {
-      "date": "2025-01-05",
+      "date": "2025-11-02",
+      "value": 127,
+      "label": "Article Generation Trend",
+      "category": "articles"
+    },
+    {
+      "date": "2025-11-03",
       "value": 135,
       "label": "Article Generation Trend",
       "category": "articles"
     },
     {
-      "date": "2025-01-06",
-      "value": 138,
+      "date": "2025-11-04",
+      "value": 132,
       "label": "Article Generation Trend",
       "category": "articles"
     },
     {
-      "date": "2025-01-07",
-      "value": 140,
+      "date": "2025-11-05",
+      "value": 134,
       "label": "Article Generation Trend",
       "category": "articles"
     },
     {
-      "date": "2025-01-08",
+      "date": "2025-11-06",
+      "value": 139,
+      "label": "Article Generation Trend",
+      "category": "articles"
+    },
+    {
+      "date": "2025-11-07",
+      "value": 143,
+      "label": "Article Generation Trend",
+      "category": "articles"
+    },
+    {
+      "date": "2025-11-08",
+      "value": 146,
+      "label": "Article Generation Trend",
+      "category": "articles"
+    },
+    {
+      "date": "2025-11-09",
+      "value": 143,
+      "label": "Article Generation Trend",
+      "category": "articles"
+    },
+    {
+      "date": "2025-11-10",
       "value": 142,
       "label": "Article Generation Trend",
       "category": "articles"
     },
     {
-      "date": "2025-01-09",
-      "value": 145,
-      "label": "Article Generation Trend",
-      "category": "articles"
-    },
-    {
-      "date": "2025-01-10",
-      "value": 148,
-      "label": "Article Generation Trend",
-      "category": "articles"
-    },
-    {
-      "date": "2025-01-11",
+      "date": "2025-11-11",
       "value": 150,
       "label": "Article Generation Trend",
       "category": "articles"
     },
     {
-      "date": "2025-01-12",
-      "value": 152,
+      "date": "2025-11-12",
+      "value": 146,
       "label": "Article Generation Trend",
       "category": "articles"
     },
     {
-      "date": "2025-01-13",
-      "value": 155,
+      "date": "2025-11-13",
+      "value": 149,
       "label": "Article Generation Trend",
       "category": "articles"
     },
     {
-      "date": "2025-01-14",
-      "value": 158,
+      "date": "2025-11-14",
+      "value": 154,
       "label": "Article Generation Trend",
       "category": "articles"
     },
     {
-      "date": "2025-01-15",
+      "date": "2025-11-15",
       "value": 160,
+      "label": "Article Generation Trend",
+      "category": "articles"
+    },
+    {
+      "date": "2025-11-16",
+      "value": 154,
+      "label": "Article Generation Trend",
+      "category": "articles"
+    },
+    {
+      "date": "2025-11-17",
+      "value": 165,
+      "label": "Article Generation Trend",
+      "category": "articles"
+    },
+    {
+      "date": "2025-11-18",
+      "value": 164,
       "label": "Article Generation Trend",
       "category": "articles"
     }
   ],
-  "last_updated": "2025-01-15T12:00:00Z",
+  "last_updated": "2025-11-19T02:18:11.963103Z",
   "trend_direction": "up"
 }
-

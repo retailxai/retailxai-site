@@ -1,337 +1,336 @@
 {
   "periods": [
     {
-      "date": "2024-12-17",
-      "total_cost": 12.50,
+      "date": "2025-10-20",
+      "total_cost": 22.0,
       "breakdown": {
-        "transcription": 3.75,
-        "llm": 7.50,
-        "storage": 0.63,
-        "other": 0.62
+        "transcription": 6.6,
+        "llm": 13.2,
+        "storage": 1.1,
+        "other": 1.1
       },
       "article_count": 3
     },
     {
-      "date": "2024-12-18",
-      "total_cost": 15.20,
+      "date": "2025-10-21",
+      "total_cost": 14.0,
       "breakdown": {
-        "transcription": 4.56,
-        "llm": 9.12,
-        "storage": 0.76,
-        "other": 0.76
-      },
-      "article_count": 4
-    },
-    {
-      "date": "2024-12-19",
-      "total_cost": 18.30,
-      "breakdown": {
-        "transcription": 5.49,
-        "llm": 10.98,
-        "storage": 0.92,
-        "other": 0.91
+        "transcription": 4.2,
+        "llm": 8.4,
+        "storage": 0.7,
+        "other": 0.7
       },
       "article_count": 5
     },
     {
-      "date": "2024-12-20",
-      "total_cost": 14.80,
+      "date": "2025-10-22",
+      "total_cost": 17.0,
       "breakdown": {
-        "transcription": 4.44,
-        "llm": 8.88,
-        "storage": 0.74,
-        "other": 0.74
+        "transcription": 5.1,
+        "llm": 10.2,
+        "storage": 0.85,
+        "other": 0.85
       },
-      "article_count": 3
+      "article_count": 8
     },
     {
-      "date": "2024-12-21",
-      "total_cost": 16.50,
+      "date": "2025-10-23",
+      "total_cost": 28.0,
       "breakdown": {
-        "transcription": 4.95,
-        "llm": 9.90,
-        "storage": 0.83,
-        "other": 0.82
+        "transcription": 8.4,
+        "llm": 16.8,
+        "storage": 1.4,
+        "other": 1.4
       },
-      "article_count": 4
+      "article_count": 9
     },
     {
-      "date": "2024-12-22",
-      "total_cost": 19.20,
+      "date": "2025-10-24",
+      "total_cost": 26.0,
       "breakdown": {
-        "transcription": 5.76,
-        "llm": 11.52,
-        "storage": 0.96,
-        "other": 0.96
+        "transcription": 7.8,
+        "llm": 15.6,
+        "storage": 1.3,
+        "other": 1.3
+      },
+      "article_count": 7
+    },
+    {
+      "date": "2025-10-25",
+      "total_cost": 15.0,
+      "breakdown": {
+        "transcription": 4.5,
+        "llm": 9.0,
+        "storage": 0.75,
+        "other": 0.75
       },
       "article_count": 6
     },
     {
-      "date": "2024-12-23",
-      "total_cost": 13.40,
+      "date": "2025-10-26",
+      "total_cost": 16.0,
       "breakdown": {
-        "transcription": 4.02,
-        "llm": 8.04,
-        "storage": 0.67,
-        "other": 0.67
+        "transcription": 4.8,
+        "llm": 9.6,
+        "storage": 0.8,
+        "other": 0.8
+      },
+      "article_count": 7
+    },
+    {
+      "date": "2025-10-27",
+      "total_cost": 26.0,
+      "breakdown": {
+        "transcription": 7.8,
+        "llm": 15.6,
+        "storage": 1.3,
+        "other": 1.3
+      },
+      "article_count": 7
+    },
+    {
+      "date": "2025-10-28",
+      "total_cost": 23.0,
+      "breakdown": {
+        "transcription": 6.9,
+        "llm": 13.8,
+        "storage": 1.15,
+        "other": 1.15
+      },
+      "article_count": 4
+    },
+    {
+      "date": "2025-10-29",
+      "total_cost": 18.0,
+      "breakdown": {
+        "transcription": 5.4,
+        "llm": 10.8,
+        "storage": 0.9,
+        "other": 0.9
+      },
+      "article_count": 9
+    },
+    {
+      "date": "2025-10-30",
+      "total_cost": 16.0,
+      "breakdown": {
+        "transcription": 4.8,
+        "llm": 9.6,
+        "storage": 0.8,
+        "other": 0.8
+      },
+      "article_count": 7
+    },
+    {
+      "date": "2025-10-31",
+      "total_cost": 27.0,
+      "breakdown": {
+        "transcription": 8.1,
+        "llm": 16.2,
+        "storage": 1.35,
+        "other": 1.35
+      },
+      "article_count": 8
+    },
+    {
+      "date": "2025-11-01",
+      "total_cost": 28.0,
+      "breakdown": {
+        "transcription": 8.4,
+        "llm": 16.8,
+        "storage": 1.4,
+        "other": 1.4
+      },
+      "article_count": 9
+    },
+    {
+      "date": "2025-11-02",
+      "total_cost": 11.0,
+      "breakdown": {
+        "transcription": 3.3,
+        "llm": 6.6,
+        "storage": 0.55,
+        "other": 0.55
       },
       "article_count": 2
     },
     {
-      "date": "2024-12-24",
-      "total_cost": 11.80,
+      "date": "2025-11-03",
+      "total_cost": 27.0,
       "breakdown": {
-        "transcription": 3.54,
-        "llm": 7.08,
-        "storage": 0.59,
-        "other": 0.59
+        "transcription": 8.1,
+        "llm": 16.2,
+        "storage": 1.35,
+        "other": 1.35
       },
-      "article_count": 2
+      "article_count": 8
     },
     {
-      "date": "2024-12-25",
-      "total_cost": 10.50,
+      "date": "2025-11-04",
+      "total_cost": 12.0,
       "breakdown": {
-        "transcription": 3.15,
-        "llm": 6.30,
-        "storage": 0.53,
-        "other": 0.52
+        "transcription": 3.6,
+        "llm": 7.2,
+        "storage": 0.6,
+        "other": 0.6
+      },
+      "article_count": 3
+    },
+    {
+      "date": "2025-11-05",
+      "total_cost": 12.0,
+      "breakdown": {
+        "transcription": 3.6,
+        "llm": 7.2,
+        "storage": 0.6,
+        "other": 0.6
+      },
+      "article_count": 3
+    },
+    {
+      "date": "2025-11-06",
+      "total_cost": 25.0,
+      "breakdown": {
+        "transcription": 7.5,
+        "llm": 15.0,
+        "storage": 1.25,
+        "other": 1.25
+      },
+      "article_count": 6
+    },
+    {
+      "date": "2025-11-07",
+      "total_cost": 27.0,
+      "breakdown": {
+        "transcription": 8.1,
+        "llm": 16.2,
+        "storage": 1.35,
+        "other": 1.35
+      },
+      "article_count": 8
+    },
+    {
+      "date": "2025-11-08",
+      "total_cost": 28.0,
+      "breakdown": {
+        "transcription": 8.4,
+        "llm": 16.8,
+        "storage": 1.4,
+        "other": 1.4
+      },
+      "article_count": 9
+    },
+    {
+      "date": "2025-11-09",
+      "total_cost": 13.0,
+      "breakdown": {
+        "transcription": 3.9,
+        "llm": 7.8,
+        "storage": 0.65,
+        "other": 0.65
+      },
+      "article_count": 4
+    },
+    {
+      "date": "2025-11-10",
+      "total_cost": 10.0,
+      "breakdown": {
+        "transcription": 3.0,
+        "llm": 6.0,
+        "storage": 0.5,
+        "other": 0.5
       },
       "article_count": 1
     },
     {
-      "date": "2024-12-26",
-      "total_cost": 17.60,
+      "date": "2025-11-11",
+      "total_cost": 16.0,
       "breakdown": {
-        "transcription": 5.28,
-        "llm": 10.56,
-        "storage": 0.88,
-        "other": 0.88
-      },
-      "article_count": 5
-    },
-    {
-      "date": "2024-12-27",
-      "total_cost": 20.10,
-      "breakdown": {
-        "transcription": 6.03,
-        "llm": 12.06,
-        "storage": 1.01,
-        "other": 1.00
+        "transcription": 4.8,
+        "llm": 9.6,
+        "storage": 0.8,
+        "other": 0.8
       },
       "article_count": 7
     },
     {
-      "date": "2024-12-28",
-      "total_cost": 15.90,
+      "date": "2025-11-12",
+      "total_cost": 10.0,
       "breakdown": {
-        "transcription": 4.77,
-        "llm": 9.54,
-        "storage": 0.80,
-        "other": 0.79
+        "transcription": 3.0,
+        "llm": 6.0,
+        "storage": 0.5,
+        "other": 0.5
       },
-      "article_count": 4
+      "article_count": 1
     },
     {
-      "date": "2024-12-29",
-      "total_cost": 18.70,
+      "date": "2025-11-13",
+      "total_cost": 21.0,
       "breakdown": {
-        "transcription": 5.61,
-        "llm": 11.22,
-        "storage": 0.94,
-        "other": 0.93
-      },
-      "article_count": 6
-    },
-    {
-      "date": "2024-12-30",
-      "total_cost": 16.30,
-      "breakdown": {
-        "transcription": 4.89,
-        "llm": 9.78,
-        "storage": 0.82,
-        "other": 0.81
-      },
-      "article_count": 4
-    },
-    {
-      "date": "2024-12-31",
-      "total_cost": 14.20,
-      "breakdown": {
-        "transcription": 4.26,
-        "llm": 8.52,
-        "storage": 0.71,
-        "other": 0.71
-      },
-      "article_count": 3
-    },
-    {
-      "date": "2025-01-01",
-      "total_cost": 12.80,
-      "breakdown": {
-        "transcription": 3.84,
-        "llm": 7.68,
-        "storage": 0.64,
-        "other": 0.64
+        "transcription": 6.3,
+        "llm": 12.6,
+        "storage": 1.05,
+        "other": 1.05
       },
       "article_count": 2
     },
     {
-      "date": "2025-01-02",
-      "total_cost": 19.50,
+      "date": "2025-11-14",
+      "total_cost": 24.0,
       "breakdown": {
-        "transcription": 5.85,
-        "llm": 11.70,
-        "storage": 0.98,
-        "other": 0.97
+        "transcription": 7.2,
+        "llm": 14.4,
+        "storage": 1.2,
+        "other": 1.2
+      },
+      "article_count": 5
+    },
+    {
+      "date": "2025-11-15",
+      "total_cost": 18.0,
+      "breakdown": {
+        "transcription": 5.4,
+        "llm": 10.8,
+        "storage": 0.9,
+        "other": 0.9
+      },
+      "article_count": 9
+    },
+    {
+      "date": "2025-11-16",
+      "total_cost": 10.0,
+      "breakdown": {
+        "transcription": 3.0,
+        "llm": 6.0,
+        "storage": 0.5,
+        "other": 0.5
+      },
+      "article_count": 1
+    },
+    {
+      "date": "2025-11-17",
+      "total_cost": 19.0,
+      "breakdown": {
+        "transcription": 5.7,
+        "llm": 11.4,
+        "storage": 0.95,
+        "other": 0.95
+      },
+      "article_count": 10
+    },
+    {
+      "date": "2025-11-18",
+      "total_cost": 16.0,
+      "breakdown": {
+        "transcription": 4.8,
+        "llm": 9.6,
+        "storage": 0.8,
+        "other": 0.8
       },
       "article_count": 7
-    },
-    {
-      "date": "2025-01-03",
-      "total_cost": 21.40,
-      "breakdown": {
-        "transcription": 6.42,
-        "llm": 12.84,
-        "storage": 1.07,
-        "other": 1.07
-      },
-      "article_count": 8
-    },
-    {
-      "date": "2025-01-04",
-      "total_cost": 17.90,
-      "breakdown": {
-        "transcription": 5.37,
-        "llm": 10.74,
-        "storage": 0.90,
-        "other": 0.89
-      },
-      "article_count": 5
-    },
-    {
-      "date": "2025-01-05",
-      "total_cost": 16.10,
-      "breakdown": {
-        "transcription": 4.83,
-        "llm": 9.66,
-        "storage": 0.81,
-        "other": 0.80
-      },
-      "article_count": 4
-    },
-    {
-      "date": "2025-01-06",
-      "total_cost": 18.80,
-      "breakdown": {
-        "transcription": 5.64,
-        "llm": 11.28,
-        "storage": 0.94,
-        "other": 0.94
-      },
-      "article_count": 6
-    },
-    {
-      "date": "2025-01-07",
-      "total_cost": 20.30,
-      "breakdown": {
-        "transcription": 6.09,
-        "llm": 12.18,
-        "storage": 1.02,
-        "other": 1.01
-      },
-      "article_count": 7
-    },
-    {
-      "date": "2025-01-08",
-      "total_cost": 15.60,
-      "breakdown": {
-        "transcription": 4.68,
-        "llm": 9.36,
-        "storage": 0.78,
-        "other": 0.78
-      },
-      "article_count": 4
-    },
-    {
-      "date": "2025-01-09",
-      "total_cost": 17.20,
-      "breakdown": {
-        "transcription": 5.16,
-        "llm": 10.32,
-        "storage": 0.86,
-        "other": 0.86
-      },
-      "article_count": 5
-    },
-    {
-      "date": "2025-01-10",
-      "total_cost": 19.70,
-      "breakdown": {
-        "transcription": 5.91,
-        "llm": 11.82,
-        "storage": 0.99,
-        "other": 0.98
-      },
-      "article_count": 6
-    },
-    {
-      "date": "2025-01-11",
-      "total_cost": 16.40,
-      "breakdown": {
-        "transcription": 4.92,
-        "llm": 9.84,
-        "storage": 0.82,
-        "other": 0.82
-      },
-      "article_count": 4
-    },
-    {
-      "date": "2025-01-12",
-      "total_cost": 18.60,
-      "breakdown": {
-        "transcription": 5.58,
-        "llm": 11.16,
-        "storage": 0.93,
-        "other": 0.93
-      },
-      "article_count": 5
-    },
-    {
-      "date": "2025-01-13",
-      "total_cost": 20.80,
-      "breakdown": {
-        "transcription": 6.24,
-        "llm": 12.48,
-        "storage": 1.04,
-        "other": 1.04
-      },
-      "article_count": 8
-    },
-    {
-      "date": "2025-01-14",
-      "total_cost": 17.50,
-      "breakdown": {
-        "transcription": 5.25,
-        "llm": 10.50,
-        "storage": 0.88,
-        "other": 0.87
-      },
-      "article_count": 5
-    },
-    {
-      "date": "2025-01-15",
-      "total_cost": 19.20,
-      "breakdown": {
-        "transcription": 5.76,
-        "llm": 11.52,
-        "storage": 0.96,
-        "other": 0.96
-      },
-      "article_count": 6
     }
   ],
-  "last_updated": "2025-01-15T12:00:00Z",
-  "total_30_days": 485.30
+  "last_updated": "2025-11-19T02:18:11.963947Z",
+  "total_30_days": 575.0
 }
-

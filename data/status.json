@@ -1,6 +1,6 @@
 {
   "last_pipeline_run": {
-    "timestamp": "2025-01-15T10:30:00Z",
+    "timestamp": "2025-11-19T02:18:11.964521Z",
     "status": "success",
     "duration_seconds": 120,
     "articles_processed": 5,
@@ -16,6 +16,5 @@
     "uptime_percent": 99.9
   },
   "failures_this_week": 0,
-  "last_updated": "2025-01-15T12:00:00Z"
+  "last_updated": "2025-11-19T02:18:11.964529Z"
 }
-

@@ -200,6 +200,25 @@ Place these files in `assets/images/`:
 
 ---
 
+## Phase Five Integration Update
+
+**Live Article Integration:**
+- ✅ The site now displays live article drafts driven by pipeline outputs
+- ✅ Articles are synced from the Precipice backend to `data/articles.json` using `precipice sync-static` command
+- ✅ The homepage "Recent Articles" section automatically loads and displays articles from JSON
+- ✅ Test article successfully displayed: "The Impact and Influence of Ronda Rousey's Comments: An Analysis"
+- ✅ Documentation updated: "How to Run RetailXAI" section added to `docs/getting_started.html` with Cloud Run backend instructions
+- ✅ Clear navigation: "How to Run RetailXAI" button added to homepage hero section
+
+**How It Works:**
+1. Pipeline processes video and generates article
+2. Article metadata is sent to Cloud Run backend (if using `publish-backend`)
+3. Article is synced to static site JSON files using `precipice sync-static VIDEO_ID`
+4. GitHub Pages automatically displays the article on the homepage
+5. Users can click through to view full article content
+
+---
+
 **Phase Three Complete** ✅
 
 **Ready for Phase Four?** Would you like to proceed to Phase Four, which includes Substack integration, Render deployment wiring, and automated updates from the Precipice engine?

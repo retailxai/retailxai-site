@@ -1,0 +1,69 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["id", "title", "source", "source_type", "status"],
+    "properties": {
+      "id": {
+        "type": "integer",
+        "description": "Unique article identifier"
+      },
+      "title": {
+        "type": "string",
+        "description": "Article title"
+      },
+      "source": {
+        "type": "string",
+        "description": "Source URL or identifier"
+      },
+      "source_type": {
+        "type": "string",
+        "enum": ["youtube", "article", "podcast", "multi-source", "earnings_call"],
+        "description": "Type of source content"
+      },
+      "status": {
+        "type": "string",
+        "enum": ["Complete", "Pending", "In Progress", "Failed"],
+        "description": "Processing status"
+      },
+      "ingest_timestamp": {
+        "type": ["string", "null"],
+        "format": "date-time",
+        "description": "ISO 8601 timestamp of ingestion"
+      },
+      "output": {
+        "type": ["string", "null"],
+        "description": "Path to output file"
+      },
+      "word_count": {
+        "type": "integer",
+        "minimum": 0,
+        "description": "Word count of generated article"
+      },
+      "cost_usd": {
+        "type": "number",
+        "minimum": 0,
+        "description": "Cost in USD for processing"
+      },
+      "model_used": {
+        "type": ["string", "null"],
+        "description": "AI model used for generation"
+      },
+      "published_at": {
+        "type": ["string", "null"],
+        "format": "date-time",
+        "description": "Publication timestamp"
+      },
+      "platforms": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "enum": ["substack", "linkedin", "x", "medium"]
+        },
+        "description": "Platforms where article was published"
+      }
+    }
+  }
+}
+

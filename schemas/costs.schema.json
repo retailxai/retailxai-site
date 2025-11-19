@@ -1,0 +1,67 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": ["periods"],
+  "properties": {
+    "periods": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["date", "total_cost"],
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date",
+            "description": "Date of cost period"
+          },
+          "total_cost": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Total cost in USD"
+          },
+          "breakdown": {
+            "type": "object",
+            "properties": {
+              "transcription": {
+                "type": "number",
+                "minimum": 0,
+                "description": "Transcription costs"
+              },
+              "llm": {
+                "type": "number",
+                "minimum": 0,
+                "description": "LLM API costs"
+              },
+              "storage": {
+                "type": "number",
+                "minimum": 0,
+                "description": "Storage costs"
+              },
+              "other": {
+                "type": "number",
+                "minimum": 0,
+                "description": "Other costs"
+              }
+            }
+          },
+          "article_count": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Number of articles processed"
+          }
+        }
+      }
+    },
+    "last_updated": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Last update timestamp"
+    },
+    "total_30_days": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Total cost for last 30 days"
+    }
+  }
+}
+

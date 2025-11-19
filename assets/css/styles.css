@@ -587,6 +587,246 @@ section {
     padding: 2rem;
 }
 
+/* Earnings Calls Section */
+.earnings-calls {
+    padding: 4rem 0;
+    background-color: var(--bg-secondary);
+}
+
+.earnings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.earnings-card {
+    background-color: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: var(--shadow);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.earnings-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+.earnings-card h3 {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+}
+
+.earnings-symbol {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.earnings-metrics {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.earnings-metrics .metric {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.earnings-metrics .metric:last-child {
+    border-bottom: none;
+}
+
+.metric-label {
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+.metric-value {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.sentiment-positive {
+    color: #10b981;
+}
+
+.sentiment-negative {
+    color: #ef4444;
+}
+
+.sentiment-neutral {
+    color: var(--text-secondary);
+}
+
+/* Trends Section */
+.trends {
+    padding: 4rem 0;
+    background-color: var(--bg-primary);
+}
+
+.trends-content {
+    margin-top: 2rem;
+}
+
+.trends-summary {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 2rem;
+}
+
+.trends-summary p {
+    margin-bottom: 1rem;
+    font-size: 1rem;
+}
+
+.trend-up {
+    color: #10b981;
+    font-weight: 700;
+}
+
+.trend-down {
+    color: #ef4444;
+    font-weight: 700;
+}
+
+.trend-stable {
+    color: var(--text-secondary);
+    font-weight: 700;
+}
+
+.trends-cta {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+/* Dashboard Preview Section */
+.dashboard-preview {
+    padding: 4rem 0;
+    background-color: var(--bg-secondary);
+}
+
+.section-description {
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 1.125rem;
+    margin-bottom: 2rem;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.dashboard-preview-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.preview-card {
+    background-color: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 2rem;
+    box-shadow: var(--shadow);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.preview-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+}
+
+.preview-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+}
+
+.preview-card p {
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+.dashboard-preview-cta {
+    text-align: center;
+    margin-top: 3rem;
+}
+
+/* Substack Feed Section */
+.substack-feed {
+    padding: 4rem 0;
+    background-color: var(--bg-primary);
+}
+
+.substack-embed {
+    margin-top: 2rem;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+}
+
+/* About Section */
+.about {
+    padding: 4rem 0;
+    background-color: var(--bg-secondary);
+}
+
+.about-description {
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 1.125rem;
+    line-height: 1.8;
+    max-width: 900px;
+    margin: 0 auto 2rem;
+}
+
+.tech-stack {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.tech-badge {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    background-color: var(--bg-primary);
+    border: 2px solid var(--accent-cyan);
+    border-radius: 25px;
+    color: var(--accent-cyan);
+    font-weight: 600;
+    font-size: 0.875rem;
+    transition: all 0.2s;
+}
+
+.tech-badge:hover {
+    background-color: var(--accent-cyan);
+    color: var(--bg-hero);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-glow);
+}
+
+/* Hero Description */
+.hero-description {
+    font-size: 1.125rem;
+    line-height: 1.8;
+    color: var(--text-secondary);
+    margin-top: 1.5rem;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .hero-title {

@@ -35,11 +35,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/ticker.css">
+    <link rel="stylesheet" href="assets/css/global.css">
     
     <!-- Plausible Analytics -->
     <script defer data-domain="retailxai.github.io" src="https://plausible.io/js/script.js"></script>
 </head>
 <body>
+    <!-- Stock Ticker -->
+    <div id="ticker-container" class="ticker-container"></div>
+    
     <!-- Navigation -->
     <nav class="navbar">
         <div class="container">
@@ -47,23 +52,26 @@
                 <h1>RetailXAI</h1>
             </div>
             <ul class="nav-links">
-                <li><a href="#features">Features</a></li>
-                <li><a href="#pipeline">Pipeline</a></li>
+                <li><a href="#home">Home</a></li>
                 <li><a href="#articles">Articles</a></li>
+                <li><a href="#trends">Trends</a></li>
+                <li><a href="dashboard/index.html">Dashboard</a></li>
                 <li><a href="docs/getting_started.html">Docs</a></li>
-                <li><a href="#contact">Contact</a></li>
+                <li><a href="#about">About</a></li>
             </ul>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <section class="hero">
+    <section id="home" class="hero">
         <div class="container">
-            <h1 class="hero-title">Enterprise AI Meets Modern Content Intelligence</h1>
-            <p class="hero-subtitle">Transform video content into professional articles with our production-grade pipeline. Ingest YouTube videos, earnings calls, and podcasts to produce publication-ready content for Substack, LinkedIn, and X.</p>
+            <h1 class="hero-title">RetailXAI: AI-Powered Financial Content Intelligence</h1>
+            <p class="hero-subtitle">Transform earnings calls, financial videos, and market content into professional articles through insight compression and advanced financial analysis. Our AI-powered pipeline processes YouTube videos, earnings calls, and podcasts to produce publication-ready content for Substack, LinkedIn, and X.</p>
+            <p class="hero-description">RetailXAI uses advanced natural language processing to compress hours of financial content into concise, actionable insights. We analyze sentiment, extract key metrics, identify trends, and generate comprehensive financial analysis articles that help readers quickly understand market dynamics and company performance.</p>
             <div class="hero-cta">
-                <a href="docs/getting_started.html" class="btn btn-primary" data-analytics="cta-hero-get-started">Get Started</a>
-                <a href="why_retailxai.html" class="btn btn-secondary" data-analytics="cta-hero-why">Why RetailXAI</a>
+                <a href="#articles" class="btn btn-primary" data-analytics="cta-hero-articles">View Articles</a>
+                <a href="https://retailxai.substack.com" target="_blank" rel="noopener" class="btn btn-secondary" data-analytics="cta-hero-substack">Read on Substack</a>
+                <a href="dashboard/index.html" class="btn btn-secondary" data-analytics="cta-hero-dashboard">Dashboard</a>
             </div>
         </div>
     </section>
@@ -180,6 +188,16 @@
         </div>
     </section>
 
+    <!-- Top 5 Earnings Calls Section -->
+    <section id="earnings-calls" class="earnings-calls">
+        <div class="container">
+            <h2 class="section-title">Top 5 Earnings Calls</h2>
+            <div id="earnings-calls-container" class="earnings-grid">
+                <p class="loading">Loading earnings calls...</p>
+            </div>
+        </div>
+    </section>
+
     <!-- Articles Section -->
     <section id="articles" class="articles">
         <div class="container">
@@ -188,7 +206,70 @@
                 <p class="loading">Loading articles...</p>
             </div>
             <div class="articles-cta">
-                <a href="dashboard.html" class="btn btn-outline">View All Articles</a>
+                <a href="dashboard/index.html#articles" class="btn btn-outline">View All Articles</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trends Section -->
+    <section id="trends" class="trends">
+        <div class="container">
+            <h2 class="section-title">Market Trends</h2>
+            <div id="trends-container" class="trends-content">
+                <p class="loading">Loading trends...</p>
+            </div>
+            <div class="trends-cta">
+                <a href="dashboard/index.html#trends" class="btn btn-outline">View Full Trends</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dashboard Preview Section -->
+    <section id="dashboard-preview" class="dashboard-preview">
+        <div class="container">
+            <h2 class="section-title">Dashboard Preview</h2>
+            <p class="section-description">Access comprehensive analytics, cost tracking, and system health monitoring through our protected dashboard.</p>
+            <div class="dashboard-preview-grid">
+                <div class="preview-card">
+                    <h3>📊 Analytics</h3>
+                    <p>Track article generation trends, costs, and performance metrics.</p>
+                </div>
+                <div class="preview-card">
+                    <h3>💰 Cost Management</h3>
+                    <p>Monitor API costs, transcription expenses, and optimize spending.</p>
+                </div>
+                <div class="preview-card">
+                    <h3>⚡ System Health</h3>
+                    <p>Real-time monitoring of pipeline status and system components.</p>
+                </div>
+            </div>
+            <div class="dashboard-preview-cta">
+                <a href="dashboard/index.html" class="btn btn-primary">Access Dashboard</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Substack Feed Section -->
+    <section id="substack-feed" class="substack-feed">
+        <div class="container">
+            <h2 class="section-title">Latest from Substack</h2>
+            <div class="substack-embed">
+                <iframe src="https://retailxai.substack.com/embed" width="100%" height="320" style="border:1px solid #EEE; background:white;" frameborder="0" scrolling="no"></iframe>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <h2 class="section-title">Built with Advanced AI Technology</h2>
+            <p class="about-description">RetailXAI is built using cutting-edge AI technologies including LangGraph for workflow orchestration, LlamaIndex for data indexing and retrieval, Whisper for audio transcription, Precipice-2 for content generation, and the RetailXAI stack for financial analysis and insight compression.</p>
+            <div class="tech-stack">
+                <span class="tech-badge">LangGraph</span>
+                <span class="tech-badge">LlamaIndex</span>
+                <span class="tech-badge">Whisper</span>
+                <span class="tech-badge">Precipice-2</span>
+                <span class="tech-badge">RetailXAI Stack</span>
             </div>
         </div>
     </section>
@@ -215,7 +296,7 @@
                     <ul>
                         <li><a href="https://github.com/retailxai" target="_blank" rel="noopener" data-analytics="footer-github">GitHub</a></li>
                         <li><a href="https://retailxai.substack.com" target="_blank" rel="noopener" data-analytics="footer-substack">Substack</a></li>
-                        <li><a href="https://www.producthunt.com/products/retailxai" target="_blank" rel="noopener" data-analytics="footer-producthunt">Product Hunt</a></li>
+                        <li><a href="https://x.com/retailxai" target="_blank" rel="noopener" data-analytics="footer-x">X (Twitter)</a></li>
                     </ul>
                 </div>
             </div>
@@ -226,6 +307,8 @@
     </footer>
 
     <script src="assets/js/main.js"></script>
+    <script src="assets/js/ticker.js"></script>
+    <script src="assets/js/theme-toggle.js"></script>
     <script>
         // Analytics click tracking
         document.addEventListener('click', function(e) {
@@ -237,6 +320,114 @@
                 }
             }
         });
+
+        // Load earnings calls data
+        async function loadEarningsCalls() {
+            try {
+                const response = await fetch('data/earnings.json');
+                if (!response.ok) throw new Error('Failed to load earnings data');
+                const earnings = await response.json();
+                
+                const container = document.getElementById('earnings-calls-container');
+                if (!container) return;
+
+                // Sort by call_date and take top 5
+                const sorted = earnings
+                    .filter(e => e.call_date)
+                    .sort((a, b) => new Date(b.call_date) - new Date(a.call_date))
+                    .slice(0, 5);
+
+                if (sorted.length === 0) {
+                    container.innerHTML = '<p>No earnings calls data available</p>';
+                    return;
+                }
+
+                container.innerHTML = sorted.map(earning => {
+                    const revenue = earning.revenue 
+                        ? `$${(earning.revenue.value / 1e9).toFixed(2)}B`
+                        : 'N/A';
+                    const eps = earning.eps 
+                        ? `$${earning.eps.value.toFixed(2)}`
+                        : 'N/A';
+                    const callDate = new Date(earning.call_date).toLocaleDateString();
+                    const sentimentClass = earning.sentiment || 'neutral';
+                    
+                    return `
+                        <div class="earnings-card">
+                            <h3>${earning.company}</h3>
+                            <p class="earnings-symbol">${earning.symbol || ''}</p>
+                            <div class="earnings-metrics">
+                                <div class="metric">
+                                    <span class="metric-label">Revenue:</span>
+                                    <span class="metric-value">${revenue}</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">EPS:</span>
+                                    <span class="metric-value">${eps}</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">Date:</span>
+                                    <span class="metric-value">${callDate}</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">Sentiment:</span>
+                                    <span class="metric-value sentiment-${sentimentClass}">${sentimentClass}</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            } catch (error) {
+                console.error('Error loading earnings calls:', error);
+                const container = document.getElementById('earnings-calls-container');
+                if (container) {
+                    container.innerHTML = '<p>Unable to load earnings calls data</p>';
+                }
+            }
+        }
+
+        // Load trends preview
+        async function loadTrendsPreview() {
+            try {
+                const response = await fetch('data/trends.json');
+                if (!response.ok) throw new Error('Failed to load trends data');
+                const trends = await response.json();
+                
+                const container = document.getElementById('trends-container');
+                if (!container) return;
+
+                if (!trends.data_points || trends.data_points.length === 0) {
+                    container.innerHTML = '<p>No trends data available</p>';
+                    return;
+                }
+
+                const recentPoints = trends.data_points.slice(-7);
+                container.innerHTML = `
+                    <div class="trends-summary">
+                        <p><strong>Trend Direction:</strong> <span class="trend-${trends.trend_direction || 'stable'}">${(trends.trend_direction || 'stable').toUpperCase()}</span></p>
+                        <p><strong>Recent Data Points:</strong> ${recentPoints.length} points</p>
+                        <p><strong>Last Updated:</strong> ${new Date(trends.last_updated).toLocaleString()}</p>
+                    </div>
+                `;
+            } catch (error) {
+                console.error('Error loading trends:', error);
+                const container = document.getElementById('trends-container');
+                if (container) {
+                    container.innerHTML = '<p>Unable to load trends data</p>';
+                }
+            }
+        }
+
+        // Load data when page is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                loadEarningsCalls();
+                loadTrendsPreview();
+            });
+        } else {
+            loadEarningsCalls();
+            loadTrendsPreview();
+        }
     </script>
 </body>
 </html>

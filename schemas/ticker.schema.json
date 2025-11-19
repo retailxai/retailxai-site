@@ -1,0 +1,48 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["symbol", "price", "change", "change_percent"],
+    "properties": {
+      "symbol": {
+        "type": "string",
+        "description": "Stock ticker symbol"
+      },
+      "price": {
+        "type": "number",
+        "minimum": 0,
+        "description": "Current stock price"
+      },
+      "change": {
+        "type": "number",
+        "description": "Price change from previous close"
+      },
+      "change_percent": {
+        "type": "number",
+        "description": "Percentage change from previous close"
+      },
+      "sentiment": {
+        "type": "string",
+        "enum": ["positive", "negative", "neutral"],
+        "description": "Sentiment indicator"
+      },
+      "volume": {
+        "type": "integer",
+        "minimum": 0,
+        "description": "Trading volume"
+      },
+      "market_cap": {
+        "type": "number",
+        "minimum": 0,
+        "description": "Market capitalization"
+      },
+      "last_updated": {
+        "type": "string",
+        "format": "date-time",
+        "description": "Last update timestamp"
+      }
+    }
+  }
+}
+

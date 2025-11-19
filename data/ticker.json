@@ -1,0 +1,83 @@
+[
+  {
+    "symbol": "AAPL",
+    "price": 150.25,
+    "change": 2.50,
+    "change_percent": 1.69,
+    "sentiment": "positive",
+    "volume": 45000000,
+    "market_cap": 2400000000000,
+    "last_updated": "2025-01-15T12:00:00Z"
+  },
+  {
+    "symbol": "MSFT",
+    "price": 380.45,
+    "change": -1.20,
+    "change_percent": -0.31,
+    "sentiment": "negative",
+    "volume": 28000000,
+    "market_cap": 2800000000000,
+    "last_updated": "2025-01-15T12:00:00Z"
+  },
+  {
+    "symbol": "GOOGL",
+    "price": 140.30,
+    "change": 0.50,
+    "change_percent": 0.36,
+    "sentiment": "positive",
+    "volume": 32000000,
+    "market_cap": 1750000000000,
+    "last_updated": "2025-01-15T12:00:00Z"
+  },
+  {
+    "symbol": "AMZN",
+    "price": 155.60,
+    "change": 3.20,
+    "change_percent": 2.10,
+    "sentiment": "positive",
+    "volume": 38000000,
+    "market_cap": 1600000000000,
+    "last_updated": "2025-01-15T12:00:00Z"
+  },
+  {
+    "symbol": "TSLA",
+    "price": 250.75,
+    "change": -5.00,
+    "change_percent": -1.95,
+    "sentiment": "negative",
+    "volume": 52000000,
+    "market_cap": 800000000000,
+    "last_updated": "2025-01-15T12:00:00Z"
+  },
+  {
+    "symbol": "META",
+    "price": 485.30,
+    "change": 8.50,
+    "change_percent": 1.78,
+    "sentiment": "positive",
+    "volume": 15000000,
+    "market_cap": 1250000000000,
+    "last_updated": "2025-01-15T12:00:00Z"
+  },
+  {
+    "symbol": "NVDA",
+    "price": 520.80,
+    "change": 12.30,
+    "change_percent": 2.42,
+    "sentiment": "positive",
+    "volume": 42000000,
+    "market_cap": 1300000000000,
+    "last_updated": "2025-01-15T12:00:00Z"
+  },
+  {
+    "symbol": "NFLX",
+    "price": 485.20,
+    "change": -2.10,
+    "change_percent": -0.43,
+    "sentiment": "negative",
+    "volume": 8500000,
+    "market_cap": 215000000000,
+    "last_updated": "2025-01-15T12:00:00Z"
+  }
+]
+

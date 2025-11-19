@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RetailXAI Dashboard</title>
+    <link rel="stylesheet" href="../assets/css/dashboard.css">
+    <link rel="stylesheet" href="../assets/css/global.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="dashboard-nav">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <h1>RetailXAI Dashboard</h1>
+            </div>
+            <ul class="nav-tabs">
+                <li><a href="#dashboard" class="nav-tab active" data-tab="dashboard">Dashboard</a></li>
+                <li><a href="#articles" class="nav-tab" data-tab="articles">Articles</a></li>
+                <li><a href="#drafts" class="nav-tab" data-tab="drafts">Drafts</a></li>
+                <li><a href="#trends" class="nav-tab" data-tab="trends">Trends</a></li>
+                <li><a href="#earnings" class="nav-tab" data-tab="earnings">Earnings</a></li>
+                <li><a href="#costs" class="nav-tab" data-tab="costs">Costs</a></li>
+                <li><a href="#system-health" class="nav-tab" data-tab="system-health">System Health</a></li>
+            </ul>
+            <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+                <span class="theme-icon">🌙</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Dashboard Tab Content -->
+    <div id="dashboard" class="tab-content active">
+        <div class="dashboard-container">
+            <!-- Summary Cards -->
+            <div class="summary-cards">
+                <div class="summary-card">
+                    <div class="card-icon">📄</div>
+                    <div class="card-content">
+                        <h3 class="card-label">Total Articles</h3>
+                        <p class="card-value" id="totalArticles">-</p>
+                    </div>
+                </div>
+                <div class="summary-card">
+                    <div class="card-icon">💰</div>
+                    <div class="card-content">
+                        <h3 class="card-label">Total Cost (30 days)</h3>
+                        <p class="card-value" id="totalCost">-</p>
+                    </div>
+                </div>
+                <div class="summary-card">
+                    <div class="card-icon">⏱️</div>
+                    <div class="card-content">
+                        <h3 class="card-label">Last Pipeline Run</h3>
+                        <p class="card-value" id="lastPipelineRun">-</p>
+                    </div>
+                </div>
+                <div class="summary-card">
+                    <div class="card-icon">⚠️</div>
+                    <div class="card-content">
+                        <h3 class="card-label">Failures This Week</h3>
+                        <p class="card-value" id="failuresThisWeek">-</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Middle Layout: Articles Table and Trends Chart -->
+            <div class="middle-layout">
+                <div class="layout-column">
+                    <div class="panel">
+                        <h2>Recent Articles</h2>
+                        <div class="table-container">
+                            <table class="data-table" id="dashboardArticlesTable">
+                                <thead>
+                                    <tr>
+                                        <th>Title</th>
+                                        <th>Status</th>
+                                        <th>Date</th>
+                                        <th>Cost</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="dashboardArticlesBody">
+                                    <tr><td colspan="4" class="loading">Loading...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="layout-column">
+                    <div class="panel">
+                        <h2>Trends</h2>
+                        <canvas id="trendsChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Layout: Cost Chart and System Health -->
+            <div class="bottom-layout">
+                <div class="layout-column">
+                    <div class="panel">
+                        <h2>Costs (30 Days)</h2>
+                        <canvas id="costsChart"></canvas>
+                    </div>
+                </div>
+                <div class="layout-column">
+                    <div class="panel">
+                        <h2>System Health</h2>
+                        <div id="systemHealthCard" class="health-card">
+                            <div class="loading">Loading...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Articles Tab Content -->
+    <div id="articles" class="tab-content">
+        <div class="tab-container">
+            <div class="tab-header">
+                <h2>Articles</h2>
+                <div class="table-controls">
+                    <input type="text" id="articlesSearch" placeholder="Search articles..." class="search-input">
+                    <select id="articlesStatusFilter" class="filter-select">
+                        <option value="">All Status</option>
+                        <option value="Complete">Complete</option>
+                        <option value="Pending">Pending</option>
+                        <option value="In Progress">In Progress</option>
+                        <option value="Failed">Failed</option>
+                    </select>
+                </div>
+            </div>
+            <div class="table-container">
+                <table class="data-table" id="articlesTable">
+                    <thead>
+                        <tr>
+                            <th data-sort="id">ID</th>
+                            <th data-sort="title">Title</th>
+                            <th data-sort="source_type">Source Type</th>
+                            <th data-sort="status">Status</th>
+                            <th data-sort="ingest_timestamp">Date</th>
+                            <th data-sort="word_count">Words</th>
+                            <th data-sort="cost_usd">Cost</th>
+                            <th data-sort="model_used">Model</th>
+                        </tr>
+                    </thead>
+                    <tbody id="articlesBody">
+                        <tr><td colspan="8" class="loading">Loading...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Drafts Tab Content -->
+    <div id="drafts" class="tab-content">
+        <div class="tab-container">
+            <div class="tab-header">
+                <h2>Drafts</h2>
+                <div class="table-controls">
+                    <input type="text" id="draftsSearch" placeholder="Search drafts..." class="search-input">
+                    <select id="draftsStatusFilter" class="filter-select">
+                        <option value="">All Status</option>
+                        <option value="draft">Draft</option>
+                        <option value="review">Review</option>
+                        <option value="ready">Ready</option>
+                        <option value="archived">Archived</option>
+                    </select>
+                </div>
+            </div>
+            <div class="table-container">
+                <table class="data-table" id="draftsTable">
+                    <thead>
+                        <tr>
+                            <th data-sort="id">ID</th>
+                            <th data-sort="title">Title</th>
+                            <th data-sort="status">Status</th>
+                            <th data-sort="created_at">Created</th>
+                            <th data-sort="updated_at">Updated</th>
+                            <th data-sort="word_count">Words</th>
+                        </tr>
+                    </thead>
+                    <tbody id="draftsBody">
+                        <tr><td colspan="6" class="loading">Loading...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Trends Tab Content -->
+    <div id="trends" class="tab-content">
+        <div class="tab-container">
+            <div class="tab-header">
+                <h2>Trends Analysis</h2>
+            </div>
+            <div class="trends-container">
+                <div class="trends-chart-panel">
+                    <canvas id="trendsDetailChart"></canvas>
+                </div>
+                <div class="trends-info">
+                    <div class="trend-metric">
+                        <h3>Trend Direction</h3>
+                        <p id="trendDirection" class="trend-value">-</p>
+                    </div>
+                    <div class="trend-metric">
+                        <h3>Last Updated</h3>
+                        <p id="trendsLastUpdated" class="trend-value">-</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Earnings Tab Content -->
+    <div id="earnings" class="tab-content">
+        <div class="tab-container">
+            <div class="tab-header">
+                <h2>Earnings Calls</h2>
+                <div class="table-controls">
+                    <input type="text" id="earningsSearch" placeholder="Search companies..." class="search-input">
+                </div>
+            </div>
+            <div class="table-container">
+                <table class="data-table" id="earningsTable">
+                    <thead>
+                        <tr>
+                            <th data-sort="company">Company</th>
+                            <th data-sort="symbol">Symbol</th>
+                            <th data-sort="quarter">Quarter</th>
+                            <th data-sort="year">Year</th>
+                            <th data-sort="call_date">Call Date</th>
+                            <th>Revenue</th>
+                            <th>EPS</th>
+                            <th data-sort="sentiment">Sentiment</th>
+                        </tr>
+                    </thead>
+                    <tbody id="earningsBody">
+                        <tr><td colspan="8" class="loading">Loading...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Costs Tab Content -->
+    <div id="costs" class="tab-content">
+        <div class="tab-container">
+            <div class="tab-header">
+                <h2>Cost Analysis</h2>
+            </div>
+            <div class="costs-container">
+                <div class="costs-chart-panel">
+                    <canvas id="costsDetailChart"></canvas>
+                </div>
+                <div class="costs-summary">
+                    <div class="cost-metric">
+                        <h3>Total (30 Days)</h3>
+                        <p id="costsTotal30Days" class="cost-value">-</p>
+                    </div>
+                    <div class="cost-metric">
+                        <h3>Last Updated</h3>
+                        <p id="costsLastUpdated" class="cost-value">-</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- System Health Tab Content -->
+    <div id="system-health" class="tab-content">
+        <div class="tab-container">
+            <div class="tab-header">
+                <h2>System Health</h2>
+            </div>
+            <div class="health-container">
+                <div id="systemHealthDetail" class="health-detail">
+                    <div class="loading">Loading...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../assets/js/theme-toggle.js"></script>
+    <script src="../assets/js/dashboard.js"></script>
+</body>
+</html>
+

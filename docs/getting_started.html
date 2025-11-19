@@ -122,11 +122,42 @@ ANTHROPIC_API_KEY=your_anthropic_key
 # YouTube API (optional)
 YOUTUBE_API_KEY=your_youtube_key</code></pre>
 
-        <h2>Your First Pipeline Run</h2>
+        <h2 id="how-to-run">How to Run RetailXAI</h2>
+        
+        <p>RetailXAI provides a simple command-line interface for processing videos and generating articles. Here's how to get started:</p>
 
-        <h3>Basic Usage</h3>
-        <pre><code># Process a YouTube video to article
-precipice process "https://www.youtube.com/watch?v=VIDEO_ID"</code></pre>
+        <h3>Basic Pipeline Commands</h3>
+        <pre><code># Process a YouTube video locally
+precipice process "https://www.youtube.com/watch?v=VIDEO_ID"
+
+# Process with specific style
+precipice process "https://www.youtube.com/watch?v=VIDEO_ID" --style analytical
+
+# Publish to static site (updates GitHub Pages JSON files)
+precipice publish-static "https://www.youtube.com/watch?v=VIDEO_ID"</code></pre>
+
+        <h3>Cloud Run Backend Integration</h3>
+        <p>RetailXAI can also publish articles to a Cloud Run backend for centralized storage and management:</p>
+        
+        <pre><code># Configure environment to use Cloud Run backend
+source scripts/set_env_cloudrun.sh
+
+# Test Cloud Run connectivity
+precipice test-cloudrun
+
+# Publish article to Cloud Run backend
+precipice publish-backend "https://www.youtube.com/watch?v=VIDEO_ID"
+
+# Sync article from backend to static site
+precipice sync-static VIDEO_ID</code></pre>
+
+        <h3>How GitHub Pages Integration Works</h3>
+        <p>The GitHub Pages site (retailxai-site) automatically displays articles by reading JSON files:</p>
+        <ul>
+            <li><code>data/articles.json</code> - Contains article metadata and links</li>
+            <li><code>data/ingest_status.json</code> - Contains ingest processing status</li>
+        </ul>
+        <p>When you run <code>precipice publish-static</code> or <code>precipice sync-static</code>, these JSON files are automatically updated in the retailxai-site repository, and the homepage displays the latest articles.</p>
 
         <h3>Expected Output</h3>
         <p>The pipeline will:</p>
@@ -135,6 +166,8 @@ precipice process "https://www.youtube.com/watch?v=VIDEO_ID"</code></pre>
             <li>Analyze content for key points</li>
             <li>Generate a professional article</li>
             <li>Save the output to your data directory</li>
+            <li>If using Cloud Run backend, send updates to the backend API</li>
+            <li>If using static site mode, update JSON files for GitHub Pages</li>
         </ol>
 
         <h2>Next Steps</h2>

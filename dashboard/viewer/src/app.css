@@ -1,0 +1,41 @@
+:root {
+  --viewer-bg: var(--dashboard-bg, #f5f7fa);
+  --viewer-card-bg: var(--dashboard-card-bg, #ffffff);
+  --viewer-text: var(--dashboard-text, #1a1a1a);
+  --viewer-text-secondary: var(--dashboard-text-secondary, #6b7280);
+  --viewer-border: var(--dashboard-border, #e5e7eb);
+  --viewer-primary: var(--dashboard-primary, #3b82f6);
+  --viewer-shadow: var(--dashboard-shadow, rgba(0, 0, 0, 0.1));
+  --viewer-error: var(--dashboard-error, #ef4444);
+  --viewer-success: var(--dashboard-success, #10b981);
+  --viewer-warning: var(--dashboard-warning, #f59e0b);
+}
+
+[data-theme="dark"] {
+  --viewer-bg: var(--dashboard-bg, #1a1a1a);
+  --viewer-card-bg: var(--dashboard-card-bg, #2d2d2d);
+  --viewer-text: var(--dashboard-text, #f5f5f5);
+  --viewer-text-secondary: var(--dashboard-text-secondary, #a0a0a0);
+  --viewer-border: var(--dashboard-border, #404040);
+  --viewer-primary: var(--dashboard-primary, #60a5fa);
+  --viewer-error: var(--dashboard-error, #f87171);
+  --viewer-success: var(--dashboard-success, #34d399);
+  --viewer-warning: var(--dashboard-warning, #fbbf24);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--viewer-bg);
+  color: var(--viewer-text);
+  line-height: 1.6;
+}
+
+#viewer-app {
+  min-height: 100vh;
+}

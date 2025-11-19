@@ -214,6 +214,44 @@ def find_draft_file(article_id, title, precipice_dir):
     return None
 
 
+def find_pdf_file(article_id, title, precipice_dir):
+    """Find PDF file for an article in Precipice-2."""
+    if not precipice_dir.exists():
+        return None
+    
+    # Try multiple possible locations
+    possible_paths = [
+        precipice_dir / "pdfs",
+        precipice_dir / "data" / "pdfs",
+        precipice_dir / "output" / "pdfs",
+        precipice_dir / "drafts",  # Sometimes PDFs are in drafts folder
+    ]
+    
+    # Try by ID first
+    if article_id:
+        for base_path in possible_paths:
+            if base_path.exists():
+                patterns = [
+                    f"{article_id}.pdf",
+                    f"article-{article_id}.pdf",
+                ]
+                for pattern in patterns:
+                    pdf_file = base_path / pattern
+                    if pdf_file.exists():
+                        return pdf_file
+    
+    # Try by slug from title
+    slug = generate_slug_from_title(title)
+    if slug:
+        for base_path in possible_paths:
+            if base_path.exists():
+                pdf_file = base_path / f"{slug}.pdf"
+                if pdf_file.exists():
+                    return pdf_file
+    
+    return None
+
+
 def generate_articles_json():
     """Generate articles.json from Precipice-2 data."""
     # Try to load from Precipice-2
@@ -258,6 +296,30 @@ def generate_articles_json():
                 slug = article.get('slug') or generate_slug_from_title(title) or f"article-{article_id}"
                 article['draft_path'] = f"drafts/{slug}.md"
                 print(f"Found draft for article {article_id}: {article['draft_path']}")
+            
+            # Find PDF file if available
+            pdf_file = find_pdf_file(article_id, title, PRECIPICE_DIR)
+            if pdf_file:
+                slug = article.get('slug') or generate_slug_from_title(title) or f"article-{article_id}"
+                article['pdf_path'] = f"pdfs/{slug}.pdf"
+                print(f"Found PDF for article {article_id}: {article['pdf_path']}")
+            
+            # Extract additional metadata for sidebar
+            if 'tickers' not in article and article.get('symbol'):
+                article['tickers'] = [article['symbol']]
+            
+            # Extract financial metrics if present in article data
+            if 'financials' in article:
+                financials = article['financials']
+                if isinstance(financials, dict):
+                    if 'revenue' in financials:
+                        article['revenue'] = financials['revenue']
+                    if 'eps' in financials:
+                        article['eps'] = financials['eps']
+                    if 'margins' in financials:
+                        article['margins'] = financials['margins']
+                    if 'short_interest' in financials:
+                        article['short_interest'] = financials['short_interest']
             
             cleaned_articles.append(article)
         

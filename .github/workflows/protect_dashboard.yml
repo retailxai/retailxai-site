@@ -4,12 +4,15 @@ on:
   push:
     paths:
       - 'dashboard/index.html'
+      - 'dashboard/draft.html'
       - 'assets/css/dashboard.css'
       - 'assets/js/dashboard.js'
       - 'assets/css/global.css'
       - 'assets/css/ticker.css'
       - 'assets/js/theme-toggle.js'
       - 'assets/js/ticker.js'
+      - 'assets/viewer/**'
+      - 'assets/css/viewer.css'
       - 'data/*.json'
   workflow_dispatch:
   workflow_run:

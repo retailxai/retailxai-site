@@ -39,21 +39,45 @@ jobs:
       
       - name: Copy draft files from Precipice-2
         run: |
-          mkdir -p drafts
+          mkdir -p drafts pdfs
           # Copy drafts from various possible locations in Precipice-2
           if [ -d "precipice/drafts" ]; then
             cp -r precipice/drafts/*.md drafts/ 2>/dev/null || true
             cp -r precipice/drafts/*.txt drafts/ 2>/dev/null || true
+            cp -r precipice/drafts/*.pdf pdfs/ 2>/dev/null || true
           fi
           if [ -d "precipice/data/drafts" ]; then
             cp -r precipice/data/drafts/*.md drafts/ 2>/dev/null || true
             cp -r precipice/data/drafts/*.txt drafts/ 2>/dev/null || true
+            cp -r precipice/data/drafts/*.pdf pdfs/ 2>/dev/null || true
           fi
           if [ -d "precipice/output/drafts" ]; then
             cp -r precipice/output/drafts/*.md drafts/ 2>/dev/null || true
             cp -r precipice/output/drafts/*.txt drafts/ 2>/dev/null || true
+            cp -r precipice/output/drafts/*.pdf pdfs/ 2>/dev/null || true
           fi
-          echo "Copied draft files to drafts/ folder"
+          # Copy PDFs from dedicated PDF folders
+          if [ -d "precipice/pdfs" ]; then
+            cp -r precipice/pdfs/*.pdf pdfs/ 2>/dev/null || true
+          fi
+          if [ -d "precipice/data/pdfs" ]; then
+            cp -r precipice/data/pdfs/*.pdf pdfs/ 2>/dev/null || true
+          fi
+          if [ -d "precipice/output/pdfs" ]; then
+            cp -r precipice/output/pdfs/*.pdf pdfs/ 2>/dev/null || true
+          fi
+          echo "Copied draft and PDF files"
+      
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      
+      - name: Build Svelte viewer
+        run: |
+          cd dashboard/viewer
+          npm install
+          npm run build
       
       - name: Generate data files
         env:
@@ -70,6 +94,8 @@ jobs:
           git config --local user.name "GitHub Action"
           git add data/*.json
           git add drafts/*.md drafts/*.txt 2>/dev/null || true
-          git diff --staged --quiet || git commit -m "Update data files and drafts [skip ci]"
+          git add pdfs/*.pdf 2>/dev/null || true
+          git add assets/viewer/*.js assets/css/viewer.css 2>/dev/null || true
+          git diff --staged --quiet || git commit -m "Update data files, drafts, PDFs, and viewer [skip ci]"
           git push
 

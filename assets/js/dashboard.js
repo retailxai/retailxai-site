@@ -211,6 +211,19 @@ class Dashboard {
         return text;
     }
 
+    getArticleLink(article) {
+        if (article.id) {
+            return `draft.html?id=${article.id}`;
+        }
+        // Create slug from title if no ID
+        const slug = article.title
+            ? article.title.toLowerCase()
+                .replace(/[^a-z0-9]+/g, '-')
+                .replace(/^-+|-+$/g, '')
+            : `article-${Date.now()}`;
+        return `draft.html?id=${encodeURIComponent(slug)}`;
+    }
+
     renderDashboardArticles() {
         const tbody = document.getElementById('dashboardArticlesBody');
         if (!tbody) return;
@@ -228,10 +241,11 @@ class Dashboard {
                 : '-';
             const cost = article.cost_usd ? `$${article.cost_usd.toFixed(2)}` : '-';
             const statusClass = `status-${article.status.toLowerCase().replace(' ', '-')}`;
+            const articleLink = this.getArticleLink(article);
             
             return `
                 <tr>
-                    <td>${this.escapeHtml(article.title)}</td>
+                    <td><a href="${articleLink}" style="color: var(--dashboard-primary); text-decoration: none;">${this.escapeHtml(article.title)}</a></td>
                     <td><span class="status-badge ${statusClass}">${article.status}</span></td>
                     <td>${date}</td>
                     <td>${cost}</td>
@@ -257,11 +271,12 @@ class Dashboard {
                 : '-';
             const cost = article.cost_usd ? `$${article.cost_usd.toFixed(2)}` : '-';
             const statusClass = `status-${article.status.toLowerCase().replace(' ', '-')}`;
+            const articleLink = this.getArticleLink(article);
             
             return `
                 <tr>
-                    <td>${article.id}</td>
-                    <td>${this.escapeHtml(article.title)}</td>
+                    <td>${article.id || '-'}</td>
+                    <td><a href="${articleLink}" style="color: var(--dashboard-primary); text-decoration: none;">${this.escapeHtml(article.title)}</a></td>
                     <td>${article.source_type}</td>
                     <td><span class="status-badge ${statusClass}">${article.status}</span></td>
                     <td>${date}</td>
@@ -664,11 +679,12 @@ class Dashboard {
                 : '-';
             const cost = article.cost_usd ? `$${article.cost_usd.toFixed(2)}` : '-';
             const statusClass = `status-${article.status.toLowerCase().replace(' ', '-')}`;
+            const articleLink = this.getArticleLink(article);
             
             return `
                 <tr>
-                    <td>${article.id}</td>
-                    <td>${this.escapeHtml(article.title)}</td>
+                    <td>${article.id || '-'}</td>
+                    <td><a href="${articleLink}" style="color: var(--dashboard-primary); text-decoration: none;">${this.escapeHtml(article.title)}</a></td>
                     <td>${article.source_type}</td>
                     <td><span class="status-badge ${statusClass}">${article.status}</span></td>
                     <td>${date}</td>

@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Draft Viewer - RetailXAI Dashboard</title>
+    <link rel="stylesheet" href="../assets/css/dashboard.css">
+    <link rel="stylesheet" href="../assets/css/global.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked@11.1.1/marked.min.js"></script>
+    <script>
+        // Set dark mode immediately to prevent flash
+        (function() {
+            const theme = localStorage.getItem('theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', theme);
+        })();
+    </script>
+    <style>
+        .draft-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .draft-header {
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid var(--dashboard-border);
+        }
+        .draft-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--dashboard-text);
+        }
+        .draft-meta {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .meta-item {
+            display: flex;
+            flex-direction: column;
+        }
+        .meta-label {
+            font-size: 0.875rem;
+            color: var(--dashboard-text-secondary);
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+        .meta-value {
+            font-size: 1rem;
+            color: var(--dashboard-text);
+            font-weight: 600;
+        }
+        .draft-content {
+            background-color: var(--dashboard-card-bg);
+            border: 1px solid var(--dashboard-border);
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 2px 4px var(--dashboard-shadow);
+            margin-top: 2rem;
+        }
+        .draft-content h1,
+        .draft-content h2,
+        .draft-content h3 {
+            color: var(--dashboard-text);
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        .draft-content p {
+            color: var(--dashboard-text);
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+        .draft-content code {
+            background-color: var(--dashboard-bg);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        .draft-content pre {
+            background-color: var(--dashboard-bg);
+            padding: 1rem;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin-bottom: 1rem;
+        }
+        .draft-content pre code {
+            background: none;
+            padding: 0;
+        }
+        .draft-content blockquote {
+            border-left: 4px solid var(--dashboard-primary);
+            padding-left: 1rem;
+            margin-left: 0;
+            color: var(--dashboard-text-secondary);
+            font-style: italic;
+        }
+        .draft-content a {
+            color: var(--dashboard-primary);
+            text-decoration: none;
+        }
+        .draft-content a:hover {
+            text-decoration: underline;
+        }
+        .draft-content ul,
+        .draft-content ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        .draft-content li {
+            margin-bottom: 0.5rem;
+            color: var(--dashboard-text);
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 1rem;
+            color: var(--dashboard-primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            color: var(--dashboard-text-secondary);
+        }
+        .error {
+            background-color: rgba(239, 68, 68, 0.1);
+            border: 1px solid var(--dashboard-error);
+            border-radius: 8px;
+            padding: 1.5rem;
+            color: var(--dashboard-error);
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <nav class="dashboard-nav">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <h1><a href="index.html" style="text-decoration: none; color: inherit;">RetailXAI Dashboard</a></h1>
+            </div>
+            <ul class="nav-tabs">
+                <li><a href="index.html" class="nav-tab">← Back to Dashboard</a></li>
+            </ul>
+            <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+                <span class="theme-icon">🌙</span>
+            </button>
+        </div>
+    </nav>
+
+    <div class="draft-container">
+        <a href="index.html#articles" class="back-link">← Back to Articles</a>
+        
+        <div id="draftContent">
+            <div class="loading">Loading draft...</div>
+        </div>
+    </div>
+
+    <script src="../assets/js/theme-toggle.js"></script>
+    <script>
+        // Get article ID from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const articleId = urlParams.get('id');
+
+        async function loadDraft() {
+            const container = document.getElementById('draftContent');
+            
+            if (!articleId) {
+                container.innerHTML = '<div class="error">No article ID provided</div>';
+                return;
+            }
+
+            try {
+                // Load articles.json to find the article
+                const articlesResponse = await fetch('../data/articles.json');
+                if (!articlesResponse.ok) throw new Error('Failed to load articles');
+                const articles = await articlesResponse.json();
+                
+                const article = articles.find(a => a.id == articleId || a.id === articleId);
+                
+                if (!article) {
+                    container.innerHTML = '<div class="error">Article not found</div>';
+                    return;
+                }
+
+                // Render article metadata
+                const metaHtml = `
+                    <div class="draft-header">
+                        <h1 class="draft-title">${escapeHtml(article.title || 'Untitled Article')}</h1>
+                        <div class="draft-meta">
+                            <div class="meta-item">
+                                <span class="meta-label">Status</span>
+                                <span class="meta-value">${escapeHtml(article.status || 'Unknown')}</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">Source Type</span>
+                                <span class="meta-value">${escapeHtml(article.source_type || 'Unknown')}</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">Date</span>
+                                <span class="meta-value">${article.ingest_timestamp ? new Date(article.ingest_timestamp).toLocaleDateString() : 'N/A'}</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">Word Count</span>
+                                <span class="meta-value">${article.word_count || 0}</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">Cost</span>
+                                <span class="meta-value">${article.cost_usd ? '$' + article.cost_usd.toFixed(2) : 'N/A'}</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">Model</span>
+                                <span class="meta-value">${escapeHtml(article.model_used || 'N/A')}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                // Try to load draft file
+                let draftPath = article.draft_path;
+                if (!draftPath && article.id) {
+                    // Try to construct path from ID or title
+                    const slug = article.slug || article.title?.toLowerCase()
+                        .replace(/[^a-z0-9]+/g, '-')
+                        .replace(/^-+|-+$/g, '') || `article-${article.id}`;
+                    draftPath = `../drafts/${slug}.md`;
+                }
+                
+                // Ensure path is relative from dashboard folder
+                if (draftPath && !draftPath.startsWith('../')) {
+                    // If path doesn't start with ../, assume it's relative to site root
+                    draftPath = '../' + draftPath;
+                }
+
+                let contentHtml = '';
+                
+                if (draftPath) {
+                    try {
+                        const draftResponse = await fetch(draftPath);
+                        if (draftResponse.ok) {
+                            const draftText = await draftResponse.text();
+                            if (draftText.trim()) {
+                                // Render markdown
+                                if (typeof marked !== 'undefined') {
+                                    contentHtml = marked.parse(draftText);
+                                } else {
+                                    // Fallback: show as plain text with line breaks
+                                    contentHtml = '<pre>' + escapeHtml(draftText) + '</pre>';
+                                }
+                            }
+                        }
+                    } catch (e) {
+                        console.warn('Could not load draft file:', e);
+                    }
+                }
+
+                // If no draft content, show article metadata as content
+                if (!contentHtml) {
+                    contentHtml = `
+                        <div class="draft-content">
+                            <h2>Article Metadata</h2>
+                            <p><strong>Source:</strong> <a href="${escapeHtml(article.source || '#')}" target="_blank">${escapeHtml(article.source || 'N/A')}</a></p>
+                            ${article.output ? `<p><strong>Output File:</strong> ${escapeHtml(article.output)}</p>` : ''}
+                            ${article.published_at ? `<p><strong>Published:</strong> ${new Date(article.published_at).toLocaleString()}</p>` : ''}
+                            ${article.platforms && article.platforms.length > 0 ? `<p><strong>Platforms:</strong> ${article.platforms.join(', ')}</p>` : ''}
+                        </div>
+                    `;
+                } else {
+                    contentHtml = `<div class="draft-content">${contentHtml}</div>`;
+                }
+
+                container.innerHTML = metaHtml + contentHtml;
+            } catch (error) {
+                console.error('Error loading draft:', error);
+                container.innerHTML = '<div class="error">Error loading draft: ' + escapeHtml(error.message) + '</div>';
+            }
+        }
+
+        function escapeHtml(text) {
+            if (text == null) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Load draft when page is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', loadDraft);
+        } else {
+            loadDraft();
+        }
+    </script>
+</body>
+</html>
+

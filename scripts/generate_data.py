@@ -164,6 +164,56 @@ def generate_ticker_json():
     save_json("ticker.json", ticker_data)
 
 
+def generate_slug_from_title(title):
+    """Generate a URL-friendly slug from article title."""
+    if not title:
+        return None
+    import re
+    slug = title.lower()
+    slug = re.sub(r'[^a-z0-9]+', '-', slug)
+    slug = re.sub(r'^-+|-+$', '', slug)
+    return slug
+
+
+def find_draft_file(article_id, title, precipice_dir):
+    """Find draft file for an article in Precipice-2."""
+    if not precipice_dir.exists():
+        return None
+    
+    # Try multiple possible locations
+    possible_paths = [
+        precipice_dir / "drafts",
+        precipice_dir / "data" / "drafts",
+        precipice_dir / "output" / "drafts",
+    ]
+    
+    # Try by ID first
+    if article_id:
+        for base_path in possible_paths:
+            if base_path.exists():
+                # Try various naming patterns
+                patterns = [
+                    f"{article_id}.md",
+                    f"article-{article_id}.md",
+                    f"{article_id}.txt",
+                ]
+                for pattern in patterns:
+                    draft_file = base_path / pattern
+                    if draft_file.exists():
+                        return draft_file
+    
+    # Try by slug from title
+    slug = generate_slug_from_title(title)
+    if slug:
+        for base_path in possible_paths:
+            if base_path.exists():
+                draft_file = base_path / f"{slug}.md"
+                if draft_file.exists():
+                    return draft_file
+    
+    return None
+
+
 def generate_articles_json():
     """Generate articles.json from Precipice-2 data."""
     # Try to load from Precipice-2
@@ -183,11 +233,33 @@ def generate_articles_json():
         elif isinstance(articles, dict) and 'data' in articles:
             articles = articles['data']
         
-        # Validate and clean articles
+        # Validate and clean articles, ensure IDs and draft paths
         cleaned_articles = []
-        for article in articles:
-            if isinstance(article, dict) and 'id' in article:
-                cleaned_articles.append(article)
+        for idx, article in enumerate(articles):
+            if not isinstance(article, dict):
+                continue
+            
+            # Ensure article has an ID
+            if 'id' not in article or not article['id']:
+                article['id'] = idx + 1
+            
+            # Generate slug if not present
+            if 'slug' not in article and article.get('title'):
+                article['slug'] = generate_slug_from_title(article['title'])
+            
+            # Find draft file and set draft_path
+            article_id = article.get('id')
+            title = article.get('title', '')
+            draft_file = find_draft_file(article_id, title, PRECIPICE_DIR)
+            
+            if draft_file:
+                # Set relative path from site root
+                # Drafts will be copied to /drafts/ folder
+                slug = article.get('slug') or generate_slug_from_title(title) or f"article-{article_id}"
+                article['draft_path'] = f"drafts/{slug}.md"
+                print(f"Found draft for article {article_id}: {article['draft_path']}")
+            
+            cleaned_articles.append(article)
         
         articles = cleaned_articles
         print(f"Loaded {len(articles)} articles from Precipice-2")

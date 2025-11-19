@@ -37,6 +37,24 @@ jobs:
           pip install --upgrade pip
           pip install yfinance pytrends requests
       
+      - name: Copy draft files from Precipice-2
+        run: |
+          mkdir -p drafts
+          # Copy drafts from various possible locations in Precipice-2
+          if [ -d "precipice/drafts" ]; then
+            cp -r precipice/drafts/*.md drafts/ 2>/dev/null || true
+            cp -r precipice/drafts/*.txt drafts/ 2>/dev/null || true
+          fi
+          if [ -d "precipice/data/drafts" ]; then
+            cp -r precipice/data/drafts/*.md drafts/ 2>/dev/null || true
+            cp -r precipice/data/drafts/*.txt drafts/ 2>/dev/null || true
+          fi
+          if [ -d "precipice/output/drafts" ]; then
+            cp -r precipice/output/drafts/*.md drafts/ 2>/dev/null || true
+            cp -r precipice/output/drafts/*.txt drafts/ 2>/dev/null || true
+          fi
+          echo "Copied draft files to drafts/ folder"
+      
       - name: Generate data files
         env:
           FINNHUB_API_KEY: ${{ secrets.FINNHUB_API_KEY }}
@@ -51,6 +69,7 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add data/*.json
-          git diff --staged --quiet || git commit -m "Update data files [skip ci]"
+          git add drafts/*.md drafts/*.txt 2>/dev/null || true
+          git diff --staged --quiet || git commit -m "Update data files and drafts [skip ci]"
           git push
 

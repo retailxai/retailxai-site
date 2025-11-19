@@ -38,6 +38,14 @@
     <link rel="stylesheet" href="assets/css/ticker.css">
     <link rel="stylesheet" href="assets/css/global.css">
     
+    <!-- Set dark mode immediately to prevent flash -->
+    <script>
+        (function() {
+            const theme = localStorage.getItem('theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', theme);
+        })();
+    </script>
+    
     <!-- Plausible Analytics -->
     <script defer data-domain="retailxai.github.io" src="https://plausible.io/js/script.js"></script>
 </head>

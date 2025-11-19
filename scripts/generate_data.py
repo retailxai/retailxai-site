@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Generate data files for RetailXAI dashboard.
-Fetches data from various APIs and generates JSON files in the data folder.
+Fetches real data from Precipice-2 repository and live financial APIs.
 """
 
 import json
@@ -10,6 +10,7 @@ import sys
 from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Dict, List, Any, Optional
+from collections import defaultdict
 
 # Try importing optional dependencies
 try:
@@ -22,14 +23,10 @@ try:
 except ImportError:
     requests = None
 
-try:
-    from pytrends.request import TrendReq
-except ImportError:
-    TrendReq = None
-
 # Configuration
 DATA_DIR = Path(__file__).parent.parent / "data"
 SCHEMAS_DIR = Path(__file__).parent.parent / "schemas"
+PRECIPICE_DIR = Path(__file__).parent.parent / "precipice"
 
 # API Keys from environment variables
 FINNHUB_API_KEY = os.getenv("FINNHUB_API_KEY")
@@ -43,15 +40,15 @@ def ensure_data_dir():
     DATA_DIR.mkdir(parents=True, exist_ok=True)
 
 
-def load_existing_json(filename: str) -> Any:
-    """Load existing JSON file or return None."""
-    filepath = DATA_DIR / filename
+def load_precipice_json(filename: str) -> Any:
+    """Load JSON file from Precipice-2 repository."""
+    filepath = PRECIPICE_DIR / filename
     if filepath.exists():
         try:
             with open(filepath, 'r') as f:
                 return json.load(f)
         except Exception as e:
-            print(f"Warning: Could not load {filename}: {e}")
+            print(f"Warning: Could not load {filename} from Precipice: {e}")
     return None
 
 
@@ -63,21 +60,20 @@ def save_json(filename: str, data: Any):
     print(f"✓ Saved {filename}")
 
 
-def fetch_stock_data(symbol: str) -> Optional[Dict]:
+def fetch_stock_data_yfinance(symbol: str) -> Optional[Dict]:
     """Fetch stock data using yfinance."""
     if not yf:
         return None
     
     try:
         ticker = yf.Ticker(symbol)
-        info = ticker.info
         hist = ticker.history(period="2d")
         
         if hist.empty:
             return None
         
-        current_price = hist['Close'].iloc[-1]
-        prev_close = hist['Close'].iloc[-2] if len(hist) > 1 else current_price
+        current_price = float(hist['Close'].iloc[-1])
+        prev_close = float(hist['Close'].iloc[-2]) if len(hist) > 1 else current_price
         change = current_price - prev_close
         change_percent = (change / prev_close * 100) if prev_close > 0 else 0
         
@@ -88,14 +84,15 @@ def fetch_stock_data(symbol: str) -> Optional[Dict]:
         elif change < 0:
             sentiment = "negative"
         
+        info = ticker.info
         return {
             "symbol": symbol,
             "price": round(current_price, 2),
             "change": round(change, 2),
             "change_percent": round(change_percent, 2),
             "sentiment": sentiment,
-            "volume": int(info.get("volume", 0)),
-            "market_cap": info.get("marketCap", 0),
+            "volume": int(info.get("volume", 0)) if info else 0,
+            "market_cap": info.get("marketCap", 0) if info else 0,
             "last_updated": datetime.utcnow().isoformat() + "Z"
         }
     except Exception as e:
@@ -103,179 +100,314 @@ def fetch_stock_data(symbol: str) -> Optional[Dict]:
         return None
 
 
+def fetch_stock_data_finnhub(symbol: str) -> Optional[Dict]:
+    """Fetch stock data using Finnhub API."""
+    if not FINNHUB_API_KEY or not requests:
+        return None
+    
+    try:
+        url = f"https://finnhub.io/api/v1/quote?symbol={symbol}&token={FINNHUB_API_KEY}"
+        response = requests.get(url, timeout=10)
+        if response.status_code == 200:
+            data = response.json()
+            if data.get('c'):  # current price
+                current_price = float(data['c'])
+                prev_close = float(data.get('pc', current_price))
+                change = current_price - prev_close
+                change_percent = (change / prev_close * 100) if prev_close > 0 else 0
+                
+                sentiment = "neutral"
+                if change > 0:
+                    sentiment = "positive"
+                elif change < 0:
+                    sentiment = "negative"
+                
+                return {
+                    "symbol": symbol,
+                    "price": round(current_price, 2),
+                    "change": round(change, 2),
+                    "change_percent": round(change_percent, 2),
+                    "sentiment": sentiment,
+                    "volume": int(data.get('v', 0)),
+                    "market_cap": 0,
+                    "last_updated": datetime.utcnow().isoformat() + "Z"
+                }
+    except Exception as e:
+        print(f"Error fetching {symbol} from Finnhub: {e}")
+    
+    return None
+
+
 def generate_ticker_json():
-    """Generate ticker.json with stock data."""
-    # Default symbols to track
-    symbols = ["AAPL", "MSFT", "GOOGL", "AMZN", "TSLA", "META", "NVDA", "NFLX"]
+    """Generate ticker.json with real stock data."""
+    # Core symbols to track
+    symbols = ["TSLA", "NVDA", "META", "SPY", "GLD", "AAPL", "MSFT", "AMZN"]
     
     ticker_data = []
     
-    if yf:
-        for symbol in symbols:
-            data = fetch_stock_data(symbol)
-            if data:
-                ticker_data.append(data)
-    else:
-        # Fallback: generate mock data
-        print("Warning: yfinance not available, generating mock ticker data")
-        for symbol in symbols:
-            ticker_data.append({
-                "symbol": symbol,
-                "price": round(100 + (hash(symbol) % 500), 2),
-                "change": round((hash(symbol) % 20) - 10, 2),
-                "change_percent": round(((hash(symbol) % 20) - 10) / 10, 2),
-                "sentiment": ["positive", "negative", "neutral"][hash(symbol) % 3],
-                "volume": hash(symbol) % 10000000,
-                "market_cap": hash(symbol) % 1000000000000,
-                "last_updated": datetime.utcnow().isoformat() + "Z"
-            })
+    for symbol in symbols:
+        # Try yfinance first, then Finnhub
+        data = fetch_stock_data_yfinance(symbol)
+        if not data:
+            data = fetch_stock_data_finnhub(symbol)
+        
+        if data:
+            ticker_data.append(data)
+        else:
+            print(f"Warning: Could not fetch data for {symbol}")
+    
+    if not ticker_data:
+        print("Error: No ticker data fetched. Check API keys and network connectivity.")
+        # Don't save empty ticker - let existing file remain
+        return
     
     save_json("ticker.json", ticker_data)
 
 
 def generate_articles_json():
-    """Generate or update articles.json."""
-    # Try to load existing articles
-    existing = load_existing_json("articles.json")
-    if existing:
-        # Keep existing articles, just update timestamp
-        save_json("articles.json", existing)
-        return
+    """Generate articles.json from Precipice-2 data."""
+    # Try to load from Precipice-2
+    articles = load_precipice_json("data/articles.json")
     
-    # If no existing file, try to fetch from Precipice API
-    if PRECIPICE_API_URL and PRECIPICE_API_KEY:
-        try:
-            headers = {"Authorization": f"Bearer {PRECIPICE_API_KEY}"}
-            response = requests.get(f"{PRECIPICE_API_URL}/articles", headers=headers, timeout=10)
-            if response.status_code == 200:
-                articles = response.json()
-                save_json("articles.json", articles)
-                return
-        except Exception as e:
-            print(f"Warning: Could not fetch articles from API: {e}")
+    if not articles:
+        # Try alternative paths
+        articles = load_precipice_json("articles.json")
     
-    # Fallback: use existing file or create empty array
-    save_json("articles.json", [])
+    if not articles and isinstance(articles, list):
+        articles = []
+    
+    if articles:
+        # Ensure articles are in correct format
+        if isinstance(articles, dict) and 'articles' in articles:
+            articles = articles['articles']
+        elif isinstance(articles, dict) and 'data' in articles:
+            articles = articles['data']
+        
+        # Validate and clean articles
+        cleaned_articles = []
+        for article in articles:
+            if isinstance(article, dict) and 'id' in article:
+                cleaned_articles.append(article)
+        
+        articles = cleaned_articles
+        print(f"Loaded {len(articles)} articles from Precipice-2")
+    else:
+        print("Warning: No articles found in Precipice-2, using empty array")
+        articles = []
+    
+    save_json("articles.json", articles)
 
 
 def generate_drafts_json():
-    """Generate drafts.json."""
-    existing = load_existing_json("drafts.json")
-    if existing:
-        save_json("drafts.json", existing)
-        return
+    """Generate drafts.json from Precipice-2 data."""
+    drafts = load_precipice_json("data/drafts.json")
     
-    # Try to fetch from Precipice API
-    if PRECIPICE_API_URL and PRECIPICE_API_KEY:
-        try:
-            headers = {"Authorization": f"Bearer {PRECIPICE_API_KEY}"}
-            response = requests.get(f"{PRECIPICE_API_URL}/drafts", headers=headers, timeout=10)
-            if response.status_code == 200:
-                drafts = response.json()
-                save_json("drafts.json", drafts)
-                return
-        except Exception as e:
-            print(f"Warning: Could not fetch drafts from API: {e}")
+    if not drafts:
+        drafts = load_precipice_json("drafts.json")
     
-    save_json("drafts.json", [])
+    if not drafts:
+        drafts = []
+    
+    if isinstance(drafts, dict):
+        if 'drafts' in drafts:
+            drafts = drafts['drafts']
+        elif 'data' in drafts:
+            drafts = drafts['data']
+        else:
+            drafts = []
+    
+    if drafts:
+        print(f"Loaded {len(drafts)} drafts from Precipice-2")
+    else:
+        print("Warning: No drafts found in Precipice-2, using empty array")
+    
+    save_json("drafts.json", drafts)
 
 
 def generate_trends_json():
-    """Generate trends.json."""
-    # Generate trend data points for last 30 days
-    data_points = []
-    base_value = 100
+    """Generate trends.json from real article data."""
+    articles = load_precipice_json("data/articles.json")
     
+    if not articles:
+        articles = load_precipice_json("articles.json")
+    
+    if isinstance(articles, dict):
+        if 'articles' in articles:
+            articles = articles['articles']
+        elif 'data' in articles:
+            articles = articles['data']
+        else:
+            articles = []
+    
+    if not articles or not isinstance(articles, list):
+        articles = []
+    
+    # Generate trend data from article timestamps
+    data_points = []
+    now = datetime.utcnow()
+    
+    # Group articles by date
+    articles_by_date = defaultdict(int)
+    for article in articles:
+        if isinstance(article, dict) and 'ingest_timestamp' in article:
+            try:
+                ts = article['ingest_timestamp']
+                if ts:
+                    date = datetime.fromisoformat(ts.replace('Z', '+00:00')).date()
+                    articles_by_date[date] += 1
+            except:
+                pass
+    
+    # Create data points for last 30 days
+    base_value = 0
     for i in range(30):
-        date = datetime.utcnow() - timedelta(days=30-i)
-        # Simulate trend with some variation
-        value = base_value + (i * 2) + (hash(str(date.date())) % 10)
+        date = (now - timedelta(days=30-i)).date()
+        count = articles_by_date.get(date, 0)
+        value = base_value + count
+        
         data_points.append({
-            "date": date.date().isoformat(),
+            "date": date.isoformat(),
             "value": value,
             "label": "Article Generation Trend",
             "category": "articles"
         })
+        base_value = value
+    
+    # Determine trend direction
+    if len(data_points) >= 7:
+        recent_avg = sum(d['value'] for d in data_points[-7:]) / 7
+        older_avg = sum(d['value'] for d in data_points[:7]) / 7 if len(data_points) >= 7 else recent_avg
+        if recent_avg > older_avg * 1.1:
+            trend_direction = "up"
+        elif recent_avg < older_avg * 0.9:
+            trend_direction = "down"
+        else:
+            trend_direction = "stable"
+    else:
+        trend_direction = "stable"
     
     trends_data = {
         "data_points": data_points,
         "last_updated": datetime.utcnow().isoformat() + "Z",
-        "trend_direction": "up"
+        "trend_direction": trend_direction
     }
     
     save_json("trends.json", trends_data)
 
 
 def generate_earnings_json():
-    """Generate earnings.json."""
-    existing = load_existing_json("earnings.json")
-    if existing:
-        save_json("earnings.json", existing)
-        return
+    """Generate earnings.json from Precipice-2 or articles."""
+    earnings = load_precipice_json("data/earnings.json")
     
-    # Try to fetch from Precipice API
-    if PRECIPICE_API_URL and PRECIPICE_API_KEY:
-        try:
-            headers = {"Authorization": f"Bearer {PRECIPICE_API_KEY}"}
-            response = requests.get(f"{PRECIPICE_API_URL}/earnings", headers=headers, timeout=10)
-            if response.status_code == 200:
-                earnings = response.json()
-                save_json("earnings.json", earnings)
-                return
-        except Exception as e:
-            print(f"Warning: Could not fetch earnings from API: {e}")
+    if not earnings:
+        earnings = load_precipice_json("earnings.json")
     
-    # Generate sample earnings data
-    earnings_data = []
-    companies = [
-        {"name": "Apple Inc.", "symbol": "AAPL"},
-        {"name": "Microsoft Corporation", "symbol": "MSFT"},
-        {"name": "Amazon.com Inc.", "symbol": "AMZN"},
-        {"name": "Tesla Inc.", "symbol": "TSLA"},
-        {"name": "Meta Platforms Inc.", "symbol": "META"}
-    ]
+    if not earnings:
+        # Extract earnings data from articles if available
+        articles = load_precipice_json("data/articles.json")
+        if not articles:
+            articles = load_precipice_json("articles.json")
+        
+        if isinstance(articles, dict):
+            if 'articles' in articles:
+                articles = articles['articles']
+            elif 'data' in articles:
+                articles = articles['data']
+            else:
+                articles = []
+        
+        earnings = []
+        # Try to extract earnings call articles
+        for article in articles:
+            if isinstance(article, dict):
+                title = article.get('title', '').lower()
+                source_type = article.get('source_type', '').lower()
+                if 'earnings' in title or source_type == 'earnings_call':
+                    # Create earnings entry from article
+                    earnings.append({
+                        "id": article.get('id', len(earnings) + 1),
+                        "company": article.get('title', 'Unknown Company'),
+                        "symbol": "",
+                        "quarter": "",
+                        "year": datetime.now().year,
+                        "call_date": article.get('ingest_timestamp', datetime.utcnow().isoformat() + "Z")[:10],
+                        "revenue": None,
+                        "eps": None,
+                        "sentiment": "neutral",
+                        "sentiment_score": 0.0,
+                        "article_id": article.get('id'),
+                        "key_highlights": []
+                    })
     
-    for i, company in enumerate(companies):
-        earnings_data.append({
-            "id": i + 1,
-            "company": company["name"],
-            "symbol": company["symbol"],
-            "quarter": ["Q1", "Q2", "Q3", "Q4"][i % 4],
-            "year": 2025,
-            "call_date": (datetime.utcnow() - timedelta(days=30-i*7)).date().isoformat(),
-            "revenue": {
-                "value": 50000000000 + (i * 10000000000),
-                "currency": "USD",
-                "change_percent": round(5 + (hash(company["symbol"]) % 10), 2)
-            },
-            "eps": {
-                "value": round(2.5 + (i * 0.5), 2),
-                "change_percent": round(3 + (hash(company["symbol"]) % 8), 2)
-            },
-            "sentiment": ["positive", "negative", "neutral"][hash(company["symbol"]) % 3],
-            "sentiment_score": round((hash(company["symbol"]) % 200 - 100) / 100, 2),
-            "article_id": None,
-            "key_highlights": [
-                "Strong revenue growth",
-                "Positive outlook for next quarter"
-            ]
-        })
+    if isinstance(earnings, dict):
+        if 'earnings' in earnings:
+            earnings = earnings['earnings']
+        elif 'data' in earnings:
+            earnings = earnings['data']
+        else:
+            earnings = []
     
-    save_json("earnings.json", earnings_data)
+    if earnings:
+        print(f"Loaded {len(earnings)} earnings records")
+    else:
+        print("Warning: No earnings data found, using empty array")
+    
+    save_json("earnings.json", earnings)
 
 
 def generate_costs_json():
-    """Generate costs.json."""
-    # Generate cost data for last 30 days
+    """Generate costs.json from real article cost data."""
+    articles = load_precipice_json("data/articles.json")
+    
+    if not articles:
+        articles = load_precipice_json("articles.json")
+    
+    if isinstance(articles, dict):
+        if 'articles' in articles:
+            articles = articles['articles']
+        elif 'data' in articles:
+            articles = articles['data']
+        else:
+            articles = []
+    
+    if not articles or not isinstance(articles, list):
+        articles = []
+    
+    # Group costs by date
+    costs_by_date = defaultdict(lambda: {"total": 0.0, "count": 0})
+    now = datetime.utcnow()
+    thirty_days_ago = now - timedelta(days=30)
+    
+    for article in articles:
+        if not isinstance(article, dict):
+            continue
+        
+        cost = article.get('cost_usd', 0)
+        if not cost:
+            continue
+        
+        try:
+            ts = article.get('ingest_timestamp')
+            if ts:
+                date = datetime.fromisoformat(ts.replace('Z', '+00:00')).date()
+                if date >= thirty_days_ago.date():
+                    costs_by_date[date]["total"] += float(cost)
+                    costs_by_date[date]["count"] += 1
+        except:
+            pass
+    
+    # Create periods for last 30 days
     periods = []
-    base_cost = 10.0
+    total_30_days = 0.0
     
     for i in range(30):
-        date = datetime.utcnow() - timedelta(days=30-i)
-        total_cost = base_cost + (hash(str(date.date())) % 20)
+        date = (now - timedelta(days=30-i)).date()
+        cost_data = costs_by_date.get(date, {"total": 0.0, "count": 0})
+        total_cost = cost_data["total"]
+        total_30_days += total_cost
         
         periods.append({
-            "date": date.date().isoformat(),
+            "date": date.isoformat(),
             "total_cost": round(total_cost, 2),
             "breakdown": {
                 "transcription": round(total_cost * 0.3, 2),
@@ -283,10 +415,8 @@ def generate_costs_json():
                 "storage": round(total_cost * 0.05, 2),
                 "other": round(total_cost * 0.05, 2)
             },
-            "article_count": hash(str(date.date())) % 10 + 1
+            "article_count": cost_data["count"]
         })
-    
-    total_30_days = sum(p["total_cost"] for p in periods)
     
     costs_data = {
         "periods": periods,
@@ -295,34 +425,81 @@ def generate_costs_json():
     }
     
     save_json("costs.json", costs_data)
+    print(f"Total cost (30 days): ${total_30_days:.2f}")
 
 
 def generate_status_json():
-    """Generate status.json."""
-    existing = load_existing_json("status.json")
+    """Generate status.json from Precipice-2 data."""
+    status = load_precipice_json("data/status.json")
     
-    # Try to fetch from Precipice API
-    if PRECIPICE_API_URL and PRECIPICE_API_KEY:
-        try:
-            headers = {"Authorization": f"Bearer {PRECIPICE_API_KEY}"}
-            response = requests.get(f"{PRECIPICE_API_URL}/status", headers=headers, timeout=10)
-            if response.status_code == 200:
-                status = response.json()
-                save_json("status.json", status)
-                return
-        except Exception as e:
-            print(f"Warning: Could not fetch status from API: {e}")
+    if not status:
+        status = load_precipice_json("status.json")
     
-    # Generate default status
-    status_data = {
-        "last_pipeline_run": {
-            "timestamp": datetime.utcnow().isoformat() + "Z",
+    if not status:
+        status = load_precipice_json("data/ingest_status.json")
+    
+    articles = load_precipice_json("data/articles.json")
+    if not articles:
+        articles = load_precipice_json("articles.json")
+    
+    if isinstance(articles, dict):
+        if 'articles' in articles:
+            articles = articles['articles']
+        elif 'data' in articles:
+            articles = articles['data']
+        else:
+            articles = []
+    
+    # Extract real pipeline run info
+    last_timestamp = None
+    failures_this_week = 0
+    now = datetime.utcnow()
+    week_ago = now - timedelta(days=7)
+    
+    for article in articles:
+        if not isinstance(article, dict):
+            continue
+        
+        ts = article.get('ingest_timestamp')
+        if ts:
+            try:
+                article_date = datetime.fromisoformat(ts.replace('Z', '+00:00'))
+                if not last_timestamp or article_date > last_timestamp:
+                    last_timestamp = article_date
+                
+                if article_date >= week_ago:
+                    status_val = article.get('status', '').lower()
+                    if 'fail' in status_val or 'error' in status_val:
+                        failures_this_week += 1
+            except:
+                pass
+    
+    # Build status data
+    if isinstance(status, dict):
+        status_data = status.copy()
+    else:
+        status_data = {}
+    
+    # Update with real values
+    if last_timestamp:
+        status_data["last_pipeline_run"] = {
+            "timestamp": last_timestamp.isoformat() + "Z",
             "status": "success",
             "duration_seconds": 120,
-            "articles_processed": 5,
+            "articles_processed": len([a for a in articles if isinstance(a, dict) and a.get('status') == 'Complete']),
             "errors": []
-        },
-        "system_health": {
+        }
+    else:
+        status_data["last_pipeline_run"] = {
+            "timestamp": datetime.utcnow().isoformat() + "Z",
+            "status": "unknown",
+            "duration_seconds": 0,
+            "articles_processed": 0,
+            "errors": []
+        }
+    
+    if "system_health" not in status_data:
+        status_data["system_health"] = {
             "status": "healthy",
             "components": {
                 "api": "healthy",
@@ -330,23 +507,27 @@ def generate_status_json():
                 "storage": "healthy"
             },
             "uptime_percent": 99.9
-        },
-        "failures_this_week": 0,
-        "last_updated": datetime.utcnow().isoformat() + "Z"
-    }
+        }
+    
+    status_data["failures_this_week"] = failures_this_week
+    status_data["last_updated"] = datetime.utcnow().isoformat() + "Z"
     
     save_json("status.json", status_data)
 
 
 def main():
     """Main function to generate all data files."""
-    print("Generating RetailXAI data files...")
+    print("Generating RetailXAI data files from Precipice-2...")
     ensure_data_dir()
     
+    if not PRECIPICE_DIR.exists():
+        print(f"Warning: Precipice-2 directory not found at {PRECIPICE_DIR}")
+        print("This is expected if running locally. In GitHub Actions, Precipice-2 will be checked out.")
+    
     try:
-        generate_ticker_json()
         generate_articles_json()
         generate_drafts_json()
+        generate_ticker_json()
         generate_trends_json()
         generate_earnings_json()
         generate_costs_json()
@@ -363,4 +544,3 @@ def main():
 
 if __name__ == "__main__":
     sys.exit(main())
-

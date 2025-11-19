@@ -7,8 +7,15 @@ on:
       - 'assets/css/dashboard.css'
       - 'assets/js/dashboard.js'
       - 'assets/css/global.css'
+      - 'assets/css/ticker.css'
       - 'assets/js/theme-toggle.js'
+      - 'assets/js/ticker.js'
+      - 'data/*.json'
   workflow_dispatch:
+  workflow_run:
+    workflows: ["Update Data"]
+    types:
+      - completed
 
 permissions:
   contents: write

@@ -32,7 +32,6 @@ jobs:
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
         with:
           ref: main
-          token: ${{ secrets.PRECIPICE_TOKEN }}
       
       - name: Set up Node.js
         uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8
@@ -47,20 +46,40 @@ jobs:
         env:
           DASHBOARD_PASSWORD: ${{ secrets.DASHBOARD_PASSWORD }}
         run: |
+          if [ ! -f "dashboard/index.html" ]; then
+            echo "Error: dashboard/index.html not found"
+            exit 1
+          fi
+          if [ -z "$DASHBOARD_PASSWORD" ]; then
+            echo "Error: DASHBOARD_PASSWORD secret not set"
+            exit 1
+          fi
           if [ -f "resources/staticrypt-template.html" ]; then
             staticrypt dashboard/index.html dashboard/index.html.enc \
               --password "$DASHBOARD_PASSWORD" \
-              --template resources/staticrypt-template.html
+              --template resources/staticrypt-template.html || exit 1
           else
             staticrypt dashboard/index.html dashboard/index.html.enc \
-              --password "$DASHBOARD_PASSWORD"
+              --password "$DASHBOARD_PASSWORD" || exit 1
+          fi
+          if [ ! -f "dashboard/index.html.enc" ]; then
+            echo "Error: Encryption failed - output file not created"
+            exit 1
           fi
       
       - name: Commit encrypted dashboard
         run: |
+          if [ ! -f "dashboard/index.html.enc" ]; then
+            echo "Error: Encrypted file not found"
+            exit 1
+          fi
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add dashboard/index.html.enc
-          git diff --staged --quiet || git commit -m "Update encrypted dashboard [skip ci]"
-          git push origin main
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+          git commit -m "Update encrypted dashboard [skip ci]" || exit 1
+          git push origin main || { echo "Push failed"; exit 1; }
 

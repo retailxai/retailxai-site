@@ -35,6 +35,34 @@ PRECIPICE_API_URL = os.getenv("PRECIPICE_API_URL")
 PRECIPICE_API_KEY = os.getenv("PRECIPICE_API_KEY")
 
 
+def ensure_timestamp(value: Any) -> str:
+    """Return a valid ISO timestamp string for the provided value."""
+    if isinstance(value, str) and value.strip():
+        return value.strip()
+    if isinstance(value, datetime):
+        return value.isoformat() + "Z"
+    return datetime.utcnow().isoformat() + "Z"
+
+
+def build_ticker_fallback(symbol: str, reason: str = "") -> Dict[str, Any]:
+    """Return a safe fallback ticker structure when live data is unavailable."""
+    if reason:
+        print(f"Warning: {reason} for {symbol}, using fallback data.")
+    else:
+        print(f"Warning: Using fallback ticker data for {symbol}.")
+    timestamp = ensure_timestamp(datetime.utcnow())
+    return {
+        "symbol": symbol,
+        "price": 0.0,
+        "change": 0.0,
+        "change_percent": 0.0,
+        "sentiment": "neutral",
+        "volume": 0,
+        "market_cap": 0,
+        "last_updated": timestamp
+    }
+
+
 def ensure_data_dir():
     """Ensure data directory exists."""
     DATA_DIR.mkdir(parents=True, exist_ok=True)
@@ -150,16 +178,9 @@ def generate_ticker_json():
         data = fetch_stock_data_yfinance(symbol)
         if not data:
             data = fetch_stock_data_finnhub(symbol)
-        
-        if data:
-            ticker_data.append(data)
-        else:
-            print(f"Warning: Could not fetch data for {symbol}")
-    
-    if not ticker_data:
-        print("Error: No ticker data fetched. Check API keys and network connectivity.")
-        # Don't save empty ticker - let existing file remain
-        return
+        if not data:
+            data = build_ticker_fallback(symbol, "No live ticker data available")
+        ticker_data.append(data)
     
     save_json("ticker.json", ticker_data)
 
@@ -280,6 +301,9 @@ def generate_articles_json():
             # Ensure article has an ID
             if 'id' not in article or not article['id']:
                 article['id'] = idx + 1
+            
+            # Ensure ingest timestamp exists and is safe
+            article['ingest_timestamp'] = ensure_timestamp(article.get('ingest_timestamp'))
             
             # Generate slug if not present
             if 'slug' not in article and article.get('title'):
@@ -458,13 +482,14 @@ def generate_earnings_json():
                 source_type = article.get('source_type', '').lower()
                 if 'earnings' in title or source_type == 'earnings_call':
                     # Create earnings entry from article
+                    call_timestamp = ensure_timestamp(article.get('ingest_timestamp'))
                     earnings.append({
                         "id": article.get('id', len(earnings) + 1),
                         "company": article.get('title', 'Unknown Company'),
                         "symbol": "",
                         "quarter": "",
                         "year": datetime.now().year,
-                        "call_date": article.get('ingest_timestamp', datetime.utcnow().isoformat() + "Z")[:10],
+                        "call_date": call_timestamp[:10],
                         "revenue": None,
                         "eps": None,
                         "sentiment": "neutral",

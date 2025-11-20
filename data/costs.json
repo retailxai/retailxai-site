@@ -1,336 +1,336 @@
 {
   "periods": [
     {
-      "date": "2025-10-20",
-      "total_cost": 22.0,
-      "breakdown": {
-        "transcription": 6.6,
-        "llm": 13.2,
-        "storage": 1.1,
-        "other": 1.1
-      },
-      "article_count": 3
-    },
-    {
       "date": "2025-10-21",
-      "total_cost": 14.0,
+      "total_cost": 0.0,
       "breakdown": {
-        "transcription": 4.2,
-        "llm": 8.4,
-        "storage": 0.7,
-        "other": 0.7
+        "transcription": 0.0,
+        "llm": 0.0,
+        "storage": 0.0,
+        "other": 0.0
       },
-      "article_count": 5
+      "article_count": 0
     },
     {
       "date": "2025-10-22",
-      "total_cost": 17.0,
+      "total_cost": 0.0,
       "breakdown": {
-        "transcription": 5.1,
-        "llm": 10.2,
-        "storage": 0.85,
-        "other": 0.85
+        "transcription": 0.0,
+        "llm": 0.0,
+        "storage": 0.0,
+        "other": 0.0
       },
-      "article_count": 8
+      "article_count": 0
     },
     {
       "date": "2025-10-23",
-      "total_cost": 28.0,
+      "total_cost": 0.0,
       "breakdown": {
-        "transcription": 8.4,
-        "llm": 16.8,
-        "storage": 1.4,
-        "other": 1.4
+        "transcription": 0.0,
+        "llm": 0.0,
+        "storage": 0.0,
+        "other": 0.0
       },
-      "article_count": 9
+      "article_count": 0
     },
     {
       "date": "2025-10-24",
-      "total_cost": 26.0,
+      "total_cost": 0.0,
       "breakdown": {
-        "transcription": 7.8,
-        "llm": 15.6,
-        "storage": 1.3,
-        "other": 1.3
+        "transcription": 0.0,
+        "llm": 0.0,
+        "storage": 0.0,
+        "other": 0.0
       },
-      "article_count": 7
+      "article_count": 0
     },
     {
       "date": "2025-10-25",
-      "total_cost": 15.0,
+      "total_cost": 0.0,
       "breakdown": {
-        "transcription": 4.5,
-        "llm": 9.0,
-        "storage": 0.75,
-        "other": 0.75
+        "transcription": 0.0,
+        "llm": 0.0,
+        "storage": 0.0,
+        "other": 0.0
       },
-      "article_count": 6
+      "article_count": 0
     },
     {
       "date": "2025-10-26",
-      "total_cost": 16.0,
+      "total_cost": 0.0,
       "breakdown": {
-        "transcription": 4.8,
-        "llm": 9.6,
-        "storage": 0.8,
-        "other": 0.8
+        "transcription": 0.0,
+        "llm": 0.0,
+        "storage": 0.0,
+        "other": 0.0
       },
-      "article_count": 7
+      "article_count": 0
     },
     {
       "date": "2025-10-27",
-      "total_cost": 26.0,
+      "total_cost": 0.0,
       "breakdown": {
-        "transcription": 7.8,
-        "llm": 15.6,
-        "storage": 1.3,
-        "other": 1.3
+        "transcription": 0.0,
+        "llm": 0.0,
+        "storage": 0.0,
+        "other": 0.0
       },
-      "article_count": 7
+      "article_count": 0
     },
     {
       "date": "2025-10-28",
-      "total_cost": 23.0,
+      "total_cost": 0.0,
       "breakdown": {
-        "transcription": 6.9,
-        "llm": 13.8,
-        "storage": 1.15,
-        "other": 1.15
+        "transcription": 0.0,
+        "llm": 0.0,
+        "storage": 0.0,
+        "other": 0.0
       },
-      "article_count": 4
+      "article_count": 0
     },
     {
       "date": "2025-10-29",
-      "total_cost": 18.0,
+      "total_cost": 0.0,
       "breakdown": {
-        "transcription": 5.4,
-        "llm": 10.8,
-        "storage": 0.9,
-        "other": 0.9
+        "transcription": 0.0,
+        "llm": 0.0,
+        "storage": 0.0,
+        "other": 0.0
       },
-      "article_count": 9
+      "article_count": 0
     },
     {
       "date": "2025-10-30",
-      "total_cost": 16.0,
+      "total_cost": 0.0,
       "breakdown": {
-        "transcription": 4.8,
-        "llm": 9.6,
-        "storage": 0.8,
-        "other": 0.8
+        "transcription": 0.0,
+        "llm": 0.0,
+        "storage": 0.0,
+        "other": 0.0
       },
-      "article_count": 7
+      "article_count": 0
     },
     {
       "date": "2025-10-31",
-      "total_cost": 27.0,
+      "total_cost": 0.0,
       "breakdown": {
-        "transcription": 8.1,
-        "llm": 16.2,
-        "storage": 1.35,
-        "other": 1.35
+        "transcription": 0.0,
+        "llm": 0.0,
+        "storage": 0.0,
+        "other": 0.0
       },
-      "article_count": 8
+      "article_count": 0
     },
     {
       "date": "2025-11-01",
-      "total_cost": 28.0,
+      "total_cost": 0.0,
       "breakdown": {
-        "transcription": 8.4,
-        "llm": 16.8,
-        "storage": 1.4,
-        "other": 1.4
+        "transcription": 0.0,
+        "llm": 0.0,
+        "storage": 0.0,
+        "other": 0.0
       },
-      "article_count": 9
+      "article_count": 0
     },
     {
       "date": "2025-11-02",
-      "total_cost": 11.0,
+      "total_cost": 0.0,
       "breakdown": {
-        "transcription": 3.3,
-        "llm": 6.6,
-        "storage": 0.55,
-        "other": 0.55
+        "transcription": 0.0,
+        "llm": 0.0,
+        "storage": 0.0,
+        "other": 0.0
       },
-      "article_count": 2
+      "article_count": 0
     },
     {
       "date": "2025-11-03",
-      "total_cost": 27.0,
+      "total_cost": 0.0,
       "breakdown": {
-        "transcription": 8.1,
-        "llm": 16.2,
-        "storage": 1.35,
-        "other": 1.35
+        "transcription": 0.0,
+        "llm": 0.0,
+        "storage": 0.0,
+        "other": 0.0
       },
-      "article_count": 8
+      "article_count": 0
     },
     {
       "date": "2025-11-04",
-      "total_cost": 12.0,
+      "total_cost": 0.0,
       "breakdown": {
-        "transcription": 3.6,
-        "llm": 7.2,
-        "storage": 0.6,
-        "other": 0.6
+        "transcription": 0.0,
+        "llm": 0.0,
+        "storage": 0.0,
+        "other": 0.0
       },
-      "article_count": 3
+      "article_count": 0
     },
     {
       "date": "2025-11-05",
-      "total_cost": 12.0,
+      "total_cost": 0.0,
       "breakdown": {
-        "transcription": 3.6,
-        "llm": 7.2,
-        "storage": 0.6,
-        "other": 0.6
+        "transcription": 0.0,
+        "llm": 0.0,
+        "storage": 0.0,
+        "other": 0.0
       },
-      "article_count": 3
+      "article_count": 0
     },
     {
       "date": "2025-11-06",
-      "total_cost": 25.0,
+      "total_cost": 0.0,
       "breakdown": {
-        "transcription": 7.5,
-        "llm": 15.0,
-        "storage": 1.25,
-        "other": 1.25
+        "transcription": 0.0,
+        "llm": 0.0,
+        "storage": 0.0,
+        "other": 0.0
       },
-      "article_count": 6
+      "article_count": 0
     },
     {
       "date": "2025-11-07",
-      "total_cost": 27.0,
+      "total_cost": 0.0,
       "breakdown": {
-        "transcription": 8.1,
-        "llm": 16.2,
-        "storage": 1.35,
-        "other": 1.35
+        "transcription": 0.0,
+        "llm": 0.0,
+        "storage": 0.0,
+        "other": 0.0
       },
-      "article_count": 8
+      "article_count": 0
     },
     {
       "date": "2025-11-08",
-      "total_cost": 28.0,
+      "total_cost": 0.0,
       "breakdown": {
-        "transcription": 8.4,
-        "llm": 16.8,
-        "storage": 1.4,
-        "other": 1.4
+        "transcription": 0.0,
+        "llm": 0.0,
+        "storage": 0.0,
+        "other": 0.0
       },
-      "article_count": 9
+      "article_count": 0
     },
     {
       "date": "2025-11-09",
-      "total_cost": 13.0,
+      "total_cost": 0.0,
       "breakdown": {
-        "transcription": 3.9,
-        "llm": 7.8,
-        "storage": 0.65,
-        "other": 0.65
+        "transcription": 0.0,
+        "llm": 0.0,
+        "storage": 0.0,
+        "other": 0.0
       },
-      "article_count": 4
+      "article_count": 0
     },
     {
       "date": "2025-11-10",
-      "total_cost": 10.0,
+      "total_cost": 0.0,
       "breakdown": {
-        "transcription": 3.0,
-        "llm": 6.0,
-        "storage": 0.5,
-        "other": 0.5
+        "transcription": 0.0,
+        "llm": 0.0,
+        "storage": 0.0,
+        "other": 0.0
       },
-      "article_count": 1
+      "article_count": 0
     },
     {
       "date": "2025-11-11",
-      "total_cost": 16.0,
+      "total_cost": 0.0,
       "breakdown": {
-        "transcription": 4.8,
-        "llm": 9.6,
-        "storage": 0.8,
-        "other": 0.8
+        "transcription": 0.0,
+        "llm": 0.0,
+        "storage": 0.0,
+        "other": 0.0
       },
-      "article_count": 7
+      "article_count": 0
     },
     {
       "date": "2025-11-12",
-      "total_cost": 10.0,
+      "total_cost": 0.0,
       "breakdown": {
-        "transcription": 3.0,
-        "llm": 6.0,
-        "storage": 0.5,
-        "other": 0.5
+        "transcription": 0.0,
+        "llm": 0.0,
+        "storage": 0.0,
+        "other": 0.0
       },
-      "article_count": 1
+      "article_count": 0
     },
     {
       "date": "2025-11-13",
-      "total_cost": 21.0,
+      "total_cost": 0.0,
       "breakdown": {
-        "transcription": 6.3,
-        "llm": 12.6,
-        "storage": 1.05,
-        "other": 1.05
+        "transcription": 0.0,
+        "llm": 0.0,
+        "storage": 0.0,
+        "other": 0.0
       },
-      "article_count": 2
+      "article_count": 0
     },
     {
       "date": "2025-11-14",
-      "total_cost": 24.0,
+      "total_cost": 0.0,
       "breakdown": {
-        "transcription": 7.2,
-        "llm": 14.4,
-        "storage": 1.2,
-        "other": 1.2
+        "transcription": 0.0,
+        "llm": 0.0,
+        "storage": 0.0,
+        "other": 0.0
       },
-      "article_count": 5
+      "article_count": 0
     },
     {
       "date": "2025-11-15",
-      "total_cost": 18.0,
+      "total_cost": 0.0,
       "breakdown": {
-        "transcription": 5.4,
-        "llm": 10.8,
-        "storage": 0.9,
-        "other": 0.9
+        "transcription": 0.0,
+        "llm": 0.0,
+        "storage": 0.0,
+        "other": 0.0
       },
-      "article_count": 9
+      "article_count": 0
     },
     {
       "date": "2025-11-16",
-      "total_cost": 10.0,
+      "total_cost": 0.0,
       "breakdown": {
-        "transcription": 3.0,
-        "llm": 6.0,
-        "storage": 0.5,
-        "other": 0.5
+        "transcription": 0.0,
+        "llm": 0.0,
+        "storage": 0.0,
+        "other": 0.0
       },
-      "article_count": 1
+      "article_count": 0
     },
     {
       "date": "2025-11-17",
-      "total_cost": 19.0,
+      "total_cost": 0.0,
       "breakdown": {
-        "transcription": 5.7,
-        "llm": 11.4,
-        "storage": 0.95,
-        "other": 0.95
+        "transcription": 0.0,
+        "llm": 0.0,
+        "storage": 0.0,
+        "other": 0.0
       },
-      "article_count": 10
+      "article_count": 0
     },
     {
       "date": "2025-11-18",
-      "total_cost": 16.0,
+      "total_cost": 0.0,
       "breakdown": {
-        "transcription": 4.8,
-        "llm": 9.6,
-        "storage": 0.8,
-        "other": 0.8
+        "transcription": 0.0,
+        "llm": 0.0,
+        "storage": 0.0,
+        "other": 0.0
       },
-      "article_count": 7
+      "article_count": 0
+    },
+    {
+      "date": "2025-11-19",
+      "total_cost": 0.0,
+      "breakdown": {
+        "transcription": 0.0,
+        "llm": 0.0,
+        "storage": 0.0,
+        "other": 0.0
+      },
+      "article_count": 0
     }
   ],
-  "last_updated": "2025-11-19T02:18:11.963947Z",
-  "total_30_days": 575.0
+  "last_updated": "2025-11-20T17:03:31.340610Z",
+  "total_30_days": 0.0
 }

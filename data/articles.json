@@ -1,99 +1,16 @@
 [
   {
-    "id": 836149,
-    "title": "Strategy Q2 2025 Earnings Call Analysis: Bitcoin's Role in Strategic Growth",
-    "source": "https://www.youtube.com/watch?v=Jez7rIVeClE",
-    "source_type": "youtube",
-    "status": "Complete",
-    "ingest_timestamp": "2025-11-18T01:22:16.065035Z",
-    "output": "examples/Jez7rIVeClE.html",
-    "word_count": 516,
-    "cost_usd": 0.028739999999999998,
-    "model_used": "gpt-4"
-  },
-  {
-    "id": 538681,
-    "title": "Meta Platforms Q3 Earnings Call 2025: A Comprehensive Analysis",
-    "source": "https://www.youtube.com/watch?v=3GfsXtC_1IQ",
-    "source_type": "youtube",
-    "status": "Complete",
-    "ingest_timestamp": "2025-11-18T01:21:38.798196Z",
-    "output": "examples/3GfsXtC_1IQ.html",
-    "word_count": 481,
-    "cost_usd": 0.02706,
-    "model_used": "gpt-4"
-  },
-  {
-    "id": 986387,
-    "title": "Analyzing Tesla's Q3 2025 Financial Results: A Deep Dive into the Future of Retail Industry",
-    "source": "https://www.youtube.com/watch?v=GQ9S7xbkGAY",
-    "source_type": "youtube",
-    "status": "Complete",
-    "ingest_timestamp": "2025-11-18T01:21:04.420896Z",
-    "output": "examples/GQ9S7xbkGAY.html",
-    "word_count": 520,
-    "cost_usd": 0.02922,
-    "model_used": "gpt-4"
-  },
-  {
-    "id": 2029,
-    "title": "'She's a Legend!': Analyzing Joe's Response to Ronda Rousey's Comments",
-    "source": "https://www.youtube.com/watch?v=zdQqEEeZzeE",
-    "source_type": "youtube",
-    "status": "Complete",
-    "ingest_timestamp": "2025-11-17T23:26:35.641681Z",
-    "output": "examples/zdQqEEeZzeE.html",
-    "word_count": 557,
-    "cost_usd": 0.031229999999999997,
-    "model_used": "gpt-4"
-  },
-  {
-    "id": 949841,
-    "title": "The Impact and Influence of Ronda Rousey's Comments: An Analysis",
-    "source": "https://www.youtube.com/watch?v=zdQqEEeZzeE",
-    "source_type": "youtube",
-    "status": "Complete",
-    "ingest_timestamp": "2025-11-17T23:00:01.453789Z",
-    "output": "examples/zdQqEEeZzeE.html",
-    "word_count": 454,
-    "cost_usd": 0.02682,
-    "model_used": "gpt-4"
-  },
-  {
-    "id": 372830,
-    "title": "The Impact and Influence of Ronda Rousey's Comments: An Analysis",
-    "source": "https://www.youtube.com/watch?v=zdQqEEeZzeE",
-    "source_type": "youtube",
-    "status": "Complete",
-    "ingest_timestamp": "2025-11-17T22:59:55.282371Z",
-    "output": "examples/zdQqEEeZzeE.html",
-    "word_count": 454,
-    "cost_usd": 0.02682,
-    "model_used": "gpt-4"
-  },
-  {
-    "id": 554782,
-    "title": "The Impact and Influence of Ronda Rousey's Comments: An Analysis",
-    "source": "https://www.youtube.com/watch?v=zdQqEEeZzeE",
-    "source_type": "youtube",
-    "status": "Complete",
-    "ingest_timestamp": "2025-11-17T22:59:29.597066Z",
-    "output": "examples/zdQqEEeZzeE.html",
-    "word_count": 0,
-    "cost_usd": 0.0,
-    "model_used": null
-  },
-  {
     "id": 1,
     "title": "Market Analysis: Understanding the Debasement Trade",
     "source": "https://www.youtube.com/watch?v=FBoeZFBu23k",
     "source_type": "youtube",
     "status": "Complete",
     "ingest_timestamp": "2025-10-04T14:00:27Z",
-    "output": "examples/retail_earnings_summary.html",
+    "output": "data/drafts/FBoeZFBu23k.md",
     "word_count": 528,
     "cost_usd": 0.01662,
-    "model_used": "claude-3-5-sonnet"
+    "model_used": "claude-3-5-sonnet",
+    "slug": "market-analysis-understanding-the-debasement-trade"
   },
   {
     "id": 2,
@@ -102,10 +19,11 @@
     "source_type": "article",
     "status": "Complete",
     "ingest_timestamp": "2025-11-03T19:32:00Z",
-    "output": "examples/sentiment_echo_analysis.html",
+    "output": "data/sports/sessions/20251103-1932/article_3485.txt",
     "word_count": 0,
     "cost_usd": 0,
-    "model_used": null
+    "model_used": null,
+    "slug": "patriots-analysis-breaking-down-qb-drake-maye"
   },
   {
     "id": 3,
@@ -114,10 +32,11 @@
     "source_type": "multi-source",
     "status": "Complete",
     "ingest_timestamp": "2025-11-03T19:33:00Z",
-    "output": "examples/youtube_ingestion_example.html",
+    "output": "data/sports/sessions/20251103-1933/combined_sources.article.md",
     "word_count": 0,
     "cost_usd": 0,
-    "model_used": null
+    "model_used": null,
+    "slug": "multi-source-article-patriots-unfiltered-analysis"
   },
   {
     "id": 4,
@@ -126,10 +45,11 @@
     "source_type": "podcast",
     "status": "Complete",
     "ingest_timestamp": "2025-11-03T19:43:00Z",
-    "output": "examples/podcast_analysis.html",
+    "output": "data/sports/sessions/20251103-1943/combined_sources.article.md",
     "word_count": 0,
     "cost_usd": 0,
-    "model_used": null
+    "model_used": null,
+    "slug": "falcons-preview-and-week-9-league-picks"
   },
   {
     "id": 5,
@@ -137,11 +57,12 @@
     "source": "https://www.youtube.com/watch?v=example",
     "source_type": "youtube",
     "status": "Pending",
-    "ingest_timestamp": null,
+    "ingest_timestamp": "2025-11-20T17:03:14.516703Z",
     "output": null,
     "word_count": 0,
     "cost_usd": 0,
-    "model_used": null
+    "model_used": null,
+    "slug": "nvidia-earnings-q3-analysis"
   },
   {
     "id": 6,
@@ -153,6 +74,7 @@
     "output": null,
     "word_count": 0,
     "cost_usd": 0,
-    "model_used": null
+    "model_used": null,
+    "slug": "tesla-ai-day-coverage"
   }
 ]

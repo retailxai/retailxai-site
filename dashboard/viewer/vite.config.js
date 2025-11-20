@@ -8,18 +8,17 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 export default defineConfig({
   plugins: [svelte()],
   build: {
-    outDir: path.resolve(__dirname, '../../assets/viewer'),
+    outDir: path.resolve(__dirname, 'dist'),
     emptyOutDir: true,
     rollupOptions: {
-      input: path.resolve(__dirname, 'src/main.js'),
       output: {
         entryFileNames: 'viewer.js',
         chunkFileNames: 'viewer-[hash].js',
         assetFileNames: (assetInfo) => {
           if (assetInfo.name && assetInfo.name.endsWith('.css')) {
-              return 'assets/css/[name][extname]';
+            return 'assets/css/[name][extname]';
           }
-          return assetInfo.name || 'asset-[hash][extname]';
+          return 'assets/[name]-[hash][extname]';
         }
       }
     },

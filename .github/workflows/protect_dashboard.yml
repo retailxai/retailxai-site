@@ -64,13 +64,14 @@ jobs:
           DASHBOARD_HTML: ${{ steps.dashboard-paths.outputs.dashboard_html }}
           ENCRYPTED_HTML: ${{ steps.dashboard-paths.outputs.encrypted_html }}
         run: |
+          mkdir -p "$(dirname "$ENCRYPTED_HTML")"
           if [ -f "resources/staticrypt-template.html" ]; then
-            staticrypt "$DASHBOARD_HTML" "$ENCRYPTED_HTML" \
-              --password "$DASHBOARD_PASSWORD" \
-              --template resources/staticrypt-template.html
+            staticrypt "$DASHBOARD_HTML" "$DASHBOARD_PASSWORD" \
+              --template resources/staticrypt-template.html \
+              -o "$ENCRYPTED_HTML"
           else
-            staticrypt "$DASHBOARD_HTML" "$ENCRYPTED_HTML" \
-              --password "$DASHBOARD_PASSWORD"
+            staticrypt "$DASHBOARD_HTML" "$DASHBOARD_PASSWORD" \
+              -o "$ENCRYPTED_HTML"
           fi
 
       - name: Commit encrypted dashboard

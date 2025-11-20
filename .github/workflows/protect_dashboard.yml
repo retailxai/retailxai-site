@@ -24,55 +24,62 @@ permissions:
   contents: write
 
 jobs:
-    encrypt-dashboard:
-      runs-on: ubuntu-latest
-      
-      steps:
-        - name: Checkout repository
-          uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
-        
-        - name: Set up Node.js
-          uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8
-          with:
-            node-version: '20'
-        
-        - name: Install Staticrypt
-          run: |
-            npm install -g staticrypt
-        
-        - name: Locate built dashboard HTML
-          id: dashboard-paths
-          run: |
-            DASHBOARD_HTML="assets/viewer/index.html"
-            if [ ! -f "$DASHBOARD_HTML" ]; then
-              echo "::error::Built dashboard HTML not found at $DASHBOARD_HTML. Run the viewer build (npm run build) before triggering this workflow."
-              exit 1
-            fi
-            echo "dashboard_html=$DASHBOARD_HTML" >> "$GITHUB_OUTPUT"
-            echo "encrypted_html=${DASHBOARD_HTML}.enc" >> "$GITHUB_OUTPUT"
-        
-        - name: Encrypt dashboard
-          env:
-            DASHBOARD_PASSWORD: ${{ secrets.DASHBOARD_PASSWORD }}
-            DASHBOARD_HTML: ${{ steps.dashboard-paths.outputs.dashboard_html }}
-            ENCRYPTED_HTML: ${{ steps.dashboard-paths.outputs.encrypted_html }}
-          run: |
-            if [ -f "resources/staticrypt-template.html" ]; then
-              staticrypt "$DASHBOARD_HTML" "$ENCRYPTED_HTML" \
-                --password "$DASHBOARD_PASSWORD" \
-                --template resources/staticrypt-template.html
-            else
-              staticrypt "$DASHBOARD_HTML" "$ENCRYPTED_HTML" \
-                --password "$DASHBOARD_PASSWORD"
-            fi
-        
-        - name: Commit encrypted dashboard
-          env:
-            ENCRYPTED_HTML: ${{ steps.dashboard-paths.outputs.encrypted_html }}
-          run: |
-            git config --local user.email "action@github.com"
-            git config --local user.name "GitHub Action"
-            git add "$ENCRYPTED_HTML"
-            git diff --staged --quiet || git commit -m "Update encrypted dashboard [skip ci]"
-            git push
+  encrypt-dashboard:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+
+      - name: Set up Node.js
+        uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8
+        with:
+          node-version: '20'
+
+      - name: Install Staticrypt
+        run: |
+          npm install -g staticrypt
+
+      - name: Build dashboard viewer
+        working-directory: dashboard/viewer
+        run: |
+          npm ci
+          npm run build
+
+      - name: Locate built dashboard HTML
+        id: dashboard-paths
+        run: |
+          DASHBOARD_HTML="dashboard/viewer/dist/index.html"
+          ENCRYPTED_HTML="assets/viewer/index.html.enc"
+          if [ ! -f "$DASHBOARD_HTML" ]; then
+            echo "::error::Built dashboard HTML not found at $DASHBOARD_HTML. Ensure the viewer build step succeeded."
+            exit 1
+          fi
+          echo "dashboard_html=$DASHBOARD_HTML" >> "$GITHUB_OUTPUT"
+          echo "encrypted_html=$ENCRYPTED_HTML" >> "$GITHUB_OUTPUT"
+
+      - name: Encrypt dashboard
+        env:
+          DASHBOARD_PASSWORD: ${{ secrets.DASHBOARD_PASSWORD }}
+          DASHBOARD_HTML: ${{ steps.dashboard-paths.outputs.dashboard_html }}
+          ENCRYPTED_HTML: ${{ steps.dashboard-paths.outputs.encrypted_html }}
+        run: |
+          if [ -f "resources/staticrypt-template.html" ]; then
+            staticrypt "$DASHBOARD_HTML" "$ENCRYPTED_HTML" \
+              --password "$DASHBOARD_PASSWORD" \
+              --template resources/staticrypt-template.html
+          else
+            staticrypt "$DASHBOARD_HTML" "$ENCRYPTED_HTML" \
+              --password "$DASHBOARD_PASSWORD"
+          fi
+
+      - name: Commit encrypted dashboard
+        env:
+          ENCRYPTED_HTML: ${{ steps.dashboard-paths.outputs.encrypted_html }}
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add "$ENCRYPTED_HTML"
+          git diff --staged --quiet || git commit -m "Update encrypted dashboard [skip ci]"
+          git push
 

@@ -23,3 +23,6 @@ build/
 dist/
 *.egg-info/
 
+# Viewer build output (only commit encrypted version)
+assets/viewer/index.html
+

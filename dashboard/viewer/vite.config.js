@@ -17,7 +17,7 @@ export default defineConfig({
         chunkFileNames: 'viewer-[hash].js',
         assetFileNames: (assetInfo) => {
           if (assetInfo.name && assetInfo.name.endsWith('.css')) {
-            return '../../assets/css/viewer.css';
+              return 'assets/css/[name][extname]';
           }
           return assetInfo.name || 'asset-[hash][extname]';
         }

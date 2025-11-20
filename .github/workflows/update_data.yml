@@ -78,7 +78,7 @@ jobs:
       - name: Build Svelte viewer
         run: |
           cd dashboard/viewer
-          npm ci
+          npm install --legacy-peer-deps
           npm run build
         continue-on-error: false
       

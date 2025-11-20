@@ -1,24 +1,15 @@
 name: Protect Dashboard
 
 on:
-  push:
-    paths:
-      - 'dashboard/index.html'
-      - 'dashboard/draft.html'
-      - 'assets/css/dashboard.css'
-      - 'assets/js/dashboard.js'
-      - 'assets/css/global.css'
-      - 'assets/css/ticker.css'
-      - 'assets/js/theme-toggle.js'
-      - 'assets/js/ticker.js'
-      - 'assets/viewer/**'
-      - 'assets/css/viewer.css'
-      - 'data/*.json'
   workflow_dispatch:
   workflow_run:
     workflows: ["Update Data"]
-    types:
-      - completed
+    types: [completed]
+  push:
+    paths:
+      - "dashboard/**"
+      - "assets/viewer/**"
+      - "assets/css/**"
 
 permissions:
   contents: write
@@ -26,38 +17,45 @@ permissions:
 jobs:
   encrypt-dashboard:
     runs-on: ubuntu-latest
-    
     steps:
       - name: Checkout repository
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
-      
+
       - name: Set up Node.js
         uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8
         with:
-          node-version: '20'
-      
+          node-version: 20
+
       - name: Install Staticrypt
         run: |
           npm install -g staticrypt
-      
-      - name: Encrypt dashboard
-        env:
-          DASHBOARD_PASSWORD: ${{ secrets.DASHBOARD_PASSWORD }}
+
+      - name: Encrypt dashboard index.html
         run: |
-          if [ -f "resources/staticrypt-template.html" ]; then
-            staticrypt dashboard/index.html dashboard/index.html.enc \
-              --password "$DASHBOARD_PASSWORD" \
-              --template resources/staticrypt-template.html
-          else
-            staticrypt dashboard/index.html dashboard/index.html.enc \
-              --password "$DASHBOARD_PASSWORD"
-          fi
-      
+          staticrypt dashboard/index.html \
+            --password "$DASHBOARD_PASSWORD" \
+            --salt "$DASHBOARD_SALT" \
+            -o dashboard/index.html.enc
+
+      - name: Encrypt dashboard draft.html
+        run: |
+          staticrypt dashboard/draft.html \
+            --password "$DASHBOARD_PASSWORD" \
+            --salt "$DASHBOARD_SALT" \
+            -o dashboard/draft.html.enc
+
+      - name: Replace unencrypted files
+        run: |
+          rm dashboard/index.html
+          rm dashboard/draft.html
+          mv dashboard/index.html.enc dashboard/index.html
+          mv dashboard/draft.html.enc dashboard/draft.html
+
       - name: Commit encrypted dashboard
         run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add dashboard/index.html.enc
-          git diff --staged --quiet || git commit -m "Update encrypted dashboard [skip ci]"
+          git config --local user.email "actions@github.com"
+          git config --local user.name "github-actions"
+          git add dashboard/index.html dashboard/draft.html
+          git commit -m "Encrypt dashboard files" || echo "No changes to commit"
           git push
 

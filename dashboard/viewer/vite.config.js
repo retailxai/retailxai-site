@@ -8,12 +8,16 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 export default defineConfig({
   plugins: [svelte()],
   build: {
+    // Output directory: assets/viewer/ (relative to repo root)
+    // From dashboard/viewer/, this resolves to ../../assets/viewer
     outDir: path.resolve(__dirname, '../../assets/viewer'),
     emptyOutDir: true,
     rollupOptions: {
       input: path.resolve(__dirname, 'src/main.js'),
       output: {
+        // Main entry file: assets/viewer/viewer.js
         entryFileNames: 'viewer.js',
+        // Code-split chunks: assets/viewer/viewer-[hash].js
         chunkFileNames: 'viewer-[hash].js',
         assetFileNames: (assetInfo) => {
           // CSS files go to assets/css/viewer.css

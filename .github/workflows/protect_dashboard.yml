@@ -44,54 +44,98 @@ jobs:
       
       - name: Build Svelte viewer
         run: |
+          set -euo pipefail
+          echo "Building Svelte viewer..."
+          echo "Current working directory: $(pwd)"
           cd dashboard/viewer
+          echo "Changed to: $(pwd)"
           if [ ! -f "package-lock.json" ]; then
-            echo "Error: package-lock.json not found"
+            echo "Error: package-lock.json not found in dashboard/viewer/"
             exit 1
           fi
+          echo "Installing dependencies..."
           npm ci || { echo "Error: npm ci failed"; exit 1; }
+          echo "Building viewer..."
           npm run build || { echo "Error: npm build failed"; exit 1; }
+          echo "Build completed successfully"
         continue-on-error: false
       
-      - name: Verify viewer build output
+      - name: Comprehensive file tree verification
         run: |
-          echo "Checking viewer build output..."
+          set -euo pipefail
+          echo "=========================================="
+          echo "COMPREHENSIVE FILE TREE VERIFICATION"
+          echo "=========================================="
+          echo ""
           echo "Current working directory: $(pwd)"
           echo ""
-          echo "=== Directory tree of dashboard/viewer/dist (if exists) ==="
-          if [ -d "dashboard/viewer/dist" ]; then
-            find dashboard/viewer/dist -type f | head -20 || echo "  (tree command failed)"
+          echo "=== Full directory tree of dashboard/ ==="
+          if command -v tree >/dev/null 2>&1; then
+            tree -a dashboard/ || find dashboard -type f | head -30
           else
-            echo "  dashboard/viewer/dist does not exist (expected - builds to assets/viewer)"
+            find dashboard -type f | head -30 || echo "  (find command failed)"
           fi
           echo ""
-          echo "=== Directory tree of assets/viewer (build output location) ==="
-          if [ -d "assets/viewer" ]; then
-            find assets/viewer -type f | head -20 || echo "  (tree command failed)"
-            echo ""
-            echo "=== Detailed listing of assets/viewer ==="
-            ls -lah assets/viewer/ || echo "  (directory listing failed)"
+          echo "=== Full directory tree of assets/ ==="
+          if command -v tree >/dev/null 2>&1; then
+            tree -a assets/ || find assets -type f | head -30
           else
-            echo "  assets/viewer directory not found after build"
+            find assets -type f | head -30 || echo "  (find command failed)"
+          fi
+          echo ""
+          echo "=== Detailed listing of assets/viewer/ ==="
+          if [ -d "assets/viewer" ]; then
+            ls -lah assets/viewer/ || echo "  (directory listing failed)"
+            echo ""
+            echo "Files in assets/viewer/:"
+            find assets/viewer -type f || echo "  (no files found)"
+          else
+            echo "  ❌ assets/viewer/ directory NOT FOUND"
             echo "  This is an error - build should create this directory"
             exit 1
           fi
           echo ""
-          echo "=== Verifying required files ==="
-          if [ ! -f "assets/viewer/viewer.js" ]; then
-            echo "Error: assets/viewer/viewer.js not found after build"
+          echo "=== Detailed listing of assets/css/ ==="
+          if [ -d "assets/css" ]; then
+            ls -lah assets/css/ || echo "  (directory listing failed)"
+            echo ""
+            echo "Files in assets/css/:"
+            find assets/css -type f || echo "  (no files found)"
+          else
+            echo "  ❌ assets/css/ directory NOT FOUND"
             exit 1
           fi
-          if [ ! -f "assets/css/viewer.css" ]; then
-            echo "Error: assets/css/viewer.css not found after build"
+          echo ""
+          echo "=== Verifying critical files ==="
+          if [ -f "assets/viewer/viewer.js" ]; then
+            echo "  ✅ assets/viewer/viewer.js exists: $(ls -lh assets/viewer/viewer.js | awk '{print $5}')"
+          else
+            echo "  ❌ assets/viewer/viewer.js NOT FOUND"
             exit 1
           fi
-          echo "Viewer build output verified:"
-          echo "  ✅ assets/viewer/viewer.js: $(ls -lh assets/viewer/viewer.js | awk '{print $5}')"
-          echo "  ✅ assets/css/viewer.css: $(ls -lh assets/css/viewer.css | awk '{print $5}')"
+          if [ -f "assets/css/viewer.css" ]; then
+            echo "  ✅ assets/css/viewer.css exists: $(ls -lh assets/css/viewer.css | awk '{print $5}')"
+          else
+            echo "  ❌ assets/css/viewer.css NOT FOUND"
+            exit 1
+          fi
+          if [ -f "dashboard/index.html" ]; then
+            echo "  ✅ dashboard/index.html exists: $(ls -lh dashboard/index.html | awk '{print $5}')"
+          else
+            echo "  ❌ dashboard/index.html NOT FOUND"
+            exit 1
+          fi
+          echo ""
+          echo "=========================================="
+          echo "VERIFICATION COMPLETE - All files found"
+          echo "=========================================="
       
       - name: Verify dashboard HTML exists
         run: |
+          set -euo pipefail
+          # Ensure we're in the repo root
+          cd "${{ github.workspace }}"
+          echo "Current working directory: $(pwd)"
           if [ ! -f "dashboard/index.html" ]; then
             echo "Error: dashboard/index.html not found"
             echo "Current directory: $(pwd)"
@@ -104,47 +148,131 @@ jobs:
       
       - name: Install Staticrypt
         run: |
+          set -euo pipefail
+          echo "Installing Staticrypt..."
           npm install -g staticrypt || { echo "Error: Staticrypt installation failed"; exit 1; }
           staticrypt --version || { echo "Error: Staticrypt not found after install"; exit 1; }
+          echo "Staticrypt installed successfully"
       
       - name: Encrypt dashboard
         env:
           DASHBOARD_PASSWORD: ${{ secrets.DASHBOARD_PASSWORD }}
         run: |
-          if [ ! -f "dashboard/index.html" ]; then
-            echo "Error: dashboard/index.html not found"
+          set -euo pipefail
+          # CRITICAL: Ensure we're in the repo root for all path operations
+          cd "${{ github.workspace }}"
+          echo "Encrypting dashboard..."
+          echo "Current working directory: $(pwd)"
+          echo ""
+          # Verify input file exists
+          INPUT_FILE="dashboard/index.html"
+          OUTPUT_FILE="dashboard/index.html.enc"
+          echo "Input file: $INPUT_FILE"
+          echo "Output file: $OUTPUT_FILE"
+          if [ ! -f "$INPUT_FILE" ]; then
+            echo "Error: Input file not found: $INPUT_FILE"
+            echo "Current directory: $(pwd)"
+            ls -la dashboard/ || echo "  (directory listing failed)"
             exit 1
           fi
           if [ -z "$DASHBOARD_PASSWORD" ]; then
             echo "Error: DASHBOARD_PASSWORD secret not set"
             exit 1
           fi
+          # Remove output file if it exists (clean slate)
+          if [ -f "$OUTPUT_FILE" ]; then
+            echo "Removing existing encrypted file: $OUTPUT_FILE"
+            rm -f "$OUTPUT_FILE"
+          fi
+          # Encrypt using Staticrypt
           if [ -f "resources/staticrypt-template.html" ]; then
-            staticrypt dashboard/index.html dashboard/index.html.enc \
+            echo "Using custom template: resources/staticrypt-template.html"
+            staticrypt "$INPUT_FILE" "$OUTPUT_FILE" \
               --password "$DASHBOARD_PASSWORD" \
               --template resources/staticrypt-template.html || exit 1
           else
-            staticrypt dashboard/index.html dashboard/index.html.enc \
+            echo "Using default Staticrypt template"
+            staticrypt "$INPUT_FILE" "$OUTPUT_FILE" \
               --password "$DASHBOARD_PASSWORD" || exit 1
           fi
-          if [ ! -f "dashboard/index.html.enc" ]; then
-            echo "Error: Encryption failed - output file not created"
+          # Verify output file was created
+          if [ ! -f "$OUTPUT_FILE" ]; then
+            echo "Error: Encryption failed - output file not created: $OUTPUT_FILE"
+            echo "Current directory: $(pwd)"
+            echo "Dashboard directory contents:"
+            ls -la dashboard/ || echo "  (directory listing failed)"
             exit 1
           fi
+          echo "Encryption successful: $OUTPUT_FILE created"
+          echo "File size: $(ls -lh "$OUTPUT_FILE" | awk '{print $5}')"
+          echo "Full path: $(realpath "$OUTPUT_FILE")"
+      
+      - name: Verify encrypted file exists before commit
+        run: |
+          set -euo pipefail
+          # CRITICAL: Ensure we're in the repo root
+          cd "${{ github.workspace }}"
+          ENCRYPTED_FILE="dashboard/index.html.enc"
+          echo "Verifying encrypted file exists before commit..."
+          echo "Current working directory: $(pwd)"
+          echo "Looking for: $ENCRYPTED_FILE"
+          if [ ! -f "$ENCRYPTED_FILE" ]; then
+            echo "❌ ERROR: Encrypted file not found: $ENCRYPTED_FILE"
+            echo "Current directory: $(pwd)"
+            echo "Dashboard directory contents:"
+            ls -la dashboard/ || echo "  (directory listing failed)"
+            echo ""
+            echo "Searching for any .enc files:"
+            find . -name "*.enc" -type f 2>/dev/null || echo "  (no .enc files found)"
+            exit 1
+          fi
+          echo "✅ Encrypted file verified: $ENCRYPTED_FILE"
+          echo "File size: $(ls -lh "$ENCRYPTED_FILE" | awk '{print $5}')"
+          echo "Full path: $(realpath "$ENCRYPTED_FILE")"
       
       - name: Commit encrypted dashboard
         run: |
-          if [ ! -f "dashboard/index.html.enc" ]; then
-            echo "Error: Encrypted file not found"
+          set -euo pipefail
+          # CRITICAL: Ensure we're in the repo root
+          cd "${{ github.workspace }}"
+          ENCRYPTED_FILE="dashboard/index.html.enc"
+          echo "Committing encrypted dashboard..."
+          echo "Current working directory: $(pwd)"
+          echo "File to commit: $ENCRYPTED_FILE"
+          # Verify file exists before attempting to add
+          if [ ! -f "$ENCRYPTED_FILE" ]; then
+            echo "❌ ERROR: Encrypted file not found: $ENCRYPTED_FILE"
+            echo "Current directory: $(pwd)"
+            echo "Dashboard directory contents:"
+            ls -la dashboard/ || echo "  (directory listing failed)"
+            echo ""
+            echo "Searching for any .enc files:"
+            find . -name "*.enc" -type f 2>/dev/null || echo "  (no .enc files found)"
             exit 1
           fi
+          # Configure git
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add dashboard/index.html.enc
+          # Stage the encrypted file
+          echo "Staging $ENCRYPTED_FILE..."
+          git add "$ENCRYPTED_FILE"
+          # Verify file was staged
+          if ! git diff --staged --name-only | grep -q "^$ENCRYPTED_FILE$"; then
+            echo "❌ ERROR: File was not staged: $ENCRYPTED_FILE"
+            echo "Staged files:"
+            git diff --staged --name-only || echo "  (no staged files)"
+            exit 1
+          fi
+          echo "✅ File staged successfully: $ENCRYPTED_FILE"
+          # Check if there are changes to commit
           if git diff --staged --quiet; then
-            echo "No changes to commit"
+            echo "No changes to commit (file unchanged)"
             exit 0
           fi
+          # Commit
+          echo "Committing encrypted dashboard..."
           git commit -m "Update encrypted dashboard [skip ci]" || exit 1
+          # Push
+          echo "Pushing to origin main..."
           git push origin main || { echo "Push failed"; exit 1; }
-
+          echo "✅ Successfully committed and pushed $ENCRYPTED_FILE"

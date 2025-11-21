@@ -161,64 +161,127 @@ jobs:
           set -euo pipefail
           # CRITICAL: Ensure we're in the repo root for all path operations
           cd "${{ github.workspace }}"
-          echo "Encrypting dashboard..."
+          echo "=========================================="
+          echo "ENCRYPTING DASHBOARD"
+          echo "=========================================="
           echo "Current working directory: $(pwd)"
           echo ""
           # Verify input file exists
           INPUT_FILE="dashboard/index.html"
-          OUTPUT_FILE="dashboard/index.html.enc"
+          OUTPUT_FILE="assets/viewer/index.html.enc"
           echo "Input file: $INPUT_FILE"
           echo "Output file: $OUTPUT_FILE"
+          echo ""
+          # Verify input file exists
           if [ ! -f "$INPUT_FILE" ]; then
-            echo "Error: Input file not found: $INPUT_FILE"
-            echo "Current directory: $(pwd)"
-            ls -la dashboard/ || echo "  (directory listing failed)"
-            exit 1
-          fi
-          if [ -z "$DASHBOARD_PASSWORD" ]; then
-            echo "Error: DASHBOARD_PASSWORD secret not set"
-            exit 1
-          fi
-          # Remove output file if it exists (clean slate)
-          if [ -f "$OUTPUT_FILE" ]; then
-            echo "Removing existing encrypted file: $OUTPUT_FILE"
-            rm -f "$OUTPUT_FILE"
-          fi
-          # Encrypt using Staticrypt
-          if [ -f "resources/staticrypt-template.html" ]; then
-            echo "Using custom template: resources/staticrypt-template.html"
-            staticrypt "$INPUT_FILE" "$OUTPUT_FILE" \
-              --password "$DASHBOARD_PASSWORD" \
-              --template resources/staticrypt-template.html || exit 1
-          else
-            echo "Using default Staticrypt template"
-            staticrypt "$INPUT_FILE" "$OUTPUT_FILE" \
-              --password "$DASHBOARD_PASSWORD" || exit 1
-          fi
-          # Verify output file was created
-          if [ ! -f "$OUTPUT_FILE" ]; then
-            echo "Error: Encryption failed - output file not created: $OUTPUT_FILE"
+            echo "❌ ERROR: Input file not found: $INPUT_FILE"
             echo "Current directory: $(pwd)"
             echo "Dashboard directory contents:"
             ls -la dashboard/ || echo "  (directory listing failed)"
             exit 1
           fi
-          echo "Encryption successful: $OUTPUT_FILE created"
+          echo "✅ Input file exists: $INPUT_FILE"
+          # Verify password is set and not empty
+          if [ -z "${DASHBOARD_PASSWORD:-}" ]; then
+            echo "❌ ERROR: DASHBOARD_PASSWORD secret is not set or is empty"
+            echo "Please ensure DASHBOARD_PASSWORD secret is configured in repository settings"
+            exit 1
+          fi
+          echo "✅ Password is set (length: ${#DASHBOARD_PASSWORD} characters)"
+          # Ensure output directory exists
+          OUTPUT_DIR="$(dirname "$OUTPUT_FILE")"
+          echo "Creating output directory: $OUTPUT_DIR"
+          mkdir -p "$OUTPUT_DIR" || {
+            echo "❌ ERROR: Failed to create output directory: $OUTPUT_DIR"
+            exit 1
+          }
+          echo "✅ Output directory exists: $OUTPUT_DIR"
+          # Remove output file if it exists (clean slate)
+          if [ -f "$OUTPUT_FILE" ]; then
+            echo "Removing existing encrypted file: $OUTPUT_FILE"
+            rm -f "$OUTPUT_FILE"
+          fi
+          # Encrypt using Staticrypt (non-interactive mode)
+          # CRITICAL: Use npx to ensure we have the correct staticrypt version
+          echo ""
+          echo "Running Staticrypt encryption (non-interactive mode)..."
+          echo "Command: npx staticrypt \"$INPUT_FILE\" --password \"***\" --output \"$OUTPUT_FILE\""
+          if [ -f "resources/staticrypt-template.html" ]; then
+            echo "Using custom template: resources/staticrypt-template.html"
+            npx staticrypt "$INPUT_FILE" \
+              --password "$DASHBOARD_PASSWORD" \
+              --output "$OUTPUT_FILE" \
+              --template resources/staticrypt-template.html || {
+              echo "❌ ERROR: Staticrypt encryption failed"
+              echo "Exit code: $?"
+              echo "Checking if staticrypt is available:"
+              which staticrypt || echo "  staticrypt not in PATH"
+              npx staticrypt --version || echo "  npx staticrypt --version failed"
+              exit 1
+            }
+          else
+            echo "Using default Staticrypt template"
+            npx staticrypt "$INPUT_FILE" \
+              --password "$DASHBOARD_PASSWORD" \
+              --output "$OUTPUT_FILE" || {
+              echo "❌ ERROR: Staticrypt encryption failed"
+              echo "Exit code: $?"
+              echo "Checking if staticrypt is available:"
+              which staticrypt || echo "  staticrypt not in PATH"
+              npx staticrypt --version || echo "  npx staticrypt --version failed"
+              exit 1
+            }
+          fi
+          echo ""
+          echo "=========================================="
+          echo "VERIFYING ENCRYPTION RESULT"
+          echo "=========================================="
+          # CRITICAL: Verify output file was created immediately after encryption
+          if [ ! -f "$OUTPUT_FILE" ]; then
+            echo "❌ ERROR: Encryption failed - output file not created: $OUTPUT_FILE"
+            echo "Current directory: $(pwd)"
+            echo "Output directory contents:"
+            ls -la "$OUTPUT_DIR" || echo "  (directory listing failed)"
+            echo ""
+            echo "Dashboard directory contents:"
+            ls -la dashboard/ || echo "  (directory listing failed)"
+            echo ""
+            echo "Searching for any .enc files in repository:"
+            find . -name "*.enc" -type f 2>/dev/null || echo "  (no .enc files found)"
+            echo ""
+            echo "This error usually means:"
+            echo "  1. Staticrypt failed silently (check password format)"
+            echo "  2. Output path is incorrect"
+            echo "  3. File permissions issue"
+            echo "  4. Staticrypt command syntax issue"
+            exit 1
+          fi
+          echo "✅ Encryption successful: $OUTPUT_FILE created"
           echo "File size: $(ls -lh "$OUTPUT_FILE" | awk '{print $5}')"
-          echo "Full path: $(realpath "$OUTPUT_FILE")"
+          echo "Full path: $(realpath "$OUTPUT_FILE" 2>/dev/null || echo "$(pwd)/$OUTPUT_FILE")"
+          # Verify file is not empty
+          if [ ! -s "$OUTPUT_FILE" ]; then
+            echo "❌ ERROR: Encrypted file is empty"
+            exit 1
+          fi
+          echo "✅ Encrypted file is not empty"
+          echo "=========================================="
       
       - name: Verify encrypted file exists before commit
         run: |
           set -euo pipefail
           # CRITICAL: Ensure we're in the repo root
           cd "${{ github.workspace }}"
-          ENCRYPTED_FILE="dashboard/index.html.enc"
+          ENCRYPTED_FILE="assets/viewer/index.html.enc"
           echo "Verifying encrypted file exists before commit..."
           echo "Current working directory: $(pwd)"
           echo "Looking for: $ENCRYPTED_FILE"
           if [ ! -f "$ENCRYPTED_FILE" ]; then
             echo "❌ ERROR: Encrypted file not found: $ENCRYPTED_FILE"
             echo "Current directory: $(pwd)"
+            echo "Assets/viewer directory contents:"
+            ls -la assets/viewer/ || echo "  (directory listing failed)"
+            echo ""
             echo "Dashboard directory contents:"
             ls -la dashboard/ || echo "  (directory listing failed)"
             echo ""
@@ -228,14 +291,14 @@ jobs:
           fi
           echo "✅ Encrypted file verified: $ENCRYPTED_FILE"
           echo "File size: $(ls -lh "$ENCRYPTED_FILE" | awk '{print $5}')"
-          echo "Full path: $(realpath "$ENCRYPTED_FILE")"
+          echo "Full path: $(realpath "$ENCRYPTED_FILE" 2>/dev/null || echo "$(pwd)/$ENCRYPTED_FILE")"
       
       - name: Commit encrypted dashboard
         run: |
           set -euo pipefail
           # CRITICAL: Ensure we're in the repo root
           cd "${{ github.workspace }}"
-          ENCRYPTED_FILE="dashboard/index.html.enc"
+          ENCRYPTED_FILE="assets/viewer/index.html.enc"
           echo "Committing encrypted dashboard..."
           echo "Current working directory: $(pwd)"
           echo "File to commit: $ENCRYPTED_FILE"
@@ -243,6 +306,9 @@ jobs:
           if [ ! -f "$ENCRYPTED_FILE" ]; then
             echo "❌ ERROR: Encrypted file not found: $ENCRYPTED_FILE"
             echo "Current directory: $(pwd)"
+            echo "Assets/viewer directory contents:"
+            ls -la assets/viewer/ || echo "  (directory listing failed)"
+            echo ""
             echo "Dashboard directory contents:"
             ls -la dashboard/ || echo "  (directory listing failed)"
             echo ""

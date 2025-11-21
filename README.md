@@ -26,6 +26,7 @@ Visit our [Getting Started Guide](docs/getting_started.html) to begin using Reta
 
 ## Documentation
 
+### Public Documentation
 - [Getting Started](docs/getting_started.html) - Installation and setup
 - [Architecture Overview](docs/architecture.html) - System design and components
 - [Ingest Pipeline](docs/ingest_pipeline.html) - How content ingestion works
@@ -33,6 +34,11 @@ Visit our [Getting Started Guide](docs/getting_started.html) to begin using Reta
 - [Sentiment Echo Analysis](docs/sentiment_echo_analysis.html) - Multi-source sentiment analysis
 - [Release Notes](docs/release_notes.html) - Version history and updates
 - [Roadmap](docs/roadmap.html) - Future plans and features
+
+### Engineering Documentation
+- [Documentation Index](DOCUMENTATION_INDEX.md) - Complete documentation navigation
+- [System Status](SYSTEM_STATUS.md) - Current system state, workflows, and security posture
+- [Documentation Maintenance](DOCS_MAINTENANCE.md) - Documentation maintenance guidelines
 
 ## Examples
 

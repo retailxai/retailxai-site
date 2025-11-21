@@ -1,6 +1,12 @@
 # RetailXAI Site - Comprehensive Audit Report
+
+**Status:** Reference  
 **Target Score: 9.7/10**  
 **Date: 2025-01-18**
+
+**Note:** This document provides a deep technical audit with detailed recommendations. For current system status and state, see **[SYSTEM_STATUS.md](SYSTEM_STATUS.md)**. This audit report is preserved for reference and contains detailed analysis that informed the current system state.
+
+← See [DOCUMENTATION_INDEX.md](DOCUMENTATION_INDEX.md) for navigation and canonical sources.
 
 ---
 

@@ -1,5 +1,14 @@
 # Git Commands for Repository Setup
 
+**Status:** Historical  
+**Date:** 2025-01  
+
+**Note:** This document contains historical Git commands used during repository setup. For current Git workflows and system state, see **[SYSTEM_STATUS.md](SYSTEM_STATUS.md)**.
+
+← See [DOCUMENTATION_INDEX.md](DOCUMENTATION_INDEX.md) for navigation and canonical sources.
+
+---
+
 ## Quick Reference: Repository Creation Commands
 
 ### 1. Clean Current Repository (Precipice-2)

@@ -1,11 +1,18 @@
-# GitHub Actions Commit SHA Pinning - Complete
+# GitHub Actions Commit SHA Reference Ledger
 
-**Date:** 2025-01-18  
-**Status:** ✅ All GitHub Actions pinned to real commit SHAs
+**Status:** Reference  
+**Last Updated:** 2025-01-18  
+**Verification Status:** ✅ All GitHub Actions pinned to commit SHAs
+
+**Purpose:** Reference ledger of pinned GitHub Actions commit SHAs used in workflows.
+
+**Note:** For current system status, see **[SYSTEM_STATUS.md](SYSTEM_STATUS.md)**. This file serves as a reference for action SHAs and should be updated when action SHAs change.
+
+← See [DOCUMENTATION_INDEX.md](DOCUMENTATION_INDEX.md) for navigation and canonical sources.
 
 ## Summary
 
-All GitHub Actions in workflow files have been updated to use real, stable commit SHAs instead of version tags or placeholder values. This improves supply chain security by preventing unexpected changes from action updates.
+All GitHub Actions in workflow files use pinned commit SHAs instead of version tags. This ensures supply chain security and reproducible builds.
 
 ## Actions Updated
 
@@ -32,12 +39,6 @@ All GitHub Actions in workflow files have been updated to use real, stable commi
 - ✅ `actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8`
 
 ### `.github/workflows/github_pages.yml`
-- ✅ `actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11`
-- ✅ `actions/configure-pages@1f0c5cde4bc74cd7e1254d0cb4de8d49e9068c7d`
-- ✅ `actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa`
-- ✅ `actions/deploy-pages@f33f41b675f0ab2dc5a6863c9a170fe83af3571e`
-
-### `.github/workflows/pages.yml`
 - ✅ `actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11`
 - ✅ `actions/configure-pages@1f0c5cde4bc74cd7e1254d0cb4de8d49e9068c7d`
 - ✅ `actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa`

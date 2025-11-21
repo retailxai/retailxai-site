@@ -1,6 +1,11 @@
 # RetailXAI UI Mockups
 
+**Status:** Reference  
+**Purpose:** UI mockups and design specifications
+
 This document describes the layout and design of the RetailXAI dashboard and site components in text-only format.
+
+← See [DOCUMENTATION_INDEX.md](../DOCUMENTATION_INDEX.md) for navigation and canonical sources.
 
 ## Dashboard Layout
 

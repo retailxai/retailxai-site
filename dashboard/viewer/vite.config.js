@@ -16,9 +16,12 @@ export default defineConfig({
         entryFileNames: 'viewer.js',
         chunkFileNames: 'viewer-[hash].js',
         assetFileNames: (assetInfo) => {
+          // CSS files go to assets/css/viewer.css
+          // Path is relative to outDir (assets/viewer/), so we go up one level: ../css/viewer.css
           if (assetInfo.name && assetInfo.name.endsWith('.css')) {
-            return '../../assets/css/viewer.css';
+            return '../css/viewer.css';
           }
+          // Other assets stay in assets/viewer/ directory
           return assetInfo.name || 'asset-[hash][extname]';
         }
       }

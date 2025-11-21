@@ -23,6 +23,10 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: protect-dashboard
+  cancel-in-progress: true
+
 jobs:
   encrypt-dashboard:
     runs-on: ubuntu-latest
@@ -38,9 +42,70 @@ jobs:
         with:
           node-version: '20'
       
+      - name: Build Svelte viewer
+        run: |
+          cd dashboard/viewer
+          if [ ! -f "package-lock.json" ]; then
+            echo "Error: package-lock.json not found"
+            exit 1
+          fi
+          npm ci || { echo "Error: npm ci failed"; exit 1; }
+          npm run build || { echo "Error: npm build failed"; exit 1; }
+        continue-on-error: false
+      
+      - name: Verify viewer build output
+        run: |
+          echo "Checking viewer build output..."
+          echo "Current working directory: $(pwd)"
+          echo ""
+          echo "=== Directory tree of dashboard/viewer/dist (if exists) ==="
+          if [ -d "dashboard/viewer/dist" ]; then
+            find dashboard/viewer/dist -type f | head -20 || echo "  (tree command failed)"
+          else
+            echo "  dashboard/viewer/dist does not exist (expected - builds to assets/viewer)"
+          fi
+          echo ""
+          echo "=== Directory tree of assets/viewer (build output location) ==="
+          if [ -d "assets/viewer" ]; then
+            find assets/viewer -type f | head -20 || echo "  (tree command failed)"
+            echo ""
+            echo "=== Detailed listing of assets/viewer ==="
+            ls -lah assets/viewer/ || echo "  (directory listing failed)"
+          else
+            echo "  assets/viewer directory not found after build"
+            echo "  This is an error - build should create this directory"
+            exit 1
+          fi
+          echo ""
+          echo "=== Verifying required files ==="
+          if [ ! -f "assets/viewer/viewer.js" ]; then
+            echo "Error: assets/viewer/viewer.js not found after build"
+            exit 1
+          fi
+          if [ ! -f "assets/css/viewer.css" ]; then
+            echo "Error: assets/css/viewer.css not found after build"
+            exit 1
+          fi
+          echo "Viewer build output verified:"
+          echo "  ✅ assets/viewer/viewer.js: $(ls -lh assets/viewer/viewer.js | awk '{print $5}')"
+          echo "  ✅ assets/css/viewer.css: $(ls -lh assets/css/viewer.css | awk '{print $5}')"
+      
+      - name: Verify dashboard HTML exists
+        run: |
+          if [ ! -f "dashboard/index.html" ]; then
+            echo "Error: dashboard/index.html not found"
+            echo "Current directory: $(pwd)"
+            echo "Dashboard directory contents:"
+            ls -la dashboard/ || echo "  (directory listing failed)"
+            exit 1
+          fi
+          echo "dashboard/index.html found: $(ls -lh dashboard/index.html | awk '{print $5}')"
+          echo "Dashboard HTML file verified"
+      
       - name: Install Staticrypt
         run: |
-          npm install -g staticrypt
+          npm install -g staticrypt || { echo "Error: Staticrypt installation failed"; exit 1; }
+          staticrypt --version || { echo "Error: Staticrypt not found after install"; exit 1; }
       
       - name: Encrypt dashboard
         env:

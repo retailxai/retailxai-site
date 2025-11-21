@@ -1,8 +1,11 @@
 # RetailXAI Launch Announcement
 
-**Title:** Introducing RetailXAI: Enterprise AI Meets Modern Content Intelligence
-
+**Status:** Reference  
 **Date:** November 2025
+
+← See [DOCUMENTATION_INDEX.md](DOCUMENTATION_INDEX.md) for navigation and canonical sources.
+
+---
 
 ---
 
@@ -10,7 +13,7 @@ We're excited to announce the public launch of **RetailXAI**, a production-grade
 
 ## What is RetailXAI?
 
-RetailXAI is a Python CLI pipeline that ingests YouTube videos, earnings calls, and podcasts to produce publication-ready articles for Substack, LinkedIn, and X. Built with enterprise reliability and modern AI architecture, RetailXAI enables publishers to scale content production while maintaining quality.
+RetailXAI is an AI-powered content intelligence platform that transforms video content into professional articles. The system includes a production-grade pipeline (Precipice-2) that ingests YouTube videos, earnings calls, and podcasts to produce publication-ready articles for Substack, LinkedIn, and X. Built with enterprise reliability and modern AI architecture, RetailXAI enables publishers to scale content production while maintaining quality.
 
 ## Key Features
 

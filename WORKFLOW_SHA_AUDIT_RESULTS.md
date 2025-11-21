@@ -1,7 +1,13 @@
 # GitHub Actions Commit SHA Audit Results
 
+**Status:** Historical  
 **Date:** 2025-01-18  
-**Status:** ✅ All commit SHAs verified and correct
+
+**Note:** This document is preserved for historical reference. For current action SHAs, see **[GITHUB_ACTIONS_PINNED.md](GITHUB_ACTIONS_PINNED.md)**.
+
+← See [DOCUMENTATION_INDEX.md](DOCUMENTATION_INDEX.md) for navigation and canonical sources.
+
+---
 
 ## Audit Summary
 

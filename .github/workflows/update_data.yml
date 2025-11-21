@@ -33,7 +33,25 @@ jobs:
           repository: retailxai/Precipice-2
           token: ${{ secrets.PRECIPICE_TOKEN }}
           ref: main
-          path: precipice
+          path: precipice-2
+        continue-on-error: false
+      
+      - name: Verify Precipice-2 checkout
+        run: |
+          if [ ! -d "precipice-2" ]; then
+            echo "Error: Precipice-2 repository checkout failed - directory not found"
+            echo "This usually indicates a permissions issue with PRECIPICE_TOKEN secret."
+            echo "Please verify:"
+            echo "  1. PRECIPICE_TOKEN secret exists in repository settings"
+            echo "  2. Token has 'repo' scope and access to retailxai/Precipice-2"
+            echo "  3. Token owner has Read permission on retailxai/Precipice-2"
+            exit 1
+          fi
+          if [ ! -f "precipice-2/.git/config" ]; then
+            echo "Error: Precipice-2 checkout incomplete - .git/config not found"
+            exit 1
+          fi
+          echo "Precipice-2 repository checked out successfully"
       
       - name: Set up Python
         uses: actions/setup-python@82c7e631bb3cdc910f68e0081d67478d79c6982d
@@ -47,34 +65,47 @@ jobs:
       
       - name: Copy draft files from Precipice-2
         run: |
+          set -euo pipefail
           mkdir -p drafts pdfs
+          # Verify Precipice-2 directory exists before copying
+          if [ ! -d "precipice-2" ]; then
+            echo "Error: precipice-2 directory not found"
+            exit 1
+          fi
           # Copy drafts from various possible locations in Precipice-2
-          if [ -d "precipice/drafts" ]; then
-            cp -r precipice/drafts/*.md drafts/ 2>/dev/null || true
-            cp -r precipice/drafts/*.txt drafts/ 2>/dev/null || true
-            cp -r precipice/drafts/*.pdf pdfs/ 2>/dev/null || true
+          if [ -d "precipice-2/drafts" ]; then
+            cp -r precipice-2/drafts/*.md drafts/ 2>/dev/null || true
+            cp -r precipice-2/drafts/*.txt drafts/ 2>/dev/null || true
+            cp -r precipice-2/drafts/*.pdf pdfs/ 2>/dev/null || true
           fi
-          if [ -d "precipice/data/drafts" ]; then
-            cp -r precipice/data/drafts/*.md drafts/ 2>/dev/null || true
-            cp -r precipice/data/drafts/*.txt drafts/ 2>/dev/null || true
-            cp -r precipice/data/drafts/*.pdf pdfs/ 2>/dev/null || true
+          if [ -d "precipice-2/data/drafts" ]; then
+            cp -r precipice-2/data/drafts/*.md drafts/ 2>/dev/null || true
+            cp -r precipice-2/data/drafts/*.txt drafts/ 2>/dev/null || true
+            cp -r precipice-2/data/drafts/*.pdf pdfs/ 2>/dev/null || true
           fi
-          if [ -d "precipice/output/drafts" ]; then
-            cp -r precipice/output/drafts/*.md drafts/ 2>/dev/null || true
-            cp -r precipice/output/drafts/*.txt drafts/ 2>/dev/null || true
-            cp -r precipice/output/drafts/*.pdf pdfs/ 2>/dev/null || true
+          if [ -d "precipice-2/output/drafts" ]; then
+            cp -r precipice-2/output/drafts/*.md drafts/ 2>/dev/null || true
+            cp -r precipice-2/output/drafts/*.txt drafts/ 2>/dev/null || true
+            cp -r precipice-2/output/drafts/*.pdf pdfs/ 2>/dev/null || true
           fi
           # Copy PDFs from dedicated PDF folders
-          if [ -d "precipice/pdfs" ]; then
-            cp -r precipice/pdfs/*.pdf pdfs/ 2>/dev/null || true
+          if [ -d "precipice-2/pdfs" ]; then
+            cp -r precipice-2/pdfs/*.pdf pdfs/ 2>/dev/null || true
           fi
-          if [ -d "precipice/data/pdfs" ]; then
-            cp -r precipice/data/pdfs/*.pdf pdfs/ 2>/dev/null || true
+          if [ -d "precipice-2/data/pdfs" ]; then
+            cp -r precipice-2/data/pdfs/*.pdf pdfs/ 2>/dev/null || true
           fi
-          if [ -d "precipice/output/pdfs" ]; then
-            cp -r precipice/output/pdfs/*.pdf pdfs/ 2>/dev/null || true
+          if [ -d "precipice-2/output/pdfs" ]; then
+            cp -r precipice-2/output/pdfs/*.pdf pdfs/ 2>/dev/null || true
           fi
           echo "Copied draft and PDF files"
+          # Validate that at least some files were copied
+          if [ ! "$(ls -A drafts 2>/dev/null)" ] && [ ! "$(ls -A pdfs 2>/dev/null)" ]; then
+            echo "Warning: No files were copied from Precipice-2"
+            echo "This may be expected if Precipice-2 has no drafts/PDFs yet"
+          else
+            echo "Successfully copied files from Precipice-2"
+          fi
       
       - name: Set up Node.js
         uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8
@@ -84,8 +115,12 @@ jobs:
       - name: Build Svelte viewer
         run: |
           cd dashboard/viewer
-          npm ci
-          npm run build
+          if [ ! -f "package-lock.json" ]; then
+            echo "Error: package-lock.json not found"
+            exit 1
+          fi
+          npm ci || { echo "Error: npm ci failed"; exit 1; }
+          npm run build || { echo "Error: npm build failed"; exit 1; }
         continue-on-error: false
       
       - name: Generate data files

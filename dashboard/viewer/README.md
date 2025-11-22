@@ -10,7 +10,13 @@ npm install
 npm run build
 ```
 
-The build output will be placed in `assets/viewer/` and `assets/css/viewer.css`.
+The build output will be placed in:
+- `assets/viewer/index.html` - Viewer HTML (encrypted version committed as `.enc`)
+- `assets/viewer/viewer.js` - Main viewer bundle
+- `assets/viewer/viewer-[hash].js` - Code-split chunks
+- `assets/css/viewer.css` - Viewer styles (if any)
+
+Note: The unencrypted `index.html` is gitignored; only the encrypted version (`index.html.enc`) is committed to the repository.
 
 ## Development
 

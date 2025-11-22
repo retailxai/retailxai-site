@@ -5,13 +5,14 @@ on:
     paths:
       - 'dashboard/index.html'
       - 'dashboard/draft.html'
+      - 'dashboard/viewer/**'
       - 'assets/css/dashboard.css'
       - 'assets/js/dashboard.js'
       - 'assets/css/global.css'
       - 'assets/css/ticker.css'
       - 'assets/js/theme-toggle.js'
       - 'assets/js/ticker.js'
-      - 'assets/viewer/**'
+      - 'assets/viewer/*.js'
       - 'assets/css/viewer.css'
       - 'data/*.json'
   workflow_dispatch:
@@ -46,33 +47,71 @@ jobs:
           npm ci
           npm run build
 
+      - name: Validate build output
+        run: |
+          echo "=== Build Output Validation ==="
+          echo "Checking assets/viewer/ directory:"
+          if [ -d "assets/viewer" ]; then
+            ls -lah assets/viewer/
+          else
+            echo "::error::assets/viewer/ directory does not exist!"
+            exit 1
+          fi
+          echo ""
+          echo "Checking assets/css/ directory:"
+          if [ -d "assets/css" ]; then
+            ls -lah assets/css/ | grep viewer || echo "No viewer.css found"
+          fi
+          echo ""
+
       - name: Locate built dashboard HTML
         id: dashboard-paths
         run: |
-          DASHBOARD_HTML="dashboard/viewer/dist/index.html"
+          DASHBOARD_HTML="assets/viewer/index.html"
           ENCRYPTED_HTML="assets/viewer/index.html.enc"
+          
+          echo "=== Path Configuration ==="
+          echo "Looking for dashboard HTML at: $DASHBOARD_HTML"
+          echo "Will encrypt to: $ENCRYPTED_HTML"
+          echo ""
+          
           if [ ! -f "$DASHBOARD_HTML" ]; then
-            echo "::error::Built dashboard HTML not found at $DASHBOARD_HTML. Ensure the viewer build step succeeded."
+            echo "::error::Built dashboard HTML not found at $DASHBOARD_HTML"
+            echo "::error::Directory contents:"
+            ls -lah assets/viewer/ || echo "Directory does not exist"
             exit 1
           fi
+          
+          echo "✓ Dashboard HTML found"
           echo "dashboard_html=$DASHBOARD_HTML" >> "$GITHUB_OUTPUT"
           echo "encrypted_html=$ENCRYPTED_HTML" >> "$GITHUB_OUTPUT"
 
       - name: Encrypt dashboard
         env:
-          DASHBOARD_PASSWORD: ${{ secrets.DASHBOARD_PASSWORD }}
+          STATICRYPT_PASSWORD: ${{ secrets.DASHBOARD_PASSWORD }}
           DASHBOARD_HTML: ${{ steps.dashboard-paths.outputs.dashboard_html }}
           ENCRYPTED_HTML: ${{ steps.dashboard-paths.outputs.encrypted_html }}
         run: |
           mkdir -p "$(dirname "$ENCRYPTED_HTML")"
+          
+          # Create a temporary directory for staticrypt output
+          TEMP_DIR=$(mktemp -d)
+          
+          # Encrypt the file
           if [ -f "resources/staticrypt-template.html" ]; then
-            staticrypt "$DASHBOARD_HTML" "$DASHBOARD_PASSWORD" \
+            staticrypt "$DASHBOARD_HTML" \
               --template resources/staticrypt-template.html \
-              -o "$ENCRYPTED_HTML"
+              --directory "$TEMP_DIR"
           else
-            staticrypt "$DASHBOARD_HTML" "$DASHBOARD_PASSWORD" \
-              -o "$ENCRYPTED_HTML"
+            staticrypt "$DASHBOARD_HTML" \
+              --directory "$TEMP_DIR"
           fi
+          
+          # Move the encrypted file to the final location
+          mv "$TEMP_DIR/index.html" "$ENCRYPTED_HTML"
+          rm -rf "$TEMP_DIR"
+          
+          echo "✓ Successfully encrypted dashboard to $ENCRYPTED_HTML"
 
       - name: Commit encrypted dashboard
         env:

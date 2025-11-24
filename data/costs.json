@@ -1,17 +1,6 @@
 {
   "periods": [
     {
-      "date": "2025-10-24",
-      "total_cost": 0.0,
-      "breakdown": {
-        "transcription": 0.0,
-        "llm": 0.0,
-        "storage": 0.0,
-        "other": 0.0
-      },
-      "article_count": 0
-    },
-    {
       "date": "2025-10-25",
       "total_cost": 0.0,
       "breakdown": {
@@ -329,8 +318,19 @@
         "other": 0.0
       },
       "article_count": 0
+    },
+    {
+      "date": "2025-11-23",
+      "total_cost": 0.0,
+      "breakdown": {
+        "transcription": 0.0,
+        "llm": 0.0,
+        "storage": 0.0,
+        "other": 0.0
+      },
+      "article_count": 0
     }
   ],
-  "last_updated": "2025-11-23T23:51:25.675356Z",
+  "last_updated": "2025-11-24T01:43:59.685795Z",
   "total_30_days": 0.0
 }

@@ -7,7 +7,7 @@
     "sentiment": "negative",
     "volume": 0,
     "market_cap": 0,
-    "last_updated": "2025-11-24T11:50:57.600239Z"
+    "last_updated": "2025-11-24T12:42:17.049906Z"
   },
   {
     "symbol": "NVDA",
@@ -17,7 +17,7 @@
     "sentiment": "negative",
     "volume": 0,
     "market_cap": 0,
-    "last_updated": "2025-11-24T11:50:58.175246Z"
+    "last_updated": "2025-11-24T12:42:17.679704Z"
   },
   {
     "symbol": "META",
@@ -27,7 +27,7 @@
     "sentiment": "positive",
     "volume": 0,
     "market_cap": 0,
-    "last_updated": "2025-11-24T11:50:58.771025Z"
+    "last_updated": "2025-11-24T12:42:18.223858Z"
   },
   {
     "symbol": "SPY",
@@ -37,7 +37,7 @@
     "sentiment": "positive",
     "volume": 0,
     "market_cap": 0,
-    "last_updated": "2025-11-24T11:50:59.371745Z"
+    "last_updated": "2025-11-24T12:42:18.769479Z"
   },
   {
     "symbol": "GLD",
@@ -47,7 +47,7 @@
     "sentiment": "negative",
     "volume": 0,
     "market_cap": 0,
-    "last_updated": "2025-11-24T11:50:59.964888Z"
+    "last_updated": "2025-11-24T12:42:19.308984Z"
   },
   {
     "symbol": "AAPL",
@@ -57,7 +57,7 @@
     "sentiment": "positive",
     "volume": 0,
     "market_cap": 0,
-    "last_updated": "2025-11-24T11:51:00.575429Z"
+    "last_updated": "2025-11-24T12:42:19.838092Z"
   },
   {
     "symbol": "MSFT",
@@ -67,7 +67,7 @@
     "sentiment": "negative",
     "volume": 0,
     "market_cap": 0,
-    "last_updated": "2025-11-24T11:51:01.178024Z"
+    "last_updated": "2025-11-24T12:42:20.385840Z"
   },
   {
     "symbol": "AMZN",
@@ -77,6 +77,6 @@
     "sentiment": "positive",
     "volume": 0,
     "market_cap": 0,
-    "last_updated": "2025-11-24T11:51:01.791750Z"
+    "last_updated": "2025-11-24T12:42:20.970086Z"
   }
 ]

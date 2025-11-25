@@ -1,82 +1,82 @@
 [
   {
     "symbol": "TSLA",
-    "price": 418.67,
-    "change": 0.89,
-    "change_percent": 0.21,
+    "price": 417.8,
+    "change": 0.02,
+    "change_percent": 0.0,
     "sentiment": "positive",
     "volume": 0,
     "market_cap": 0,
-    "last_updated": "2025-11-25T18:31:15.129648Z"
+    "last_updated": "2025-11-25T18:55:45.219794Z"
   },
   {
     "symbol": "NVDA",
-    "price": 176.23,
-    "change": -6.32,
-    "change_percent": -3.46,
+    "price": 176.58,
+    "change": -5.97,
+    "change_percent": -3.27,
     "sentiment": "negative",
     "volume": 0,
     "market_cap": 0,
-    "last_updated": "2025-11-25T18:31:15.726225Z"
+    "last_updated": "2025-11-25T18:55:45.917589Z"
   },
   {
     "symbol": "META",
-    "price": 630.1,
-    "change": 17.05,
-    "change_percent": 2.78,
+    "price": 630.96,
+    "change": 17.91,
+    "change_percent": 2.92,
     "sentiment": "positive",
     "volume": 0,
     "market_cap": 0,
-    "last_updated": "2025-11-25T18:31:16.299406Z"
+    "last_updated": "2025-11-25T18:55:47.433676Z"
   },
   {
     "symbol": "SPY",
-    "price": 674.04,
-    "change": 5.31,
-    "change_percent": 0.79,
+    "price": 674.14,
+    "change": 5.41,
+    "change_percent": 0.81,
     "sentiment": "positive",
     "volume": 0,
     "market_cap": 0,
-    "last_updated": "2025-11-25T18:31:16.881087Z"
+    "last_updated": "2025-11-25T18:55:48.064446Z"
   },
   {
     "symbol": "GLD",
-    "price": 381.03,
-    "change": 0.83,
-    "change_percent": 0.22,
+    "price": 380.72,
+    "change": 0.52,
+    "change_percent": 0.14,
     "sentiment": "positive",
     "volume": 0,
     "market_cap": 0,
-    "last_updated": "2025-11-25T18:31:17.442088Z"
+    "last_updated": "2025-11-25T18:55:48.699881Z"
   },
   {
     "symbol": "AAPL",
-    "price": 278.77,
-    "change": 2.85,
-    "change_percent": 1.03,
+    "price": 278.42,
+    "change": 2.5,
+    "change_percent": 0.91,
     "sentiment": "positive",
     "volume": 0,
     "market_cap": 0,
-    "last_updated": "2025-11-25T18:31:18.005926Z"
+    "last_updated": "2025-11-25T18:55:49.347959Z"
   },
   {
     "symbol": "MSFT",
-    "price": 476.75,
-    "change": 2.75,
-    "change_percent": 0.58,
+    "price": 477.17,
+    "change": 3.17,
+    "change_percent": 0.67,
     "sentiment": "positive",
     "volume": 0,
     "market_cap": 0,
-    "last_updated": "2025-11-25T18:31:18.617511Z"
+    "last_updated": "2025-11-25T18:55:49.962091Z"
   },
   {
     "symbol": "AMZN",
-    "price": 229.55,
-    "change": 3.27,
-    "change_percent": 1.45,
+    "price": 230.1,
+    "change": 3.82,
+    "change_percent": 1.69,
     "sentiment": "positive",
     "volume": 0,
     "market_cap": 0,
-    "last_updated": "2025-11-25T18:31:19.182689Z"
+    "last_updated": "2025-11-25T18:55:50.574353Z"
   }
 ]
